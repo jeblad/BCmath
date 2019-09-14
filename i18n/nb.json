@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeblad"
+		]
+	},
+	"bcmath-desc": "Legger til aritmetikk med vilkårlig presisjon for Lua moduler"
+}

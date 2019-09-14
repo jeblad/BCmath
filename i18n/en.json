@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeblad"
+		]
+	},
+	"bcmath-desc": "Provides arbitrary-precision arithmetic to Lua modules"
+}
