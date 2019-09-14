@@ -1,0 +1,38 @@
+{
+	"name": "BCmath",
+	"version": "0.1.0",
+	"author": [
+		"John Erling Blad"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:BCmath",
+	"descriptionmsg": "bcmath-desc",
+	"license-name": "GPL-2.0",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.33",
+		"extensions": {
+			"Scribunto": "*"
+		}
+	},
+	"AutoloadClasses": {
+		"BCmath\\Hooks":
+			"includes/Hooks.php",
+		"BCmath\\LuaLibBCmath":
+			"includes/LuaLibrary/LuaLibBCmath.php"
+	},
+	"config_prefix": "wgBCmath",
+	"config": {
+	},
+	"callback": "BCmath\\Hooks::onExtensionSetup",
+	"Hooks": {
+		"ScribuntoExternalLibraryPaths": [
+			"BCmath\\Hooks::onRegisterScribuntoExternalLibraryPaths"
+		]
+	},
+	"MessagesDirs": {
+		"BCmath": [
+			"i18n"
+		]
+	},
+	"manifest_version": 2
+}
