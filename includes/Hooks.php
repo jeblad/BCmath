@@ -34,4 +34,25 @@ class Hooks {
 		$extraLibraryPaths[] = __DIR__ . '/LuaLibrary/lua/pure';
 		return true;
 	}
+
+	/**
+	 * Extra Lua libraries for Scribunto
+	 *
+	 * @param any $engine to be used for the call
+	 * @param array &$extraLibraries additional libs
+	 * @return bool
+	 */
+	public static function onRegisterScribuntoLibraries(
+		string $engine,
+		array &$extraLibraries
+	): bool {
+		if ( $engine !== 'lua' ) {
+			return true;
+		}
+		$extraLibraries['bcmath'] = [
+			'class' => '\BCmath\LuaLibBCmath',
+			'deferLoad' => false
+		];
+		return true;
+	}
 }
