@@ -25,6 +25,9 @@
 	},
 	"callback": "BCmath\\Hooks::onExtensionSetup",
 	"Hooks": {
+		"ScribuntoExternalLibraries": [
+			"BCmath\\Hooks::onRegisterScribuntoLibraries"
+		],
 		"ScribuntoExternalLibraryPaths": [
 			"BCmath\\Hooks::onRegisterScribuntoExternalLibraryPaths"
 		]
