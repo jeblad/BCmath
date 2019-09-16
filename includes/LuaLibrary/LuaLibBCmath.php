@@ -9,6 +9,8 @@ use Scribunto_LuaLibraryBase;
  */
 class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function register() {
+		global $wgContLang;
+		$lang = $wgContLang;
 		$lib = [
 			'bcadd' => [ $this, 'bcAdd' ],
 			'bcsub' => [ $this, 'bcSub' ],
@@ -22,9 +24,6 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 		// Get the correct default language from the parser
 		if ( $this->getParser() ) {
 			$lang = $this->getParser()->getTargetLanguage();
-		} else {
-			global $wgContLang;
-			$lang = $wgContLang;
 		}
 		return $this->getEngine()->registerInterface( __DIR__ . '/lua/non-pure/BCmath.lua', $lib, [
 			'lang' => $lang->getCode(),
@@ -36,12 +35,12 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 * @internal
 	 * @param string $lhs
 	 * @param string $rhs
-	 * @param null|int $rhs
+	 * @param null|int $scale
 	 * @return string
 	 */
 	public function bcAdd( $lhs, $rhs, $scale=null ) {
 		try {
-			return [ \bcadd( $lhs, $rhs, is_null($scale) ? 0 : $scale ) ];
+			return [ \bcadd( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:add() failed (" . $ex->getMessage() . ")" );
 		}
@@ -52,11 +51,12 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 * @internal
 	 * @param string $lhs
 	 * @param string $rhs
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcSub( $lhs, $rhs ) {
+	public function bcSub( $lhs, $rhs, $scale=null ) {
 		try {
-			return [ \bcsub( $lhs, $rhs ) ];
+			return [ \bcsub( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:sub() failed (" . $ex->getMessage() . ")" );
 		}
@@ -67,11 +67,12 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 * @internal
 	 * @param string $lhs
 	 * @param string $rhs
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcMul( $lhs, $rhs ) {
+	public function bcMul( $lhs, $rhs, $scale=null ) {
 		try {
-			return [ \bcmul( $lhs, $rhs ) ];
+			return [ \bcmul( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:mul() failed (" . $ex->getMessage() . ")" );
 		}
@@ -80,13 +81,14 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	/**
 	 * Handler for bcDiv
 	 * @internal
-	 * @param string $lhs
-	 * @param string $rhs
+	 * @param string $dividend
+	 * @param string $divisor
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcDiv( $lhs, $rhs ) {
+	public function bcDiv( $dividend, $divisor, $scale=null ) {
 		try {
-			return [ \bcdiv( $lhs, $rhs ) ];
+			return [ \bcdiv( $dividend, $divisor, is_null($scale) ? bcscale() : $scale ) ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:div() failed (" . $ex->getMessage() . ")" );
 		}
@@ -95,13 +97,14 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	/**
 	 * Handler for bcMod
 	 * @internal
-	 * @param string $lhs
-	 * @param string $rhs
+	 * @param string $dividend
+	 * @param string $divisor
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcMod( $lhs, $rhs ) {
+	public function bcMod( $dividend, $divisor, $scale=null ) {
 		try {
-			return [ \bcmod( $lhs, $rhs ) ];
+			return [ \bcmod( $dividend, $divisor, is_null($scale) ? bcscale() : $scale ) ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:mod() failed (" . $ex->getMessage() . ")" );
 		}
@@ -110,13 +113,14 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	/**
 	 * Handler for bcPow
 	 * @internal
-	 * @param string $lhs
-	 * @param string $rhs
+	 * @param string $base
+	 * @param string $exponent
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcPow( $lhs, $rhs ) {
+	public function bcPow( $base, $exponent, $scale=null ) {
 		try {
-			return [ \bcpow( $lhs, $rhs ) ];
+			return [ \bcpow( $base, $exponent, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:pow() failed (" . $ex->getMessage() . ")" );
 		}
@@ -125,13 +129,15 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	/**
 	 * Handler for bcPowMod
 	 * @internal
-	 * @param string $lhs
-	 * @param string $rhs
+	 * @param string $base
+	 * @param string $exponent
+	 * @param string $modulus
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcPowMod( $lhs, $rhs ) {
+	public function bcPowMod( $base, $exponent, $scale=null ) {
 		try {
-			return [ \bcpowmod( $lhs, $rhs ) ];
+			return [ \bcpowmod( $base, $exponent, $modulus, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:powmod() failed (" . $ex->getMessage() . ")" );
 		}
@@ -140,13 +146,13 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	/**
 	 * Handler for bcSqrt
 	 * @internal
-	 * @param string $lhs
-	 * @param string $rhs
+	 * @param string $operand
+	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcSqrt( $num ) {
+	public function bcSqrt( $operand, $scale=null ) {
 		try {
-			return [ \bcsqrt( $num ) ];
+			return [ \bcsqrt( $operand, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:sqrt() failed (" . $ex->getMessage() . ")" );
 		}
