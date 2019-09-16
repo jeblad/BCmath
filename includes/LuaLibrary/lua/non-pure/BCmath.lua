@@ -18,9 +18,6 @@ local numberFormat = "%+." .. string.format( "%d", numberLength ) .. "e"
 -- @var structure for storage of the lib
 local bcmath = {}
 
--- @var metatable for the library
-local meta = {}
-
 function bcmath.setupInterface( options )
 	-- Boilerplate
 	bcmath.setupInterface = nil
@@ -34,9 +31,6 @@ function bcmath.setupInterface( options )
 
 	package.loaded['mw.bcmath'] = bcmath
 end
-
-local bcsuper = {}
-bcsuper.__index = bcsuper
 
 local argConvs = {}
 bcmath.converters = argConvs
@@ -106,8 +100,19 @@ local function parseNum( value )
 	return conv( value )
 end
 
+local bcmeta = {}
+
+function bcmeta:__call()
+	return self:num()
+end
+
+function bcmeta:__tostring()
+	return self:num()
+end
+
 local function makeBCmath( value, scale )
-	local obj = {}
+	local obj = setmetatable( {}, bcmeta )
+
 	local checkSelf = makeCheckSelfFunction( 'mw.bcmath', 'msg', obj, 'bcmath object' )
 	checkTypeMulti( 'bcmath object', 1, value, { 'string', 'table', 'number' } )
 	checkType( 'bcmath object', 2, scale, 'number', true )
@@ -197,29 +202,7 @@ local function makeBCmath( value, scale )
 		return self
 	end
 
- --   bccomp — Compare two arbitrary precision numbers
-
-	local bcmeta = setmetatable( {}, bcsuper )
-
-	function bcmeta.__call()
-		return bignum
-	end
-
-	function bcmeta.__tostring( t )
-		return mw.dumpObject( t )
-	end
-
-	bcmeta.__add = bcmath.add
-	bcmeta.__sub = bcmath.sub
-	bcmeta.__mul = bcmath.mul
-	bcmeta.__div = bcmath.div
-	bcmeta.__mod = bcmath.mod
-	bcmeta.__pow = bcmath.pow
-	bcmeta.__eq = bcmath.eq
-	bcmeta.__lt = bcmath.lt
-	bcmeta.__le = bcmath.le
-
-	return setmetatable( obj, bcmeta )
+	return obj
 end
 
 function bcmath.new( num )
@@ -237,6 +220,8 @@ function bcmath.add( augend, addend, scl )
 	return makeBCmath( php.bcadd( bval1, bval2, bscl ), bscl )
 end
 
+bcmeta.__add = bcmath.add
+
 function bcmath.sub( minuend, subtrahend, scl )
 	checkTypeMulti( 'bcmath.sub', 1, minuend, { 'string', 'number', 'table' } )
 	checkTypeMulti( 'bcmath.sub', 2, subtrahend, { 'string', 'number', 'table' } )
@@ -246,6 +231,8 @@ function bcmath.sub( minuend, subtrahend, scl )
 	local bscl = scl or math.min( bscl1, bscl2 )
 	return makeBCmath( php.bcsub( bval1, bval2, bscl ), bscl )
 end
+
+bcmeta.__sub = bcmath.sub
 
 function bcmath.mul( multiplier, multiplicator, scl )
 	checkTypeMulti( 'bcmath.mul', 1, multiplier, { 'string', 'number', 'table' } )
@@ -257,6 +244,8 @@ function bcmath.mul( multiplier, multiplicator, scl )
 	return makeBCmath( php.bcmul( bval1, bval2, bscl ), bscl )
 end
 
+bcmeta.__mul = bcmath.mul
+
 function bcmath.div( dividend, divisor, scl )
 	checkTypeMulti( 'bcmath.div', 1, dividend, { 'string', 'number', 'table' } )
 	checkTypeMulti( 'bcmath.div', 2, divisor, { 'string', 'number', 'table' } )
@@ -266,6 +255,8 @@ function bcmath.div( dividend, divisor, scl )
 	local bscl = scl or ( bscl1 * bscl2 )
 	return makeBCmath( php.bcdiv( bval1, bval2, bscl ), bscl )
 end
+
+bcmeta.__div = bcmath.div
 
 function bcmath.mod( dividend, divisor, scl )
 	checkTypeMulti( 'bcmath.mod', 1, dividend, { 'string', 'number', 'table' } )
@@ -277,6 +268,8 @@ function bcmath.mod( dividend, divisor, scl )
 	return makeBCmath( php.bcmod( bval1, bval2, bscl ), bscl )
 end
 
+bcmeta.__mod = bcmath.mod
+
 function bcmath.pow( base, exponent, scl )
 	checkTypeMulti( 'bcmath.pow', 1, base, { 'string', 'number', 'table' } )
 	checkTypeMulti( 'bcmath.pow', 2, exponent, { 'string', 'number', 'table' } )
@@ -286,6 +279,8 @@ function bcmath.pow( base, exponent, scl )
 	local bscl = scl or math.pow( bscl1, bscl2 )
 	return makeBCmath( php.bcpow( bval1, bval2, bscl ), bscl )
 end
+
+bcmeta.__pow = bcmath.pow
 
 -- Not a metamethod
 function bcmath.powmod( base, exponent, modulus, scl )
@@ -320,6 +315,8 @@ function bcmath.eq( lhs, rhs, scl )
 	return php.bccomp( bval1, bval2, bscl ) == 0
 end
 
+bcmeta.__eq = bcmath.eq
+
 function bcmath.lt( lhs, rhs, scl )
 	checkTypeMulti( 'bcmath.lt', 1, lhs, { 'string', 'number', 'table' } )
 	checkTypeMulti( 'bcmath.lt', 2, rhs, { 'string', 'number', 'table' } )
@@ -329,6 +326,8 @@ function bcmath.lt( lhs, rhs, scl )
 	local bscl = scl or math.min( bscl1, bscl2 )
 	return php.bccomp( bval1, bval2, bscl ) < 0
 end
+
+bcmeta.__lt = bcmath.lt
 
 -- Not a metamethod
 function bcmath.ge( lhs, rhs, scl )
@@ -344,6 +343,8 @@ function bcmath.le( lhs, rhs, scl )
 	local bscl = scl or math.min( bscl1, bscl2 )
 	return php.bccomp( bval1, bval2, bscl ) <= 0
 end
+
+bcmeta.__le = bcmath.le
 
 -- Not a metamethod
 function bcmath.gt( lhs, rhs, scl )
