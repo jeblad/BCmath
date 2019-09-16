@@ -114,8 +114,6 @@ local function makeBCmath( value, scale )
 	local obj = setmetatable( {}, bcmeta )
 
 	local checkSelf = makeCheckSelfFunction( 'mw.bcmath', 'msg', obj, 'bcmath object' )
-	checkTypeMulti( 'bcmath object', 1, value, { 'string', 'table', 'number' } )
-	checkType( 'bcmath object', 2, scale, 'number', true )
 
 	local bignum, bigscale = parseNum( value )
 	if scale then
@@ -205,9 +203,10 @@ local function makeBCmath( value, scale )
 	return obj
 end
 
-function bcmath.new( num )
-	checkType( 'bcmath.new', 1, num, 'string' )
-	return makeBCmath( num )
+function bcmath.new( value, scl )
+	checkTypeMulti( 'bcmath.new', 1, value, { 'string', 'table', 'number' } )
+	checkType( 'bcmath.new', 2, scl, 'number', true )
+	return makeBCmath( value, scl )
 end
 
 function bcmath.add( augend, addend, scl )
