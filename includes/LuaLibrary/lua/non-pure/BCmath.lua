@@ -6,9 +6,14 @@ local php      -- luacheck: ignore
 
 -- pure libs
 local libUtil = require 'libraryUtil'
+
+-- lookup
 local checkType = libUtil.checkType
 local checkTypeMulti = libUtil.checkTypeMulti
 local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
+
+local numberLength = 15
+local numberFormat = "%+." .. string.format( "%d", numberLength ) .. "e"
 
 -- @var structure for storage of the lib
 local bcmath = {}
@@ -31,151 +36,190 @@ function bcmath.setupInterface( options )
 end
 
 local bcsuper = {}
+bcsuper.__index = bcsuper
 
-local function makeBCarg( num )
-	return ( type( num ) == 'table' and num() )
-		or ( type( num ) == 'string' and num )
-		or tostring( num )
+local argConvs = {}
+bcmath.converters = argConvs
+
+argConvs.number = function( value )
+	local num = string.format( numberFormat, value )
+	local sign,integral = string.match( num, '^([-+]?)([%d]*)' )
+	local fraction = string.match( num, '%.([%d]*)' )
+	local exponent = tonumber( string.match( num, '[eE]([-+][%d]*)$' ) )
+	local integralLen = string.len( integral )
+	local fractionLen = string.len( fraction )
+	local scale
+
+	if exponent < 0 then
+		local temp = ''
+		local adjust = math.max( -( integralLen + exponent ), 0 )
+		for _ = 1, adjust do
+			temp = temp .. '0'
+		end
+		local mantissa = temp..integral..fraction
+		num = sign
+			.. string.sub( mantissa, 1, -( fractionLen - exponent +1 ) )
+			.. '.'
+			.. string.sub( mantissa, -( fractionLen - exponent ), -1 )
+		scale = fractionLen - exponent
+	elseif exponent > 0 then
+		local temp = ''
+		local adjust = math.max( -( fractionLen - exponent ), 0 )
+		for _ = 1, adjust do
+			temp = temp .. '0'
+		end
+		local mantissa = integral..fraction..temp
+		num = sign
+			.. string.sub( mantissa, 1, (integralLen + exponent ) )
+			.. '.'
+			.. string.sub( mantissa, (integralLen + exponent +1), -1 )
+		scale = fractionLen - exponent
+	else
+		num = sign
+			.. integral
+			.. '.'
+			.. fraction
+		scale = fractionLen
+	end
+
+	return num, scale
 end
 
-local function makeBCmath( data )
+argConvs.string = function( value )
+	local num = string.gsub( value, '%s', '' )
+	local p1, p2 = string.find( num, '%.(%d*)' )
+	local scale = ( p1 and p2 and ( p2-p1 ) ) or 0
+	return num, scale
+end
+
+argConvs.table = function( value )
+	local num = value.num()
+	local scale = value.scale()
+	return num, scale
+end
+
+local function parseNum( value )
+	local conv = argConvs[type( value )]
+	if not conv then
+		return nil
+	end
+	return conv( value )
+end
+
+local function makeBCmath( value, scale )
 	local obj = {}
 	local checkSelf = makeCheckSelfFunction( 'mw.bcmath', 'msg', obj, 'bcmath object' )
+	checkTypeMulti( 'bcmath object', 1, value, { 'string', 'table', 'number' } )
+	checkType( 'bcmath object', 2, scale, 'number', true )
 
-	function obj:add( num )
+	local bignum, bigscale = parseNum( value )
+	if scale then
+		bigscale = scale
+	end
+
+	function obj:scale()
+		return bigscale
+	end
+
+	function obj:num()
+		return bignum
+	end
+
+	function obj:add( addend, scl )
 		checkSelf( self, 'add' )
-		checkTypeMulti( 'bcmath:add', 1, num, { 'string', 'table' } )
-		data = php.bcadd( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:add', 1, addend, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:add', 2, scl, 'number', true )
+		local bval, bscl = parseNum( addend )
+		bignum = php.bcadd( self:num(), bval, scl or math.min( self:scale(), bscl ) )
 		return self
 	end
 
-	function obj:sub( num )
+	function obj:sub( subtrahend, scl )
 		checkSelf( self, 'sub' )
-		checkTypeMulti( 'bcmath:sub', 1, num, { 'string', 'table' } )
-		data = php.bcsub( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:sub', 1, subtrahend, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:sub', 2, scl, 'number', true )
+		local bval, bscl = parseNum( subtrahend )
+		bignum = php.bcsub( self:num(), bval, scl or math.min( self:scale(), bscl ) )
 		return self
 	end
 
-	function obj:mul( num )
+	function obj:mul( operand, scl )
 		checkSelf( self, 'mul' )
-		checkTypeMulti( 'bcmath:mul', 1, num, { 'string', 'table' } )
-		data = php.bcmul( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:mul', 1, operand, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:mul', 2, scl, 'number', true )
+		local bval, bscl = parseNum( operand )
+		bignum = php.bcmul( self:num(), bval, scl or ( self:scale() * bscl ) )
 		return self
 	end
 
-	function obj:div( num )
+	function obj:div( divisor, scl )
 		checkSelf( self, 'div' )
-		checkTypeMulti( 'bcmath:div', 1, num, { 'string', 'table' } )
-		data = php.bcdiv( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:div', 1, divisor, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:div', 2, scl, 'number', true )
+		local bval, bscl = parseNum( divisor )
+		bignum = php.bcdiv( self:num(), bval, scl or ( self:scale() * bscl ) )
 		return self
 	end
 
-	function obj:mod( num )
+	function obj:mod( divisor, scl )
 		checkSelf( self, 'mod' )
-		checkTypeMulti( 'bcmath:mod', 1, num, { 'string', 'table' } )
-		data = php.bcmod( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:mod', 1, divisor, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:mod', 2, scl, 'number', true )
+		local bval, bscl = parseNum( divisor )
+		bignum = php.bcmod( self:num(), bval, scl or ( self:scale() * bscl ) )
 		return self
 	end
 
-	function obj:pow( num )
+	function obj:pow( exponent, scl )
 		checkSelf( self, 'pow' )
-		checkTypeMulti( 'bcmath:pow', 1, num, { 'string', 'table' } )
-		data = php.bcpow( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:pow', 1, exponent, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:pow', 2, scl, 'number', true )
+		local bval, bscl = parseNum( exponent )
+		bignum = php.bcpow( self:num(), bval, scl or math.pow( self:scale(), bscl ) )
 		return self
 	end
 
-	function obj:powmod( num )
+	function obj:powmod( exponent, modulus, scl )
 		checkSelf( self, 'powmod' )
-		checkTypeMulti( 'bcmath:powmod', 1, num, { 'string', 'table' } )
-		data = php.bcpowmod( self(), makeBCarg( num ) )
+		checkTypeMulti( 'bcmath:powmod', 1, exponent, { 'string', 'number', 'table' } )
+		checkTypeMulti( 'bcmath:powmod', 2, modulus, { 'string', 'number', 'table' } )
+		checkType( 'bcmath:powmod', 3, scl, 'number', true )
+		local bval1, bscl1 = parseNum( exponent )
+		local bval2, bscl2 = parseNum( modulus )
+		bignum = php.bcpowmod( self:num(), bval1, bval2, scl or math.pow( self:scale(), bscl1 + bscl2 ) )
 		return self
 	end
 
-	function obj:sqrt()
+	function obj:sqrt( scl )
 		checkSelf( self, 'sqrt' )
-		data = php.bcsqrt( self() )
+		checkType( 'bcmath:add', 1, scl, 'number', true )
+		bignum = php.bcsqrt( self:num(), scl or math.pow( self:scale(), 2 ) )
 		return self
 	end
 
  --   bccomp — Compare two arbitrary precision numbers
 
 	local bcmeta = setmetatable( {}, bcsuper )
+
 	function bcmeta.__call()
-		return data
+		return bignum
 	end
+
+	function bcmeta.__tostring( t )
+		return mw.dumpObject( t )
+	end
+
+	bcmeta.__add = bcmath.add
+	bcmeta.__sub = bcmath.sub
+	bcmeta.__mul = bcmath.mul
+	bcmeta.__div = bcmath.div
+	bcmeta.__mod = bcmath.mod
+	bcmeta.__pow = bcmath.pow
+	bcmeta.__eq = bcmath.eq
+	bcmeta.__lt = bcmath.lt
+	bcmeta.__le = bcmath.le
+
 	return setmetatable( obj, bcmeta )
-end
-
-function bcsuper.__add( lhs, rhs )
-	checkTypeMulti( 'bcmath:__add', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__add', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcadd( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
-function bcsuper.__sub( lhs, rhs )
-	checkTypeMulti( 'bcmath:__sub', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__sub', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcsub( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
-function bcsuper.__mul( lhs, rhs )
-	checkTypeMulti( 'bcmath:__mul', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__mul', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcmul( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
-function bcsuper.__div( lhs, rhs )
-	checkTypeMulti( 'bcmath:__div', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__div', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcdiv( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
-function bcsuper.__mod( lhs, rhs )
-	checkTypeMulti( 'bcmath:__mod', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__mod', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcmod( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
-function bcsuper.__pow( lhs, rhs )
-	checkTypeMulti( 'bcmath:__pow', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__pow', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcpow( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
--- Not a metamethod
-function bcsuper.__powmod( lhs, rhs )
-	checkTypeMulti( 'bcmath:__powmod', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__powmod', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcpowmod( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
--- Not a metamethod
-function bcsuper.__sqrt( lhs, rhs )
-	checkTypeMulti( 'bcmath:__sqrt', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__sqrt', 2, rhs, { 'string', 'table' } )
-	return makeBCmath( php.bcsqrt( makeBCarg( lhs ), makeBCarg( rhs ) ) )
-end
-
-function bcsuper.__eq( lhs, rhs )
-	checkTypeMulti( 'bcmath:__eq', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__eq', 2, rhs, { 'string', 'table' } )
-	return php.bccomp( makeBCarg( lhs ), makeBCarg( rhs ) ) == 0
-end
-
-function bcsuper.__lt( lhs, rhs )
-	checkTypeMulti( 'bcmath:__lt', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__lt', 2, rhs, { 'string', 'table' } )
-	return php.bccomp( makeBCarg( lhs ), makeBCarg( rhs ) ) < 0
-end
-
-function bcsuper.__le( lhs, rhs )
-	checkTypeMulti( 'bcmath:__le', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath:__le', 2, rhs, { 'string', 'table' } )
-	return php.bccomp( makeBCarg( lhs ), makeBCarg( rhs ) ) <= 0
-end
-
-function bcsuper._k_tostring( t )
-	return mw.dumpObject( t )
 end
 
 function bcmath.new( num )
@@ -183,11 +227,127 @@ function bcmath.new( num )
 	return makeBCmath( num )
 end
 
-function bcmath.add( lhs, rhs, scale )
-	checkTypeMulti( 'bcmath.add', 1, lhs, { 'string', 'table' } )
-	checkTypeMulti( 'bcmath.add', 2, rhs, { 'string', 'table' } )
-	checkType( 'bcmath.add', 3, scale, 'number', true )
-	return makeBCmath( php.bcadd( makeBCarg( lhs ), makeBCarg( rhs ), scale ) )
+function bcmath.add( augend, addend, scl )
+	checkTypeMulti( 'bcmath.add', 1, augend, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.add', 2, addend, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.add', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( augend )
+	local bval2, bscl2 = parseNum( addend )
+	local bscl = scl or math.min( bscl1, bscl2 )
+	return makeBCmath( php.bcadd( bval1, bval2, bscl ), bscl )
+end
+
+function bcmath.sub( minuend, subtrahend, scl )
+	checkTypeMulti( 'bcmath.sub', 1, minuend, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.sub', 2, subtrahend, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.sub', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( minuend )
+	local bval2, bscl2 = parseNum( subtrahend )
+	local bscl = scl or math.min( bscl1, bscl2 )
+	return makeBCmath( php.bcsub( bval1, bval2, bscl ), bscl )
+end
+
+function bcmath.mul( multiplier, multiplicator, scl )
+	checkTypeMulti( 'bcmath.mul', 1, multiplier, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.mul', 2, multiplicator, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.mul', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( multiplier )
+	local bval2, bscl2 = parseNum( multiplicator )
+	local bscl = scl or ( bscl1 * bscl2 )
+	return makeBCmath( php.bcmul( bval1, bval2, bscl ), bscl )
+end
+
+function bcmath.div( dividend, divisor, scl )
+	checkTypeMulti( 'bcmath.div', 1, dividend, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.div', 2, divisor, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.div', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( dividend )
+	local bval2, bscl2 = parseNum( divisor )
+	local bscl = scl or ( bscl1 * bscl2 )
+	return makeBCmath( php.bcdiv( bval1, bval2, bscl ), bscl )
+end
+
+function bcmath.mod( dividend, divisor, scl )
+	checkTypeMulti( 'bcmath.mod', 1, dividend, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.mod', 2, divisor, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.div', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( dividend )
+	local bval2, bscl2 = parseNum( divisor )
+	local bscl = scl or ( bscl1 * bscl2 )
+	return makeBCmath( php.bcmod( bval1, bval2, bscl ), bscl )
+end
+
+function bcmath.pow( base, exponent, scl )
+	checkTypeMulti( 'bcmath.pow', 1, base, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.pow', 2, exponent, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.pow', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( base )
+	local bval2, bscl2 = parseNum( exponent )
+	local bscl = scl or math.pow( bscl1, bscl2 )
+	return makeBCmath( php.bcpow( bval1, bval2, bscl ), bscl )
+end
+
+-- Not a metamethod
+function bcmath.powmod( base, exponent, modulus, scl )
+	checkTypeMulti( 'bcmath.powmod', 1, base, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.powmod', 2, exponent, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.powmod', 3, modulus, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.powmod', 4, scl, 'number', true )
+	checkType( 'bcmath.pow', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( base )
+	local bval2, bscl2 = parseNum( exponent )
+	local bval3, bscl3 = parseNum( modulus )
+	local bscl = scl or math.pow( bscl1, bscl2, bscl3 )
+	return makeBCmath( php.bcpowmod( bval1, bval2, bval3, bscl ), bscl )
+end
+
+-- Not a metamethod
+function bcmath.sqrt( operand, scl )
+	checkTypeMulti( 'bcmath.sqrt', 1, operand, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.sqrt', 2, scl, 'number', true )
+	local bval1, bscl1 = parseNum( operand )
+	local bscl = scl or bscl1
+	return makeBCmath( php.bcsqrt( bval1, bscl ), bscl )
+end
+
+function bcmath.eq( lhs, rhs, scl )
+	checkTypeMulti( 'bcmath.eq', 1, lhs, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.eq', 2, rhs, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.eq', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( lhs )
+	local bval2, bscl2 = parseNum( rhs )
+	local bscl = scl or math.min( bscl1, bscl2 )
+	return php.bccomp( bval1, bval2, bscl ) == 0
+end
+
+function bcmath.lt( lhs, rhs, scl )
+	checkTypeMulti( 'bcmath.lt', 1, lhs, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.lt', 2, rhs, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.lt', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( lhs )
+	local bval2, bscl2 = parseNum( rhs )
+	local bscl = scl or math.min( bscl1, bscl2 )
+	return php.bccomp( bval1, bval2, bscl ) < 0
+end
+
+-- Not a metamethod
+function bcmath.ge( lhs, rhs, scl )
+	return not bcmath.lt( lhs, rhs, scl )
+end
+
+function bcmath.le( lhs, rhs, scl )
+	checkTypeMulti( 'bcmath.le', 1, lhs, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.le', 2, rhs, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.le', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( lhs )
+	local bval2, bscl2 = parseNum( rhs )
+	local bscl = scl or math.min( bscl1, bscl2 )
+	return php.bccomp( bval1, bval2, bscl ) <= 0
+end
+
+-- Not a metamethod
+function bcmath.gt( lhs, rhs, scl )
+	return not bcmath.le( lhs, rhs, scl )
 end
 
 return bcmath

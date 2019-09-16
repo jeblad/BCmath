@@ -56,7 +56,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 */
 	public function bcSub( $lhs, $rhs, $scale=null ) {
 		try {
-			return [ \bcsub( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ) ];
+			return [ \bcsub( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:sub() failed (" . $ex->getMessage() . ")" );
 		}
@@ -72,7 +72,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 */
 	public function bcMul( $lhs, $rhs, $scale=null ) {
 		try {
-			return [ \bcmul( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ) ];
+			return [ \bcmul( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:mul() failed (" . $ex->getMessage() . ")" );
 		}
@@ -88,7 +88,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 */
 	public function bcDiv( $dividend, $divisor, $scale=null ) {
 		try {
-			return [ \bcdiv( $dividend, $divisor, is_null($scale) ? bcscale() : $scale ) ) ];
+			return [ \bcdiv( $dividend, $divisor, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:div() failed (" . $ex->getMessage() . ")" );
 		}
@@ -104,7 +104,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 */
 	public function bcMod( $dividend, $divisor, $scale=null ) {
 		try {
-			return [ \bcmod( $dividend, $divisor, is_null($scale) ? bcscale() : $scale ) ) ];
+			return [ \bcmod( $dividend, $divisor, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:mod() failed (" . $ex->getMessage() . ")" );
 		}
@@ -135,7 +135,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 * @param null|int $scale
 	 * @return string
 	 */
-	public function bcPowMod( $base, $exponent, $scale=null ) {
+	public function bcPowMod( $base, $exponent, $modulus, $scale=null ) {
 		try {
 			return [ \bcpowmod( $base, $exponent, $modulus, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
