@@ -12,14 +12,14 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 		global $wgContLang;
 		$lang = $wgContLang;
 		$lib = [
-			'bcadd' => [ $this, 'bcAdd' ],
-			'bcsub' => [ $this, 'bcSub' ],
-			'bcmul' => [ $this, 'bcMul' ],
-			'bcdiv' => [ $this, 'bcDiv' ],
-			'bcmod' => [ $this, 'bcMod' ],
-			'bcpow' => [ $this, 'bcPow' ],
+			'bcadd'    => [ $this, 'bcAdd' ],
+			'bcsub'    => [ $this, 'bcSub' ],
+			'bcmul'    => [ $this, 'bcMul' ],
+			'bcdiv'    => [ $this, 'bcDiv' ],
+			'bcmod'    => [ $this, 'bcMod' ],
+			'bcpow'    => [ $this, 'bcPow' ],
 			'bcpowmod' => [ $this, 'bcPowMod' ],
-			'bcsqrt' => [ $this, 'bcSqrt' ]
+			'bcsqrt'   => [ $this, 'bcSqrt' ]
 		];
 		// Get the correct default language from the parser
 		if ( $this->getParser() ) {
