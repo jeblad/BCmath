@@ -128,9 +128,7 @@ end
 -- @treturn string holding bcnumber
 -- @treturn number holding an estimate
 function argConvs.table( value )
-	local num = value.num()
-	local scale = value.scale()
-	return num, scale
+	return value:value(), value:scale()
 end
 
 --- Convert provided value into bc num-scale pair.
@@ -158,7 +156,7 @@ local bcmeta = {}
 -- @local
 -- @treturn string
 function bcmeta:__call()
-	return self:value()
+	return self:value(), self:scale()
 end
 
 --- Stringable instance.
@@ -200,6 +198,7 @@ local function makeBCmath( value, scale )
 
 	--- Add the addend to self.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcadd](https://www.php.net/manual/en/function.bcadd.php) for further documentation.
 	-- @function bcmath:add
 	-- @tparam string|number|table addend
 	-- @tparam number scale
@@ -209,12 +208,13 @@ local function makeBCmath( value, scale )
 		checkTypeMulti( 'bcmath:add', 1, addend, { 'string', 'number', 'table' } )
 		checkType( 'bcmath:add', 2, scale, 'number', true )
 		local bval, bscl = parseNum( addend )
-		_value = php.bcadd( _value, bval, scale or math.min( _scale, bscl ) )
+		_value = php.bcadd( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
 
 	--- Subtract the subtrahend from self.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcsub](https://www.php.net/manual/en/function.bcsub.php) for further documentation.
 	-- @function bcmath:sub
 	-- @tparam string|number|table subtrahend
 	-- @tparam number scale
@@ -224,12 +224,13 @@ local function makeBCmath( value, scale )
 		checkTypeMulti( 'bcmath:sub', 1, subtrahend, { 'string', 'number', 'table' } )
 		checkType( 'bcmath:sub', 2, scale, 'number', true )
 		local bval, bscl = parseNum( subtrahend )
-		_value = php.bcsub( _value, bval, scale or math.min( _scale, bscl ) )
+		_value = php.bcsub( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
 
 	--- Multiply self with multiplicator.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcmul](https://www.php.net/manual/en/function.bcmul.php) for further documentation.
 	-- @function bcmath:mul
 	-- @tparam string|number|table multiplicator
 	-- @tparam number scale
@@ -239,12 +240,13 @@ local function makeBCmath( value, scale )
 		checkTypeMulti( 'bcmath:mul', 1, multiplicator, { 'string', 'number', 'table' } )
 		checkType( 'bcmath:mul', 2, scale, 'number', true )
 		local bval, bscl = parseNum( multiplicator )
-		_value = php.bcmul( _value, bval, scale or ( _scale * bscl ) )
+		_value = php.bcmul( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
 
 	--- Divide self with divisor.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcdiv](https://www.php.net/manual/en/function.bcdiv.php) for further documentation.
 	-- @function bcmath:div
 	-- @tparam string|number|table divisor
 	-- @tparam number scale
@@ -254,12 +256,13 @@ local function makeBCmath( value, scale )
 		checkTypeMulti( 'bcmath:div', 1, divisor, { 'string', 'number', 'table' } )
 		checkType( 'bcmath:div', 2, scale, 'number', true )
 		local bval, bscl = parseNum( divisor )
-		_value = php.bcdiv( _value, bval, scale or ( _scale * bscl ) )
+		_value = php.bcdiv( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
 
 	--- Modulus self with divisor.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcmod](https://www.php.net/manual/en/function.bcmod.php) for further documentation.
 	-- @function bcmath:mod
 	-- @tparam string|number|table divisor
 	-- @tparam number scale
@@ -269,12 +272,13 @@ local function makeBCmath( value, scale )
 		checkTypeMulti( 'bcmath:mod', 1, divisor, { 'string', 'number', 'table' } )
 		checkType( 'bcmath:mod', 2, scale, 'number', true )
 		local bval, bscl = parseNum( divisor )
-		_value = php.bcmod( _value, bval, scale or ( _scale * bscl ) )
+		_value = php.bcmod( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
 
 	--- Power self with exponent.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcpow](https://www.php.net/manual/en/function.bcpow.php) for further documentation.
 	-- @function bcmath:pow
 	-- @tparam string|number|table exponent
 	-- @tparam number scale
@@ -284,12 +288,13 @@ local function makeBCmath( value, scale )
 		checkTypeMulti( 'bcmath:pow', 1, exponent, { 'string', 'number', 'table' } )
 		checkType( 'bcmath:pow', 2, scale, 'number', true )
 		local bval, bscl = parseNum( exponent )
-		_value = php.bcpow( _value, bval, scale or math.pow( _scale, bscl ) )
+		_value = php.bcpow( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
 
 	--- Power modulus self with exponent and divisor.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcpowmod](https://www.php.net/manual/en/function.bcpowmod.php) for further documentation.
 	-- @function bcmath:powmod
 	-- @tparam string|number|table exponent
 	-- @tparam string|number|table modulus
@@ -302,19 +307,20 @@ local function makeBCmath( value, scale )
 		checkType( 'bcmath:powmod', 3, scale, 'number', true )
 		local bval1, bscl1 = parseNum( exponent )
 		local bval2, bscl2 = parseNum( divisor )
-		_value = php.bcpowmod( _value, bval1, bval2, scale or math.pow( _scale, bscl1 + bscl2 ) )
+		_value = php.bcpowmod( _value, bval1, bval2, scale or math.max( _scale, bscl1, bscl2 ) )
 		return self
 	end
 
 	--- Square root self.
 	-- This method will store result in self, and then return self to facilitate chaining.
+	-- See [PHP: bcsqrt](https://www.php.net/manual/en/function.bcsqrt.php) for further documentation.
 	-- @function bcmath:sqrt
 	-- @tparam number scale
 	-- @treturn self
 	function obj:sqrt( scale )
 		checkSelf( self, 'sqrt' )
 		checkType( 'bcmath:add', 1, scale, 'number', true )
-		_value = php.bcsqrt( _value, scale or math.pow( _scale, 2 ) )
+		_value = php.bcsqrt( _value, scale or _scale )
 		return self
 	end
 
@@ -333,6 +339,7 @@ function bcmath.new( value, scl )
 end
 
 --- Add the addend to augend.
+-- This function is available as a metamethod.
 -- @function mw.bcmath.add
 -- @tparam string|number|table augend
 -- @tparam string|number|table addend
@@ -344,12 +351,13 @@ function bcmath.add( augend, addend, scl )
 	checkType( 'bcmath.add', 3, scl, 'number', true )
 	local bval1, bscl1 = parseNum( augend )
 	local bval2, bscl2 = parseNum( addend )
-	local bscl = scl or math.min( bscl1, bscl2 )
+	local bscl = scl or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcadd( bval1, bval2, bscl ), bscl )
 end
 bcmeta.__add = bcmath.add
 
 --- Subtract the subtrahend from minuend.
+-- This function is available as a metamethod.
 -- @function mw.bcmath.sub
 -- @tparam string|number|table minuend
 -- @tparam string|number|table subtrahend
@@ -361,12 +369,13 @@ function bcmath.sub( minuend, subtrahend, scl )
 	checkType( 'bcmath.sub', 3, scl, 'number', true )
 	local bval1, bscl1 = parseNum( minuend )
 	local bval2, bscl2 = parseNum( subtrahend )
-	local bscl = scl or math.min( bscl1, bscl2 )
+	local bscl = scl or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcsub( bval1, bval2, bscl ), bscl )
 end
 bcmeta.__sub = bcmath.sub
 
 --- Multiply the multiplicator with multiplier.
+-- This function is available as a metamethod.
 -- @function mw.bcmath.mul
 -- @tparam string|number|table multiplier
 -- @tparam string|number|table multiplicator
@@ -378,12 +387,13 @@ function bcmath.mul( multiplier, multiplicator, scl )
 	checkType( 'bcmath.mul', 3, scl, 'number', true )
 	local bval1, bscl1 = parseNum( multiplier )
 	local bval2, bscl2 = parseNum( multiplicator )
-	local bscl = scl or ( bscl1 * bscl2 )
+	local bscl = scl or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcmul( bval1, bval2, bscl ), bscl )
 end
 bcmeta.__mul = bcmath.mul
 
 --- Divide the divisor from dividend.
+-- This function is available as a metamethod.
 -- @function mw.bcmath.div
 -- @tparam string|number|table dividend
 -- @tparam string|number|table divisor
@@ -395,12 +405,13 @@ function bcmath.div( dividend, divisor, scl )
 	checkType( 'bcmath.div', 3, scl, 'number', true )
 	local bval1, bscl1 = parseNum( dividend )
 	local bval2, bscl2 = parseNum( divisor )
-	local bscl = scl or ( bscl1 * bscl2 )
+	local bscl = scl or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcdiv( bval1, bval2, bscl ), bscl )
 end
 bcmeta.__div = bcmath.div
 
 --- Modulus the divisor from dividend.
+-- This function is available as a metamethod.
 -- @function mw.bcmath.mod
 -- @tparam string|number|table dividend
 -- @tparam string|number|table divisor
@@ -412,12 +423,13 @@ function bcmath.mod( dividend, divisor, scl )
 	checkType( 'bcmath.div', 3, scl, 'number', true )
 	local bval1, bscl1 = parseNum( dividend )
 	local bval2, bscl2 = parseNum( divisor )
-	local bscl = scl or ( bscl1 * bscl2 )
+	local bscl = scl or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcmod( bval1, bval2, bscl ), bscl )
 end
 bcmeta.__mod = bcmath.mod
 
 --- Power the base to exponent.
+-- This function is available as a metamethod.
 -- @function mw.bcmath.pow
 -- @tparam string|number|table base
 -- @tparam string|number|table exponent
@@ -429,13 +441,13 @@ function bcmath.pow( base, exponent, scl )
 	checkType( 'bcmath.pow', 3, scl, 'number', true )
 	local bval1, bscl1 = parseNum( base )
 	local bval2, bscl2 = parseNum( exponent )
-	local bscl = scl or math.pow( bscl1, bscl2 )
+	local bscl = scl or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcpow( bval1, bval2, bscl ), bscl )
 end
 bcmeta.__pow = bcmath.pow
 
 --- Power the base to exponent.
--- This is not available as a metamethod.
+-- This function is not available as a metamethod.
 -- @function mw.bcmath.powmod
 -- @tparam string|number|table base
 -- @tparam string|number|table exponent
@@ -450,12 +462,12 @@ function bcmath.powmod( base, exponent, modulus, scl )
 	local bval1, bscl1 = parseNum( base )
 	local bval2, bscl2 = parseNum( exponent )
 	local bval3, bscl3 = parseNum( modulus )
-	local bscl = scl or math.pow( bscl1, bscl2, bscl3 )
+	local bscl = scl or math.max( bscl1, bscl2, bscl3 )
 	return makeBCmath( php.bcpowmod( bval1, bval2, bval3, bscl ), bscl )
 end
 
 --- Power the base to exponent.
--- This is not available as a metamethod.
+-- This function is not available as a metamethod.
 -- @function mw.bcmath.sqrt
 -- @tparam string|number|table operand
 -- @tparam number scale
@@ -468,77 +480,85 @@ function bcmath.sqrt( operand, scl )
 	return makeBCmath( php.bcsqrt( bval1, bscl ), bscl )
 end
 
+--- Compare the left operand with the right operand.
+-- This function is not available as a metamethod.
+-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
+-- @function mw.bcmath.eq
+-- @tparam string|number|table lhs
+-- @tparam string|number|table rhs
+-- @tparam number scale
+-- @treturn bcmath
+function bcmath.comp( lhs, rhs, scl )
+	checkTypeMulti( 'bcmath.comp', 1, lhs, { 'string', 'number', 'table' } )
+	checkTypeMulti( 'bcmath.comp', 2, rhs, { 'string', 'number', 'table' } )
+	checkType( 'bcmath.comp', 3, scl, 'number', true )
+	local bval1, bscl1 = parseNum( lhs )
+	local bval2, bscl2 = parseNum( rhs )
+	local bscl = scl or math.max( bscl1, bscl2 )
+	return php.bccomp( bval1, bval2, bscl )
+end
+
 --- Check if left operand is equal to right operand.
+-- This function is available as a metamethod.
+-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.eq
 -- @tparam string|number|table lhs
 -- @tparam string|number|table rhs
 -- @tparam number scale
 -- @treturn bcmath
 function bcmath.eq( lhs, rhs, scl )
-	checkTypeMulti( 'bcmath.eq', 1, lhs, { 'string', 'number', 'table' } )
-	checkTypeMulti( 'bcmath.eq', 2, rhs, { 'string', 'number', 'table' } )
-	checkType( 'bcmath.eq', 3, scl, 'number', true )
-	local bval1, bscl1 = parseNum( lhs )
-	local bval2, bscl2 = parseNum( rhs )
-	local bscl = scl or math.min( bscl1, bscl2 )
-	return php.bccomp( bval1, bval2, bscl ) == 0
+	return bcmath.comp( lhs, rhs, scl ) == 0
 end
 bcmeta.__eq = bcmath.eq
 
 --- Check if left operand is less than right operand.
+-- This function is available as a metamethod.
+-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.lt
 -- @tparam string|number|table lhs
 -- @tparam string|number|table rhs
 -- @tparam number scale
 -- @treturn bcmath
 function bcmath.lt( lhs, rhs, scl )
-	checkTypeMulti( 'bcmath.lt', 1, lhs, { 'string', 'number', 'table' } )
-	checkTypeMulti( 'bcmath.lt', 2, rhs, { 'string', 'number', 'table' } )
-	checkType( 'bcmath.lt', 3, scl, 'number', true )
-	local bval1, bscl1 = parseNum( lhs )
-	local bval2, bscl2 = parseNum( rhs )
-	local bscl = scl or math.min( bscl1, bscl2 )
-	return php.bccomp( bval1, bval2, bscl ) < 0
+	return bcmath.comp( lhs, rhs, scl ) < 0
 end
 bcmeta.__lt = bcmath.lt
 
 --- Check if left operand is greater or equal to right operand.
--- This is not available as a metamethod.
+-- This function is not available as a metamethod.
+-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.ge
 -- @tparam string|number|table lhs
 -- @tparam string|number|table rhs
 -- @tparam number scale
 -- @treturn bcmath
 function bcmath.ge( lhs, rhs, scl )
-	return not bcmath.lt( lhs, rhs, scl )
+	return bcmath.comp( lhs, rhs, scl ) >= 0
 end
 
 --- Check if left operand is less than or equal to right operand.
+-- This function is available as a metamethod.
+-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.le
 -- @tparam string|number|table lhs
 -- @tparam string|number|table rhs
 -- @tparam number scale
 -- @treturn bcmath
 function bcmath.le( lhs, rhs, scl )
-	checkTypeMulti( 'bcmath.le', 1, lhs, { 'string', 'number', 'table' } )
-	checkTypeMulti( 'bcmath.le', 2, rhs, { 'string', 'number', 'table' } )
-	checkType( 'bcmath.le', 3, scl, 'number', true )
-	local bval1, bscl1 = parseNum( lhs )
-	local bval2, bscl2 = parseNum( rhs )
-	local bscl = scl or math.min( bscl1, bscl2 )
-	return php.bccomp( bval1, bval2, bscl ) <= 0
+	return bcmath.comp( lhs, rhs, scl ) <= 0
 end
 bcmeta.__le = bcmath.le
 
 --- Check if left operand is equal to right operand.
--- This is not available as a metamethod.
+-- This function is not available as a metamethod.
+-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.gt
 -- @tparam string|number|table lhs
 -- @tparam string|number|table rhs
 -- @tparam number scale
 -- @treturn bcmath
 function bcmath.gt( lhs, rhs, scl )
-	return not bcmath.le( lhs, rhs, scl )
+	return bcmath.comp( lhs, rhs, scl ) > 0
 end
 
 return bcmath
