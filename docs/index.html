@@ -37,6 +37,11 @@
 <ul class="nowrap">
   <li><strong>BCmath</strong></li>
 </ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="topics/pitfalls.md.html">Pitfalls</a></li>
+  <li><a href="topics/databases.md.html">Databases</a></li>
+</ul>
 
 </div>
 
@@ -129,6 +134,10 @@
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.eq">mw.bcmath.eq ()</a></td>
+	<td class="summary">Compare the left operand with the right operand.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.eq">mw.bcmath.eq ()</a></td>
 	<td class="summary">Check if left operand is equal to right operand.</td>
 	</tr>
 	<tr>
@@ -203,6 +212,7 @@
     <dd>
     Add the addend to self.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcadd.php">PHP: bcadd</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -239,6 +249,7 @@
     <dd>
     Subtract the subtrahend from self.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcsub.php">PHP: bcsub</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -275,6 +286,7 @@
     <dd>
     Multiply self with multiplicator.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcmul.php">PHP: bcmul</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -311,6 +323,7 @@
     <dd>
     Divide self with divisor.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcdiv.php">PHP: bcdiv</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -347,6 +360,7 @@
     <dd>
     Modulus self with divisor.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcmod.php">PHP: bcmod</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -383,6 +397,7 @@
     <dd>
     Power self with exponent.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcpow.php">PHP: bcpow</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -419,6 +434,7 @@
     <dd>
     Power modulus self with exponent and divisor.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcpowmod.php">PHP: bcpowmod</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -461,6 +477,7 @@
     <dd>
     Square root self.
  This method will store result in self, and then return self to facilitate chaining.
+ See <a href="https://www.php.net/manual/en/function.bcsqrt.php">PHP: bcsqrt</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -525,6 +542,7 @@
     </dt>
     <dd>
     Add the addend to augend.
+ This function is available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -566,6 +584,7 @@
     </dt>
     <dd>
     Subtract the subtrahend from minuend.
+ This function is available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -607,6 +626,7 @@
     </dt>
     <dd>
     Multiply the multiplicator with multiplier.
+ This function is available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -648,6 +668,7 @@
     </dt>
     <dd>
     Divide the divisor from dividend.
+ This function is available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -689,6 +710,7 @@
     </dt>
     <dd>
     Modulus the divisor from dividend.
+ This function is available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -730,6 +752,7 @@
     </dt>
     <dd>
     Power the base to exponent.
+ This function is available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -771,7 +794,7 @@
     </dt>
     <dd>
     Power the base to exponent.
- This is not available as a metamethod.
+ This function is not available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -813,7 +836,7 @@
     </dt>
     <dd>
     Power the base to exponent.
- This is not available as a metamethod.
+ This function is not available as a metamethod.
 
 
     <h3>Parameters:</h3>
@@ -848,7 +871,52 @@
     <strong>mw.bcmath.eq ()</strong>
     </dt>
     <dd>
+    Compare the left operand with the right operand.
+ This function is not available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">lhs</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <span class="type">number</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">rhs</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <span class="type">number</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">scale</span>
+            <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">bcmath</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mw.bcmath.eq"></a>
+    <strong>mw.bcmath.eq ()</strong>
+    </dt>
+    <dd>
     Check if left operand is equal to right operand.
+ This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -890,6 +958,8 @@
     </dt>
     <dd>
     Check if left operand is less than right operand.
+ This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -931,7 +1001,8 @@
     </dt>
     <dd>
     Check if left operand is greater or equal to right operand.
- This is not available as a metamethod.
+ This function is not available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -973,6 +1044,8 @@
     </dt>
     <dd>
     Check if left operand is less than or equal to right operand.
+ This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -1014,7 +1087,8 @@
     </dt>
     <dd>
     Check if left operand is equal to right operand.
- This is not available as a metamethod.
+ This function is not available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
 
 
     <h3>Parameters:</h3>
