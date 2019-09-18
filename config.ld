@@ -17,8 +17,9 @@ dir = 'docs'
 
 readme = {
 	-- 'topics/introduction.md',
+	'topics/pitfalls.md',
 	-- 'topics/vagrant.md',
-	-- 'topics/databases.md',
+	'topics/databases.md',
 	-- 'topics/hello-world.md',
 	-- 'topics/translatewiki.md',
 	-- 'topics/vscode.md'
