@@ -4,5 +4,7 @@
 			"Jeblad"
 		]
 	},
-	"bcmath-desc": "Provides arbitrary-precision arithmetic to Lua modules"
+	"bcmath-desc": "Provides arbitrary-precision arithmetic to Lua modules",
+	"bcmath-check-self-nan": "“self” is “NaN”, it does not have a valid number",
+	"bcmath-check-operand-nan": "operand “$1” is “NaN”, it does not have a valid number"
 }

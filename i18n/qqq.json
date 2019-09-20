@@ -4,5 +4,7 @@
 			"Jeblad"
 		]
 	},
-	"bcmath-desc": "{{bcmath-gloss}} {{desc|name=BCmath|url=https://www.mediawiki.org/wiki/Extension:BCmath }}"
+	"bcmath-desc": "{{bcmath-gloss}} {{desc|name=BCmath|url=https://www.mediawiki.org/wiki/Extension:BCmath }}",
+	"bcmath-check-self-nan": "{{bcmath-gloss}} An exception has been catched during parsing of a number. This can be because of an error in the cript logic, but can also be an erroneous entry by the user. The “self” is the internal instance, which has a non-valid number, or actually has no number at all. This is interpreted as a “NaN” or “Not a Number”.",
+	"bcmath-check-operand-nan": "{{bcmath-gloss}} An exception has been catched during parsing of a number. This can be because of an error in the cript logic, but can also be an erroneous entry by the user. The operand “$1” is the name or the role for the argument, which has a non-valid number, or actually has no number at all. This is interpreted as a “NaN” or “Not a Number”."
 }

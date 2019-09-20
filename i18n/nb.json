@@ -4,5 +4,7 @@
 			"Jeblad"
 		]
 	},
-	"bcmath-desc": "Legger til aritmetikk med vilkårlig presisjon for Lua moduler"
+	"bcmath-desc": "Legger til aritmetikk med vilkårlig presisjon for Lua moduler",
+	"bcmath-check-self-nan": "«selv» er «NaN», det har ikke et gyldig nummer",
+	"bcmath-check-operand-nan": "operanden «$1» er «NaN», den har ikke et gyldig nummer"
 }
