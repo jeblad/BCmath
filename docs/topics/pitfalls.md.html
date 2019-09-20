@@ -32,6 +32,7 @@
 <li><a href="#Modulo_operation">Modulo operation </a></li>
 <li><a href="#False_precision">False precision </a></li>
 <li><a href="#Arbitrary_precision_fixed_point_arithmetic">Arbitrary-precision fixed-point arithmetic </a></li>
+<li><a href="#Representation">Representation </a></li>
 </ul>
 
 
@@ -91,6 +92,41 @@
 <h2>Arbitrary-precision fixed-point arithmetic</h2>
 
 <p>This library implements arbitrary-precision fixed-point arithmetic by scaling (shifting) arbitrary-precision integers. This is a rather simple solution that solves most problems with big numbers. It has some additional support for converting floating-point numbers into such fixed-point numbers. It does not implement so-called arbitrary-precision floating-point arithmetic.</p>
+
+<p><a name="Representation"></a></p>
+<h2>Representation</h2>
+
+<p>Numbers are represented during calculations as a <a href="https://en.wikipedia.org/wiki/Significand">significand</a> that contains a sign and an integral part, and may also contain a decimal point and a fractional part. Withing Lua the “numbers” are stored inside closures that export its members as tables, and can also contain undefined “numbers”. It is not possible to use those for calculations. The exported API can use Lua numbers as arguments, and also raw strings.</p>
+
+<p>Raw strings as arguments can be written in <a href="https://en.wikipedia.org/wiki/Scientific_notation">scientific notation</a> and some <a href="https://en.wikipedia.org/wiki/Engineering_notation">engineering notations</a>. It does not support localized notation, but other functions may support this.</p>
+
+<p>Examples on valid numbers</p>
+
+<ul>
+    <li>123</li>
+    <li>+123 – 'plus sign' (U+002B)</li>
+    <li>−123 - 'minus sign' (U+2212)</li>
+    <li>-123 - 'minus hyphen' (U+002D)</li>
+    <li>123.456</li>
+    <li>123 . 456 – adding spaces should not create problems</li>
+    <li>123.456×10+789 – 'multiplication sign' (U+00D7)</li>
+    <li>123.456×10⁷⁸⁹ – exponent with superscript digits, also superscript plus and minus</li>
+    <li>123 . 456 × 10 + ⁷⁸⁹ – can mix ordinary plus-minus and superscript digits</li>
+    <li>123.456e+789 – engineering notation</li>
+    <li>123.456e⁷⁸⁹ – engineering notation with superscript</li>
+    <li>123.456E789 – 'capital E' (Algol)</li>
+    <li>123.456D789 – 'capital D' (FORTRAN, Sharp)</li>
+    <li>123.456⏨789 – 'decimal exponent symbol' (Unicode)</li>
+    <li>123.456&amp;789 – 'ampersand' (Simula)</li>
+    <li>123.456𝗘789 – 'mathematical sans-serif capital E' (Texas) </li>
+    <li>123.456^789</li>
+</ul>
+
+<p>It is not clear whether only ordinary letters should be allowed, or all the mathematical variants.</p>
+
+<p>Superscript can only be used for the exponent, and only after an exponent marker has been found.</p>
+
+<p>If a string (or number) fails to decode, then the value will become undefined,and later use of that number will fail.</p>
 
 
 </div> <!-- id="content" -->

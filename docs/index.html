@@ -57,20 +57,28 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
+	<td class="name nowrap"><a href="#bcmath:__call">bcmath:__call ()</a></td>
+	<td class="summary">Instance is callable.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#bcmath:__tostring">bcmath:__tostring ()</a></td>
+	<td class="summary">Instance is stringable.</td>
+	</tr>
+	<tr>
 	<td class="name nowrap"><a href="#bcmath:scale">bcmath:scale ()</a></td>
-	<td class="summary">Get scale.</td>
+	<td class="summary">Get scale from self.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:value">bcmath:value ()</a></td>
-	<td class="summary">Get value.</td>
+	<td class="summary">Get value from self.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:add">bcmath:add ()</a></td>
-	<td class="summary">Add the addend to self.</td>
+	<td class="summary">Add self with addend.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:sub">bcmath:sub ()</a></td>
-	<td class="summary">Subtract the subtrahend from self.</td>
+	<td class="summary">Subtract self with subtrahend.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:mul">bcmath:mul ()</a></td>
@@ -90,7 +98,7 @@
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:powmod">bcmath:powmod ()</a></td>
-	<td class="summary">Power modulus self with exponent and divisor.</td>
+	<td class="summary">Power-modulus self with exponent and divisor.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:sqrt">bcmath:sqrt ()</a></td>
@@ -166,11 +174,64 @@
 
     <dl class="function">
     <dt>
+    <a name = "bcmath:__call"></a>
+    <strong>bcmath:__call ()</strong>
+    </dt>
+    <dd>
+    Instance is callable.
+ This will format according to given style and precision.
+ Unless overridden <code>style</code> will be set to <code>&apos;fix&apos;</code>.
+ Available notations are at least <code>&apos;fix&apos;</code>, <code>&apos;eng&apos;</code>, and <code>&apos;sci&apos;</code>.
+ Unless overridden <code>precision</code> will not be set, and it will use the full precission.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">vararg</span></span>
+         dispatch on type or table field name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:__tostring"></a>
+    <strong>bcmath:__tostring ()</strong>
+    </dt>
+    <dd>
+    Instance is stringable.
+ This will only create a minimal representation, suitable for further formatting.
+
+
+
+    <h3>Returns:</h3>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "bcmath:scale"></a>
     <strong>bcmath:scale ()</strong>
     </dt>
     <dd>
-    Get scale.
+    Get scale from self.
+ The scale is stored in the closure.
 
 
 
@@ -190,7 +251,8 @@
     <strong>bcmath:value ()</strong>
     </dt>
     <dd>
-    Get value.
+    Get value from self.
+ The value is stored in the closure.
 
 
 
@@ -210,7 +272,7 @@
     <strong>bcmath:add ()</strong>
     </dt>
     <dd>
-    Add the addend to self.
+    Add self with addend.
  This method will store result in self, and then return self to facilitate chaining.
  See <a href="https://www.php.net/manual/en/function.bcadd.php">PHP: bcadd</a> for further documentation.
 
@@ -247,7 +309,7 @@
     <strong>bcmath:sub ()</strong>
     </dt>
     <dd>
-    Subtract the subtrahend from self.
+    Subtract self with subtrahend.
  This method will store result in self, and then return self to facilitate chaining.
  See <a href="https://www.php.net/manual/en/function.bcsub.php">PHP: bcsub</a> for further documentation.
 
@@ -432,7 +494,7 @@
     <strong>bcmath:powmod ()</strong>
     </dt>
     <dd>
-    Power modulus self with exponent and divisor.
+    Power-modulus self with exponent and divisor.
  This method will store result in self, and then return self to facilitate chaining.
  See <a href="https://www.php.net/manual/en/function.bcpowmod.php">PHP: bcpowmod</a> for further documentation.
 
@@ -543,6 +605,7 @@
     <dd>
     Add the addend to augend.
  This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcadd.php">PHP: bcadd</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -585,6 +648,7 @@
     <dd>
     Subtract the subtrahend from minuend.
  This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcsub.php">PHP: bcsub</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -627,6 +691,7 @@
     <dd>
     Multiply the multiplicator with multiplier.
  This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcmul.php">PHP: bcmul</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -669,6 +734,7 @@
     <dd>
     Divide the divisor from dividend.
  This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcdiv.php">PHP: bcdiv</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -711,6 +777,7 @@
     <dd>
     Modulus the divisor from dividend.
  This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcmod.php">PHP: bcmod</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -753,6 +820,7 @@
     <dd>
     Power the base to exponent.
  This function is available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcpow.php">PHP: bcpow</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -795,6 +863,7 @@
     <dd>
     Power the base to exponent.
  This function is not available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcpowmod.php">PHP: bcpowmod</a> for further documentation.
 
 
     <h3>Parameters:</h3>
@@ -837,6 +906,7 @@
     <dd>
     Power the base to exponent.
  This function is not available as a metamethod.
+ See <a href="https://www.php.net/manual/en/function.bcsqrt.php">PHP: bcsqrt</a> for further documentation.
 
 
     <h3>Parameters:</h3>
