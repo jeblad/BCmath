@@ -12,6 +12,12 @@ local checkType = libUtil.checkType
 local checkTypeMulti = libUtil.checkTypeMulti
 local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
 
+--- Check whether operator is defined.
+-- This is a simple assertion-like function with a localizable message.
+-- @local
+-- @raise if value argument is nil
+-- @tparam any value to assert
+-- @tparam string name to blame
 local function checkOperator( value, name )
 	if not value then
 		error( mw.message.new( 'bcmath-check-operand-nan', name ):plain() )
@@ -45,29 +51,50 @@ function bcmath.setupInterface( options )
 	package.loaded['mw.bcmath'] = bcmath
 end
 
-local function zeros( num )
-	if num == 0 then
-		return ''
+-- @var structure for caching zero strings
+local zeroCache = {
+	[0] = '',
+	'0',                 '00',                 '000',                 '0000',
+	'00000',             '000000',             '0000000',             '00000000',
+	'000000000',         '0000000000',         '00000000000',         '000000000000',
+	'0000000000000',     '00000000000000',     '000000000000000',     '0000000000000000',
+	'00000000000000000', '000000000000000000', '0000000000000000000', '00000000000000000000'
+}
+--- Create a string of zeros.
+-- This will use the prebuilt cache, or on cache failure
+-- it will try to extend the cache.
+-- @tparam number length of the string
+-- @treturn string
+local function zeros( length )
+	local str = zeroCache[length]
+	if str then
+		return str
 	end
 
 	local temp = ''
-	for _ = 1, num do
+	for _ = 1, length do
 		temp = temp .. '0'
 	end
+
+	zeroCache[length] = temp
 
 	return temp
 end
 
+--- Parse a string representing a float number.
+-- Normally this should only be called indirectly through @{parseNum},
+-- and in particular not from @{argConvs.table} to avoid repeated parsing.
+-- @tparam string num to be parsed
+-- @treturn string
+-- @treturn scale
 local function parseFloat( num )
 	local scale
-	mw.logObject(num)
 	local sign,integral = string.match( num, '^([-+]?)([%d]*)' )
 	local fraction = string.match( num, '%.([%d]*)' )
 	local exponent = tonumber( string.match( num, '[eE]([-+]?[%d]*)$' ) )
 	local integralLen = string.len( integral or '' )
 	local fractionLen = string.len( fraction or '' )
 	if not exponent then
-		mw.logObject(string.match( num, '[eE]([-+][%d]*)$' ))
 		return 0, 0
 	end
 
@@ -98,6 +125,7 @@ local function parseFloat( num )
 	return num, scale
 end
 
+-- @var structure holding chars to be downcasted.
 local downChars = {
 	['⁺'] = '+',
 	['⁻'] = '-',
@@ -113,10 +141,23 @@ local downChars = {
 	['⁹'] = '9',
 }
 
-local function downCast( str )
-	return downChars[str]
+--- Downcast characters that has valid replacements.
+-- @tparam string character to be translated
+-- @treturn string
+local function downCast( character )
+	local replacement = downChars[character]
+	if not replacement then
+		return character
+	end
+
+	return replacement
 end
 
+--- Truncate fraction part of number.
+-- Fraction is truncated by removing trailing digits.
+-- @tparam string fraction without decimal point or sign
+-- @tparam number remove amount of digits
+-- @treturn nil|string
 local function truncFraction( fraction, remove )
 	if not fraction then
 		return nil
@@ -135,6 +176,11 @@ local function truncFraction( fraction, remove )
 	return fraction
 end
 
+--- Truncate integral part of number.
+-- Integral is truncated by replacing trailing digits with zeros.
+-- @tparam string integral without decimal point or sign
+-- @tparam number remove amount of digits
+-- @treturn nil|string
 local function truncIntegral( integral, remove )
 	if not integral then
 		return nil
@@ -160,6 +206,7 @@ local argConvs = {}
 -- This is called from @{parseNum}.
 -- Returns nil unconditionally.
 -- @local
+-- @function argConvs.nil
 -- @treturn nil
 -- @treturn number zero (0) unconditionally
 argConvs['nil'] = function()
@@ -170,6 +217,7 @@ end
 -- This is called from @{parseNum}.
 -- Returns nil on failed parsing.
 -- @local
+-- @function argConvs.number
 -- @tparam number value to be parsed
 -- @treturn nil|string holding bcnumber
 -- @treturn nil|number holding an estimate
@@ -185,10 +233,11 @@ end
 
 --- Convert string into bc num-scale pair.
 -- This is called from @{parseNum}.
--- Makes an assumption that this is already a bcnumber,
+-- The method makes an assumption that this is already a bc number,
 -- that is it will not try to parse big reals.
 -- Returns nil on failed parsing.
 -- @local
+-- @function argConvs.string
 -- @tparam string value to be parsed
 -- @treturn nil|string holding bcnumber
 -- @treturn nil|number holding an estimate
@@ -224,10 +273,11 @@ argConvs['string'] = function( value )
 end
 
 --- Convert table into bc num-scale pair.
--- This is called from `parseNum()`.
--- Makes an assumption that this is an BCmath instance,
+-- This is called from @{parseNum}.
+-- The method makes an assumption that this is an BCmath instance,
 -- that is it will not try to verify content.
 -- @local
+-- @function argConvs.table
 -- @tparam table value to be parsed
 -- @treturn string holding bcnumber
 -- @treturn number holding an estimate
@@ -237,6 +287,7 @@ end
 
 --- Convert provided value into bc num-scale pair.
 -- Dispatches value to type-specific converters.
+-- This is a real bottleneck due to the dispatched function calls.
 -- @local
 -- @function parseNum
 -- @tparam string|number|table value to be parsed
@@ -254,6 +305,13 @@ end
 -- @var structure for lookup of type converters for self
 local selfConvs = {}
 
+--- Convert a bc number into scientific notation.
+-- This is called from @{bcmath:__call}.
+-- @local
+-- @function selfConvs.sci
+-- @tparam table num to be parsed
+-- @tparam number precision
+-- @treturn string
 selfConvs['sci'] = function( num, precision )
 	local sign,integral = string.match( num, '^([-+]?)([%d]*)' )
 	local fraction = string.match( num, '%.([%d]*)' )
@@ -283,6 +341,13 @@ selfConvs['sci'] = function( num, precision )
 		.. ( exponent == 0 and '' or ( 'e' .. tostring( exponent ) ) )
 end
 
+--- Convert a bc number into engineering notation.
+-- This is called from @{bcmath:__call}.
+-- @local
+-- @function selfConvs.eng
+-- @tparam table num to be parsed
+-- @tparam number precision
+-- @treturn string
 selfConvs['eng'] = function( num, precision )
 	local sign,integral = string.match( num, '^([-+]?)([%d]*)' )
 	local fraction = string.match( num, '%.([%d]*)' )
@@ -318,6 +383,13 @@ selfConvs['eng'] = function( num, precision )
 		.. ( exponent == 0 and '' or ( 'e' .. tostring( exponent ) ) )
 end
 
+--- Convert a bc numumber into fixed notation.
+-- This is called from @{bcmath:__call}.
+-- @local
+-- @function selfConvs.fix
+-- @tparam table num to be parsed
+-- @tparam number precision
+-- @treturn string
 selfConvs['fix'] = function( num, precision )
 	local sign,integral = string.match( num, '^([-+]?)0*([%d]*)' )
 	local fraction = string.match( num, '%.([%d]*)' )
@@ -338,11 +410,16 @@ selfConvs['fix'] = function( num, precision )
 		.. ( fraction and ( '.' .. fraction ) or '' )
 end
 
+-- @var structure used as metatable for bsmath
 local bcmeta = {}
 
---- Callable instance.
--- This will format according to style
--- @local
+--- Instance is callable.
+-- This will format according to given style and precision.
+-- Unless overridden `style` will be set to `'fix'`.
+-- Available notations are at least `'fix'`, `'eng'`, and `'sci'`.
+-- Unless overridden `precision` will not be set, and it will use the full precission.
+-- @function bcmath:__call
+-- @tparam vararg ... dispatch on type or table field name
 -- @treturn string
 function bcmeta:__call( ... )
 	local style = nil
@@ -375,9 +452,9 @@ function bcmeta:__call( ... )
 	return conv( num, precision )
 end
 
---- Stringable instance.
+--- Instance is stringable.
 -- This will only create a minimal representation, suitable for further formatting.
--- @local
+-- @function bcmath:__tostring
 -- @treturn string
 function bcmeta:__tostring()
 	local num = string.gsub( self:value() or '', '^([-+]?)(0*)', '%1', 1 )
@@ -390,24 +467,35 @@ end
 -- @tparam number scale
 -- @treturn self
 local function makeBCmath( value, scale )
-	local obj = setmetatable( {}, bcmeta )
-
-	local checkSelf = makeCheckSelfFunction( 'mw.bcmath', 'msg', obj, 'bcmath object' )
 	checkTypeMulti( 'bcmath object', 1, value, { 'string', 'table', 'number', 'nil' } )
 	checkType( 'bcmath object', 2, scale, 'number', true )
 
+	local obj = setmetatable( {}, bcmeta )
+
+	--- Check whether method is part of self.
+	-- @local
+	-- @function checkSelf
+	-- @raise if called from a method not part of self
+	local checkSelf = makeCheckSelfFunction( 'mw.bcmath', 'msg', obj, 'bcmath object' )
+
+	-- keep in closure
 	local _value, _scale = parseNum( value )
 	if scale then
 		_scale = scale
 	end
 
+	--- Check whether self has a defined value.
+	-- This is a simple assertion-like function with a localizable message.
+	-- @local
+	-- @raise if self is missing _value
 	local checkSelfValue = function()
 		if not _value then
 			error( mw.message.new( 'bcmath-check-self-nan' ):plain() )
 		end
 	end
 
-	--- Get scale.
+	--- Get scale from self.
+	-- The scale is stored in the closure.
 	-- @function bcmath:scale
 	-- @treturn number
 	function obj:scale()
@@ -415,7 +503,8 @@ local function makeBCmath( value, scale )
 		return _scale
 	end
 
-	--- Get value.
+	--- Get value from self.
+	-- The value is stored in the closure.
 	-- @function bcmath:value
 	-- @treturn string
 	function obj:value()
@@ -423,7 +512,7 @@ local function makeBCmath( value, scale )
 		return _value
 	end
 
-	--- Add the addend to self.
+	--- Add self with addend.
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcadd](https://www.php.net/manual/en/function.bcadd.php) for further documentation.
 	-- @function bcmath:add
@@ -441,7 +530,7 @@ local function makeBCmath( value, scale )
 		return self
 	end
 
-	--- Subtract the subtrahend from self.
+	--- Subtract self with subtrahend.
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcsub](https://www.php.net/manual/en/function.bcsub.php) for further documentation.
 	-- @function bcmath:sub
@@ -531,7 +620,7 @@ local function makeBCmath( value, scale )
 		return self
 	end
 
-	--- Power modulus self with exponent and divisor.
+	--- Power-modulus self with exponent and divisor.
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcpowmod](https://www.php.net/manual/en/function.bcpowmod.php) for further documentation.
 	-- @function bcmath:powmod
