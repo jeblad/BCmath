@@ -1,7 +1,11 @@
 <?php
+
 declare( strict_types = 1 );
+
 namespace BCmath\Test;
+
 use Scribunto_LuaEngineTestBase;
+
 /**
  * @group BCmath
  *
@@ -15,7 +19,7 @@ class BCmathTest extends Scribunto_LuaEngineTestBase {
 	 * @slowThreshold 1000
 	 * @see Scribunto_LuaEngineTestBase::getTestModules()
 	 */
-	protected function getTestModules() {
+	protected function getTestModules(): array {
 		return parent::getTestModules() + [
 			'BCmathTest' => __DIR__ . '/BCmathTest.lua'
 		];

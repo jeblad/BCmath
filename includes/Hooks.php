@@ -1,6 +1,9 @@
 <?php
+
 declare( strict_types = 1 );
+
 namespace BCmath;
+
 /**
  * Hook handlers for the BCmath extension
  *
