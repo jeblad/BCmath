@@ -19,7 +19,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 			'bcmod'    => [ $this, 'bcMod' ],
 			'bcpow'    => [ $this, 'bcPow' ],
 			'bcpowmod' => [ $this, 'bcPowMod' ],
-			'bcsqrt'   => [ $this, 'bcSqrt' ]
+			'bcsqrt'   => [ $this, 'bcSqrt' ],
+			'bccomp'   => [ $this, 'bcComp' ]
 		];
 		// Get the correct default language from the parser
 		if ( $this->getParser() ) {
@@ -155,6 +156,22 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 			return [ \bcsqrt( $operand, is_null($scale) ? bcscale() : $scale ) ];
 		} catch ( MWException $ex ) {
 			throw new Scribunto_LuaError( "bcmath:sqrt() failed (" . $ex->getMessage() . ")" );
+		}
+	}
+
+	/**
+	 * Handler for bcComp
+	 * @internal
+	 * @param string $lhs
+	 * @param string $rhs
+	 * @param null|int $scale
+	 * @return string
+	 */
+	public function bcComp( $lhs, $rhs, $scale=null ) {
+		try {
+			return [ \bccomp( $lhs, $rhs, is_null($scale) ? bcscale() : $scale ) ];
+		} catch ( MWException $ex ) {
+			throw new Scribunto_LuaError( "bcmath:comp() failed (" . $ex->getMessage() . ")" );
 		}
 	}
 }
