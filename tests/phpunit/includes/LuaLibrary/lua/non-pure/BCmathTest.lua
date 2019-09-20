@@ -458,10 +458,10 @@ local tests = {
 		expect = { '-1.23456' }
 	},
 	{ -- 71
-		name = 'eng -12.3456',
+		name = 'eng 12.3456',
 		func = makeCall,
-		args = { mw.bcmath.new('-12.3456'), 'eng', 3 },
-		expect = { '-12.34e1' }
+		args = { mw.bcmath.new('12.3456'), 'eng', 3 },
+		expect = { '12.34e1' }
 	},
 	{ -- 72
 		name = 'eng -12.3456',
@@ -470,10 +470,10 @@ local tests = {
 		expect = { '-12.34e1' }
 	},
 	{ -- 73
-		name = 'eng -123.456',
+		name = 'eng 123.456',
 		func = makeCall,
-		args = { mw.bcmath.new('-123.456'), 'eng', 3 },
-		expect = { '-123.45e2' }
+		args = { mw.bcmath.new('123.456'), 'eng', 3 },
+		expect = { '123.45e2' }
 	},
 	{ -- 74
 		name = 'eng -123.456',
@@ -482,36 +482,48 @@ local tests = {
 		expect = { '-123.45e2' }
 	},
 	{ -- 75
+		name = 'eng 1234.56',
+		func = makeCall,
+		args = { mw.bcmath.new('1234.56'), 'eng', 3 },
+		expect = { '1.23e3' }
+	},
+	{ -- 76
+		name = 'eng -1234.56',
+		func = makeCall,
+		args = { mw.bcmath.new('-1234.56'), 'eng', 3 },
+		expect = { '-1.23e3' }
+	},
+	{ -- 77
 		name = 'sci 1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('1.23456'), 'sci' },
 		expect = { '1.23456' }
 	},
-	{ -- 76
+	{ -- 78
 		name = 'sci -1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('-1.23456'), 'sci' },
 		expect = { '-1.23456' }
 	},
-	{ -- 77
-		name = 'sci -12.3456',
-		func = makeCall,
-		args = { mw.bcmath.new('-12.3456'), 'sci', 3 },
-		expect = { '-1.23e1' }
-	},
-	{ -- 78
-		name = 'sci -12.3456',
-		func = makeCall,
-		args = { mw.bcmath.new('-12.3456'), 'sci', 3 },
-		expect = { '-1.23e1' }
-	},
 	{ -- 79
+		name = 'sci -12.3456',
+		func = makeCall,
+		args = { mw.bcmath.new('-12.3456'), 'sci', 3 },
+		expect = { '-1.23e1' }
+	},
+	{ -- 80
+		name = 'sci -12.3456',
+		func = makeCall,
+		args = { mw.bcmath.new('-12.3456'), 'sci', 3 },
+		expect = { '-1.23e1' }
+	},
+	{ -- 81
 		name = 'sci -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'sci', 3 },
 		expect = { '-1.23e2' }
 	},
-	{ -- 80
+	{ -- 82
 		name = 'sci -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'sci', 3 },
