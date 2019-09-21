@@ -22,7 +22,8 @@ readme = {
 	'topics/databases.md',
 	-- 'topics/hello-world.md',
 	-- 'topics/translatewiki.md',
-	-- 'topics/vscode.md'
+	-- 'topics/vscode.md',
+	'topics/sources.md'
 }
 
 examples = {
