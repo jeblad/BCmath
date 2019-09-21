@@ -101,17 +101,6 @@ vagrant up
 
 <p>This should create a working environment with <code>phpmd</code>, <code>phpcs</code>, and <code>phpunit</code>. An actual call would be <code>composer unit</code>. See <code>scripts</code> in <a href="https://github.com/jeblad/BCmath/blob/master/composer.json">composer.json</a> for all calls.</p>
 
-<h3>Problems</h3>
-
-<p>At [6.] there might be a problem during <code>git clone</code>. This can be usually be solved by a <code>vagrant reload</code>, and then a <code>git submodule update</code>, like so</p>
-
-
-<pre>
-vagrant reload <span class="comment">--provision
-</span>git submodule update <span class="comment">--init --recursive</span>
-</pre>
-
-
 <p><a name="Extended_setup"></a></p>
 <h2>Extended setup</h2>
 
