@@ -14,7 +14,6 @@ local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
 
 --- Check whether operator is defined.
 -- This is a simple assertion-like function with a localizable message.
--- @local
 -- @raise if value argument is nil
 -- @tparam any value to assert
 -- @tparam string name to blame
@@ -153,6 +152,11 @@ local function downCast( character )
 	return replacement
 end
 
+--- Check string for infinity character.
+-- Returned number gives the sign of the infinity,
+-- and nil if no infinity is found.
+-- @tparam string num to be parsed
+-- @treturn number
 local function checkInfinity( num )
 	if not num then
 		return nil
@@ -310,7 +314,6 @@ end
 --- Convert provided value into bc num-scale pair.
 -- Dispatches value to type-specific converters.
 -- This is a real bottleneck due to the dispatched function calls.
--- @local
 -- @function parseNumScale
 -- @tparam string|number|table value to be parsed
 -- @treturn string holding bcnumber
@@ -324,31 +327,37 @@ local function parseNumScale( value )
 	return _value, _scale
 end
 
+-- @todo
 local function extractSign( num )
 	local str = string.match( num or '', '^([-+]?)' ) or ''
 	return str, string.len( str )
 end
 
+-- @todo
 local function extractIntegral( num )
 	local str = string.match( num or '', '^[-+]?0*(%d*)' ) or ''
 	return str, string.len( str )
 end
 
+-- @todo
 local function extractFraction( num )
 	local str = string.match( num or '', '%.(%d*)' ) or ''
 	return str, string.len( str )
 end
 
+-- @todo
 local function extractLead( num )
 	local str = string.match( num or '', '^(0*)' ) or ''
 	return str, string.len( str )
 end
 
+-- @todo
 local function extractMantissa( num )
 	local str = string.match( num or '', '^0*(%d*)' ) or ''
 	return str, string.len( str )
 end
 
+-- @todo
 local function formatSign( sign )
 	if not sign then
 		return ''
@@ -361,6 +370,7 @@ local function formatSign( sign )
 	return ''
 end
 
+-- @todo
 local function formatIntegral( integral )
 	if not integral then
 		return '0'
@@ -373,6 +383,7 @@ local function formatIntegral( integral )
 	return integral
 end
 
+-- @todo
 local function formatFraction( fraction )
 	if not fraction then
 		return ''
@@ -385,6 +396,7 @@ local function formatFraction( fraction )
 	return string.format( '.%s', fraction )
 end
 
+-- @todo
 local function formatExponent( exponent )
 	if not exponent then
 		return ''
@@ -544,7 +556,6 @@ end
 
 --- Convert a bc number according to a CLDR pattern.
 -- This is called from @{bcmath:__call}.
--- @local
 -- @function selfConvs.fix
 -- @tparam table num to be parsed
 -- @tparam number precision
