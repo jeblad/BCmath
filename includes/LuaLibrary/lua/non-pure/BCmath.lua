@@ -153,6 +153,22 @@ local function downCast( character )
 	return replacement
 end
 
+local function checkInfinity( num )
+	if not num then
+		return nil
+	end
+	if num == '∞' then
+		return 1
+	end
+	if num == '+∞' then
+		return 1
+	end
+	if num == '-∞' then
+		return -1
+	end
+	return 0
+end
+
 --- Truncate fraction part of number.
 -- Fraction is truncated by removing trailing digits.
 -- @tparam string fraction without decimal point or sign
@@ -242,6 +258,12 @@ end
 -- @treturn nil|string holding bcnumber
 -- @treturn nil|number holding an estimate
 argConvs['string'] = function( value )
+	if checkInfinity( value )  ~= 0 then
+		return ( checkInfinity( value ) == 1 and '+∞' )
+			or ( checkInfinity( value ) == -1 and '-∞' )
+			or nil, 0
+	end
+
 	local scale
 	local num = value
 
@@ -302,6 +324,84 @@ local function parseNumScale( value )
 	return _value, _scale
 end
 
+local function extractSign( num )
+	local str = string.match( num or '', '^([-+]?)' ) or ''
+	return str, string.len( str )
+end
+
+local function extractIntegral( num )
+	local str = string.match( num or '', '^[-+]?0*(%d*)' ) or ''
+	return str, string.len( str )
+end
+
+local function extractFraction( num )
+	local str = string.match( num or '', '%.(%d*)' ) or ''
+	return str, string.len( str )
+end
+
+local function extractLead( num )
+	local str = string.match( num or '', '^(0*)' ) or ''
+	return str, string.len( str )
+end
+
+local function extractMantissa( num )
+	local str = string.match( num or '', '^0*(%d*)' ) or ''
+	return str, string.len( str )
+end
+
+local function formatSign( sign )
+	if not sign then
+		return ''
+	end
+
+	if sign == '-' then
+		return '-'
+	end
+
+	return ''
+end
+
+local function formatIntegral( integral )
+	if not integral then
+		return '0'
+	end
+
+	if integral == '' then
+		return '0'
+	end
+
+	return integral
+end
+
+local function formatFraction( fraction )
+	if not fraction then
+		return ''
+	end
+
+	if fraction == '' then
+		return ''
+	end
+
+	return string.format( '.%s', fraction )
+end
+
+local function formatExponent( exponent )
+	if not exponent then
+		return ''
+	end
+
+	if type( exponent ) == 'number' then
+		exponent = tostring( exponent )
+	end
+
+
+	if exponent == '0' or exponent == '' then
+		return ''
+	end
+
+	return string.format( 'e%s', exponent )
+end
+
 -- @var structure for lookup of type converters for self
 local selfConvs = {}
 
@@ -313,32 +413,45 @@ local selfConvs = {}
 -- @tparam number precision
 -- @treturn string
 selfConvs['sci'] = function( num, precision )
-	local sign,integral = string.match( num, '^([-+]?)([%d]*)' )
-	local fraction = string.match( num, '%.([%d]*)' )
-	local integralLen = string.len( integral or '' )
-	local lead,mantissa = string.match( integral .. ( fraction or '' ), '^(0*)([%d]*)' )
-	local mantissaLen = string.len( mantissa or '' )
-	local leadLen = string.len( lead or '' )
-	local exponent = integralLen - leadLen - 1
-	integral = ( not mantissa or mantissa == '' ) and nil or string.sub( mantissa, 1, 1 )
-	fraction = ( not mantissa or mantissaLen < 2 ) and nil or string.sub( mantissa, 2, -1 )
-	integralLen = 1
-	local fractionLen = mantissaLen - 1
+	local sign, _ = extractSign( num )
+	local integral, integralLen = extractIntegral( num )
+	local fraction, _ = extractFraction( num )
+	local digits = integral..fraction
+	local _, leadLen = extractLead( digits )
+	local mantissa, mantissaLen = extractMantissa( digits )
+	local exponent = integralLen - leadLen -1
+
+	integral = nil
+	integralLen = 0
+	fraction = nil
+	local fractionLen = 0
+	if mantissaLen == 0 then
+		integral = '0'
+		exponent = 0
+	end
+	if mantissaLen > 0 then
+		integral = string.sub( mantissa, 1, 1 )
+		integralLen = 1
+	end
+	if mantissaLen > 1 then
+		fraction = string.sub( mantissa, 2, -1 )
+		fractionLen = mantissaLen - 1
+	end
 
 	if not precision then
-		return sign == '+' and '' or sign
-			.. integral
-			.. ( fraction and ( '.' .. fraction ) or '' )
-			.. ( exponent == 0 and '' or ( 'e' .. tostring( exponent ) ) )
+		return formatSign( sign )
+			.. formatIntegral( integral )
+			.. formatFraction( fraction )
+			.. formatExponent( exponent )
 	end
 
 	fraction = truncFraction( fraction, math.max( integralLen + fractionLen - precision, 0 ) )
 	integral = truncIntegral( integral, math.max( integralLen - precision, 0 ) )
 
-	return sign == '+' and '' or sign
-		.. integral
-		.. ( fraction and ( '.' .. fraction ) or '' )
-		.. ( exponent == 0 and '' or ( 'e' .. tostring( exponent ) ) )
+	return formatSign( sign )
+		.. formatIntegral( integral )
+		.. formatFraction( fraction )
+		.. formatExponent( exponent )
 end
 
 --- Convert a bc number into engineering notation.
@@ -349,41 +462,61 @@ end
 -- @tparam number precision
 -- @treturn string
 selfConvs['eng'] = function( num, precision )
-	local sign,integral = string.match( num, '^([-+]?)([%d]*)' )
-	local fraction = string.match( num, '%.([%d]*)' )
-	local integralLen = string.len( integral or '' )
-	local lead,mantissa = string.match( integral .. ( fraction or '' ), '^(0*)([%d]*)' )
-	local leadLen = string.len( lead or '' )
-	local mantissaLen = string.len( mantissa or '' )
+	local sign, _ = extractSign( num )
+	local integral, integralLen = extractIntegral( num )
+	local fraction, fractionLen = extractFraction( num )
+	local digits = integral..fraction
+	local _, leadLen = extractLead( digits )
+	local mantissa, mantissaLen = extractMantissa( digits )
 	local exponent = integralLen - leadLen - 1
-	local modulus = math.mod( exponent, 3 )
+	local modulus = math.fmod( exponent, 3 )
+	mw.logObject(mantissa)
 
-	if math.abs( exponent ) >= 3 then
+	integral = nil
+	integralLen = 0
+	fraction = nil
+	if mantissaLen == 0 then
+		mw.log('then: mantissaLen == 0')
+		integral = '0'
+		exponent = 0
+	else
+		mw.log('else: mantissaLen =/= 0')
+		mw.logObject(exponent)
+		mw.logObject(modulus)
 		exponent = exponent - modulus
 	end
-
-	integral = ( not mantissa or mantissa == '' ) and nil or string.sub( mantissa, 1, modulus+1 )
-	fraction = ( not mantissa or mantissaLen < modulus+1 ) and nil or string.sub( mantissa, modulus+2, -1 )
-	integralLen = 1
-	local fractionLen = mantissaLen - modulus - 1
+	if mantissaLen > modulus then
+		mw.log('then: mantissaLen > modulus')
+		integral = string.sub( mantissa, 1, modulus )
+		integralLen = modulus + 1
+	elseif mantissaLen > 0 then
+		mw.log('else: mantissaLen /> modulus')
+		integral = mantissa
+		integralLen = mantissaLen
+	end
+	if mantissaLen > modulus+1 then
+		fraction = string.sub( mantissa, modulus+1, -1 )
+		fractionLen = mantissaLen - modulus - 1
+	end
+	mw.logObject(exponent)
 
 	if not precision then
-		return sign == '+' and '' or sign
-			.. integral
-			.. ( fraction and ( '.' .. fraction ) or '' )
-			.. ( exponent == 0 and '' or ( 'e' .. tostring( exponent ) ) )
+		return formatSign( sign )
+			.. formatIntegral( integral )
+			.. formatFraction( fraction )
+			.. formatExponent( exponent )
 	end
 
 	fraction = truncFraction( fraction, math.max( integralLen + fractionLen - precision, 0 ) )
 	integral = truncIntegral( integral, math.max( integralLen - precision, 0 ) )
 
-	return sign == '+' and '' or sign
-		.. integral
-		.. ( fraction and ( '.' .. fraction ) or '' )
-		.. ( exponent == 0 and '' or ( 'e' .. tostring( exponent ) ) )
+	return formatSign( sign )
+		.. formatIntegral( integral )
+		.. formatFraction( fraction )
+		.. formatExponent( exponent )
 end
 
---- Convert a bc numumber into fixed notation.
+--- Convert a bc number into fixed notation.
 -- This is called from @{bcmath:__call}.
 -- @local
 -- @function selfConvs.fix
@@ -391,23 +524,34 @@ end
 -- @tparam number precision
 -- @treturn string
 selfConvs['fix'] = function( num, precision )
-	local sign,integral = string.match( num, '^([-+]?)0*([%d]*)' )
-	local fraction = string.match( num, '%.([%d]*)' )
-	local integralLen = string.len( integral or '' )
-	local fractionLen = string.len( fraction or '' )
+	local sign, _ = extractSign( num )
+	local integral, integralLen = extractIntegral( num )
+	local fraction, fractionLen = extractFraction( num )
 
 	if not precision then
-		return sign == '+' and '' or sign
-			.. integral
-			.. ( fraction and ( '.' .. fraction ) or '' )
+		return formatSign( sign )
+			.. formatIntegral( integral )
+			.. formatFraction( fraction )
 	end
 
 	fraction = truncFraction( fraction, math.max( integralLen + fractionLen - precision, 0 ) )
 	integral = truncIntegral( integral, math.max( integralLen - precision, 0 ) )
 
-	return sign == '+' and '' or sign
-		.. integral
-		.. ( fraction and ( '.' .. fraction ) or '' )
+	return formatSign( sign )
+		.. formatIntegral( integral )
+		.. formatFraction( fraction )
+end
+
+--- Convert a bc number according to a CLDR pattern.
+-- This is called from @{bcmath:__call}.
+-- @local
+-- @function selfConvs.fix
+-- @tparam table num to be parsed
+-- @tparam number precision
+-- @tparam string style
+-- @treturn string
+local function convertPattern( num, precision, style ) -- luacheck: no unused args
+	error( mw.message.new( 'bcmath-check-self-style', 'CLDR Pattern' ):plain() )
 end
 
 -- @var structure used as metatable for bsmath
@@ -443,13 +587,35 @@ function bcmeta:__call( ... )
 
 	local conv = selfConvs[style or 'fix']
 	if not conv then
-		error( mw.message.new( 'bcmath-check-self-style' ):plain() )
+		conv = convertPattern
 	end
 
-	local num = string.gsub( self:value() or '', '^([-+]?)(0*)', '%1', 1 )
-	num = string.gsub( num, '%.$', '', 1 )
+	if self:isNaN() then
+		-- make log of all payloads
+		mw.log( mw.message.new( 'bcmath-check-self-nan' ):plain() )
+		local cnt = mw.message.new( 'bcmath-payload-counter' )
+		for i,v in ipairs( { self:payload() } ) do
+			if v then
+				local msg = mw.message.new( v )
+				mw.log( cnt:params( i, msg ):plain() )
+			end
+		end
 
-	return conv( num, precision )
+		return 'nan'
+	end
+
+	local num = self:value()
+	num = string.gsub( num, '^([-+]?)(0*)', '%1', 1 )
+	num = string.gsub( num, '%.(0*)$', '', 1 )
+	--num = string.gsub( num, '%.$', '', 1 )
+
+	-- if empty, then put bak a single zero
+	if num == '' then
+		num = '0'
+	end
+
+	-- return a formatted text representation
+	return conv( num, precision, style )
 end
 
 --- Instance is stringable.
@@ -457,8 +623,31 @@ end
 -- @function bcmath:__tostring
 -- @treturn string
 function bcmeta:__tostring()
-	local num = string.gsub( self:value() or '', '^([-+]?)(0*)', '%1', 1 )
-	num = string.gsub( num, '%.$', '', 1 )
+	if self:isNaN() then
+		-- make log of all payloads
+		mw.log( mw.message.new( 'bcmath-check-self-nan' ):plain() )
+		local cnt = mw.message.new( 'bcmath-payload-counter' )
+		for i,v in ipairs( { self:payload() } ) do
+			if v then
+				local msg = mw.message.new( v )
+				mw.log( cnt:params( i, msg ):plain() )
+			end
+		end
+
+		return 'nan'
+	end
+
+	local num = self:value()
+	num = string.gsub( num, '^([-+]?)0*', '%1', 1 )
+	num = string.gsub( num, '%.(0*)$', '', 1 )
+	--num = string.gsub( num, '%.$', '', 1 )
+
+	-- if empty, then put bak a single zero
+	if num == '' then
+		num = '0'
+	end
+
+	-- return a plain text representation
 	return num
 end
 
@@ -479,6 +668,7 @@ local function makeBCmath( value, scale )
 	local checkSelf = makeCheckSelfFunction( 'mw.bcmath', 'msg', obj, 'bcmath object' )
 
 	-- keep in closure
+	local _payload = nil
 	local _value, _scale = parseNumScale( value )
 	if scale then
 		_scale = scale
@@ -496,21 +686,84 @@ local function makeBCmath( value, scale )
 
 	--- Get scale from self.
 	-- The scale is stored in the closure.
+	-- @nick bcmath:getScale
 	-- @function bcmath:scale
 	-- @treturn number
 	function obj:scale()
 		checkSelf( self, 'scale' )
 		return _scale
 	end
+	obj.getScale = get.scale
 
 	--- Get value from self.
 	-- The value is stored in the closure.
+	-- @nick bcmath:number
+	-- @nick bcmath:getNumber
+	-- @nick bcmath:getValue
 	-- @function bcmath:value
 	-- @treturn string
 	function obj:value()
 		checkSelf( self, 'value' )
 		return _value
 	end
+	obj.number = obj.value
+	obj.getNumber = obj.value
+	obj.getValue = obj.value
+
+	--- Add payload to self.
+	-- The payload is stored in the closure.
+	-- Method is semiprivate as payload should not be changed.
+	-- @local
+	-- @function bcmath:addPayload
+	-- @tparam string key
+	-- @return self
+	function obj:addPayload( key )
+		checkSelf( self, 'addPayload' )
+		if not _payload then
+			_payload = {}
+		end
+		table.insert( _payload, key )
+		return self
+	end
+
+	--- Get payload from self.
+	-- The payload is stored in the closure.
+	-- @nick bcmath:payloads
+	-- @nick bcmath:hasPayload
+	-- @nick bcmath:hasPayloads
+	-- @function bcmath:payload
+	-- @return none, one or several keys
+	function obj:payload()
+		checkSelf( self, 'payload' )
+		return unpack( _payload or {} )
+	end
+	obj.payloads = obj.payload
+	obj.hasPayload = obj.payload
+	obj.hasPayloads = obj.payload
+
+	--- Is a NaN.
+	-- The value is stored in the closure.
+	-- @nick bcmath:isNan
+	-- @function bcmath:isNaN
+	-- @treturn boolean
+	function obj:isNaN()
+		checkSelf( self, 'value' )
+		return not _value
+	end
+	obj.isNan = obj.isNaN
+
+	--- Has a value.
+	-- The value is stored in the closure.
+	-- @nick bcmath:exist
+	-- @nick bcmath:hasNumber
+	-- @function bcmath:exists
+	-- @treturn boolean
+	function obj:exists()
+		checkSelf( self, 'value' )
+		return not not _value
+	end
+	obj.exist = obj.exists
+	obj.hasNumber = obj.exists
 
 	--- Add self with addend.
 	-- This method will store result in self, and then return self to facilitate chaining.
@@ -526,7 +779,35 @@ local function makeBCmath( value, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( addend )
 		checkOperator( bval, 'addend' )
-		_value = php.bcadd( _value, bval, scale or math.max( _scale, bscl ) )
+
+		if checkInfinity( _value ) == 0 and checkInfinity( bval ) == 0 then
+			_value = php.bcadd( _value, bval, scale or math.max( _scale, bscl ) )
+			return self
+		end
+
+		if checkInfinity( _value ) == 0 or checkInfinity( bval ) == 0 then
+			_value = ( checkInfinity( _value ) == -1 and '-∞' )
+				or ( checkInfinity( _value ) == 1 and '+∞' )
+				or ( checkInfinity( bval ) == -1 and '-∞' )
+				or ( checkInfinity( bval ) == 1 and '+∞' )
+				or nil
+
+			if not _value then
+				self:addPayload ( 'bcmath-add-singlesided-infinite' )
+			end
+
+			return self
+		end
+
+		if checkInfinity( _value ) == checkInfinity( bval ) then
+			self:addPayload ( 'bcmath-add-similar-infinites' )
+
+			return self
+		end
+
+		_value = nil
+		self:addPayload ( 'bcmath-add-opposite-infinites' )
+
 		return self
 	end
 
@@ -544,7 +825,34 @@ local function makeBCmath( value, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( subtrahend )
 		checkOperator( bval, 'subtrahend' )
-		_value = php.bcsub( _value, bval, scale or math.max( _scale, bscl ) )
+
+		if checkInfinity( _value ) == 0 and checkInfinity( bval ) == 0 then
+			_value = php.bcsub( _value, bval, scale or math.max( _scale, bscl ) )
+			return self
+		end
+
+		if checkInfinity( _value ) == 0 or checkInfinity( bval ) == 0 then
+			_value = ( checkInfinity( _value ) == -1 and '-∞' )
+				or ( checkInfinity( _value ) == 1 and '+∞' )
+				or ( checkInfinity( bval ) == -1 and '+∞' )
+				or ( checkInfinity( bval ) == 1 and '-∞' )
+				or nil
+
+			if not _value then
+				self:addPayload ( 'bcmath-sub-singlesided-infinite' )
+			end
+
+			return self
+		end
+
+		if checkInfinity( _value ) == -checkInfinity( bval ) then
+			self:addPayload ( 'bcmath-sub-opposite-infinites' )
+			return self
+		end
+
+		_value = nil
+		self:addPayload ( 'bcmath-sub-similar-infinite' )
+
 		return self
 	end
 
@@ -684,8 +992,38 @@ function bcmath.add( augend, addend, scl )
 	checkOperator( bval1, 'augend' )
 	local bval2, bscl2 = parseNumScale( addend )
 	checkOperator( bval2, 'addend' )
-	local bscl = scl or math.max( bscl1, bscl2 )
-	return makeBCmath( php.bcadd( bval1, bval2, bscl ), bscl )
+
+	if checkInfinity( bval1 ) == 0 and checkInfinity( bval2 ) == 0 then
+		local bscl = scl or math.max( bscl1, bscl2 )
+		return makeBCmath( php.bcadd( bval1, bval2, bscl ), bscl )
+	end
+
+	if checkInfinity( bval1 ) == 0 or checkInfinity( bval2 ) == 0 then
+		local value = ( checkInfinity( bval1 ) ~= 0 and bval1 )
+			or ( checkInfinity( bval2 ) ~= 0 and bval2 )
+			or nil
+
+		local obj = makeBCmath( value )
+
+		if not value then
+			obj:addPayload ( 'bcmath-add-singlesided-infinite' )
+		end
+
+		return obj
+	end
+
+	if checkInfinity( bval1 ) == checkInfinity( bval2 ) then
+		local obj = makeBCmath( bval1 )
+		obj:addPayload ( 'bcmath-add-similar-infinites' )
+
+		return obj
+	end
+
+	local obj = makeBCmath()
+	obj:addPayload ( 'bcmath-add-opposite-infinites' )
+
+	return obj
+
 end
 bcmeta.__add = bcmath.add
 
@@ -705,8 +1043,40 @@ function bcmath.sub( minuend, subtrahend, scl )
 	checkOperator( bval1, 'minuend' )
 	local bval2, bscl2 = parseNumScale( subtrahend )
 	checkOperator( bval2, 'subtrahend' )
-	local bscl = scl or math.max( bscl1, bscl2 )
-	return makeBCmath( php.bcsub( bval1, bval2, bscl ), bscl )
+
+	if checkInfinity( bval1 ) == 0 and checkInfinity( bval2 ) == 0 then
+		local bscl = scl or math.max( bscl1, bscl2 )
+		return makeBCmath( php.bcsub( bval1, bval2, bscl ), bscl )
+	end
+
+	if checkInfinity( bval1 ) == 0 or checkInfinity( bval2 ) == 0 then
+		local value = ( checkInfinity( bval1 ) == -1 and '-∞' )
+			or ( checkInfinity( bval1 ) == 1 and '+∞' )
+			or ( checkInfinity( bval2 ) == -1 and '+∞' )
+			or ( checkInfinity( bval2 ) == 1 and '-∞' )
+			or nil
+
+		local obj = makeBCmath( value )
+
+		if not value then
+			obj:addPayload ( 'bcmath-sub-singlesided-infinite' )
+		end
+
+		return obj
+	end
+
+	if checkInfinity( bval1 ) == -checkInfinity( bval2 ) then
+		local obj = makeBCmath( bval1 )
+		obj:addPayload ( 'bcmath-sub-opposite-infinites' )
+
+		return obj
+	end
+
+	local obj = makeBCmath()
+	obj:addPayload ( 'bcmath-add-similar-infinites' )
+
+	return obj
+
 end
 bcmeta.__sub = bcmath.sub
 
@@ -850,7 +1220,10 @@ function bcmath.comp( lhs, rhs, scl )
 	local bval1, bscl1 = parseNumScale( lhs )
 	checkOperator( bval1, 'lhs' )
 	local bval2, bscl2 = parseNumScale( rhs )
-	checkOperator( bval2, 'lhs' )
+	checkOperator( bval2, 'rhs' )
+	if not( bval1 ) or not( bval2 ) then
+		return false
+	end
 	local bscl = scl or math.max( bscl1, bscl2 )
 	return php.bccomp( bval1, bval2, bscl )
 end
