@@ -30,8 +30,12 @@ examples = {
 	'examples'
 }
 
+custom_tags = {
+	{ 'nick', title='Nicknames', hidden = false, format=nil },
+}
+
 custom_display_name_handler = function(item, default_handler)
-	-- show a label beside functions tagged with @delayed.
+	-- Strip arguments to functions
 	if item.type == 'lfunction' or item.type == 'function' then
 		return item.name .. ' ()'
 	end
