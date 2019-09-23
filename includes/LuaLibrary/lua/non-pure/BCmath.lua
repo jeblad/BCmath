@@ -693,7 +693,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'scale' )
 		return _scale
 	end
-	obj.getScale = get.scale
+	obj.getScale = obj.scale
 
 	--- Get value from self.
 	-- The value is stored in the closure.
