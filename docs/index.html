@@ -42,6 +42,7 @@
   <li><a href="topics/pitfalls.md.html">Pitfalls</a></li>
   <li><a href="topics/vagrant.md.html">Vagrant</a></li>
   <li><a href="topics/databases.md.html">Databases</a></li>
+  <li><a href="topics/vscode.md.html">VScode</a></li>
   <li><a href="topics/sources.md.html">Sources</a></li>
 </ul>
 
@@ -73,6 +74,10 @@
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:value">bcmath:value ()</a></td>
 	<td class="summary">Get value from self.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#bcmath:payload">bcmath:payload ()</a></td>
+	<td class="summary">Get payload from self.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#bcmath:isNaN">bcmath:isNaN ()</a></td>
@@ -264,6 +269,10 @@
     Get value from self.
  The value is stored in the closure.
 
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:number
+    </ul "@todo">
 
 
     <h3>Returns:</h3>
@@ -278,6 +287,28 @@
 
 </dd>
     <dt>
+    <a name = "bcmath:payload"></a>
+    <strong>bcmath:payload ()</strong>
+    </dt>
+    <dd>
+    Get payload from self.
+ The payload is stored in the closure.
+
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:payloads
+    </ul "@todo">
+
+
+    <h3>Returns:</h3>
+
+        none, one or several keys
+
+
+
+
+</dd>
+    <dt>
     <a name = "bcmath:isNaN"></a>
     <strong>bcmath:isNaN ()</strong>
     </dt>
@@ -285,6 +316,10 @@
     Is a NaN.
  The value is stored in the closure.
 
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:isNan
+    </ul "@todo">
 
 
     <h3>Returns:</h3>
@@ -306,6 +341,11 @@
     Has a value.
  The value is stored in the closure.
 
+    <h3>Nicknames:</h3>
+    <ul>
+         <li>bcmath:exist</li>
+         <li>bcmath:hasNumber</li>
+    </ul "@todo">
 
 
     <h3>Returns:</h3>
