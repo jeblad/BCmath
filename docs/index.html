@@ -207,6 +207,7 @@
     <dd>
     Convert provided value into bc num-scale pair.
  Dispatches value to type-specific converters.
+ If operator is given, then a failure will rise an exception.
  This is a real bottleneck due to the dispatched function calls.
 
 
@@ -215,6 +216,10 @@
         <li><span class="parameter">value</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <span class="type">number</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
          to be parsed
+        </li>
+        <li><span class="parameter">operator</span>
+            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         to be reported
         </li>
     </ul>
 
@@ -1133,6 +1138,8 @@
     <dd>
     Compare the left operand with the right operand.
  This function is not available as a metamethod.
+ All <a href="https://en.wikipedia.org/wiki/NaN#Comparison_with_NaN">comparisons involving a NaN</a> will
+ fail silently and return false.
  See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
 
 
