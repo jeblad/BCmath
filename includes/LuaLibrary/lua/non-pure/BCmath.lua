@@ -23,7 +23,7 @@ local function checkBinaryOperands( name, operand1, operand2, scale )
 	checkType( name, 2, scale, 'number', true )
 end
 
-local function checkTrinaryOperands( name, operand1, operand2, operand3, scale )
+local function checkTernaryOperands( name, operand1, operand2, operand3, scale )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 3, operand3, { 'string', 'number', 'table', 'nil' } )
@@ -1158,7 +1158,7 @@ bcmeta.__pow = bcmath.pow
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.powmod( base, exponent, divisor, scale )
-	checkTrinaryOperands( 'bcmath:powmod', base, exponent, divisor, scale )
+	checkTernaryOperands( 'bcmath:powmod', base, exponent, divisor, scale )
 	local bval1, bscl1 = parseNumScale( base, 'bcmath.powmod', 'base' )
 	local bval2, bscl2 = parseNumScale( exponent, 'bcmath.powmod', 'exponent' )
 	local bval3, bscl3 = parseNumScale( divisor, 'bcmath.powmod', 'divisor' )
