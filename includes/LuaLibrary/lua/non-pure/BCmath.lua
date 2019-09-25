@@ -780,7 +780,7 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcadd](https://www.php.net/manual/en/function.bcadd.php) for further documentation.
 	-- @function bcmath:add
-	-- @tparam string|number|table addend operand
+	-- @tparam string|number|table addend an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:add( addend, scale )
@@ -826,7 +826,7 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcsub](https://www.php.net/manual/en/function.bcsub.php) for further documentation.
 	-- @function bcmath:sub
-	-- @tparam string|number|table subtrahend operand
+	-- @tparam string|number|table subtrahend an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:sub( subtrahend, scale )
@@ -871,7 +871,7 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcmul](https://www.php.net/manual/en/function.bcmul.php) for further documentation.
 	-- @function bcmath:mul
-	-- @tparam string|number|table multiplicator operand
+	-- @tparam string|number|table multiplicator an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:mul( multiplicator, scale )
@@ -889,7 +889,7 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcdiv](https://www.php.net/manual/en/function.bcdiv.php) for further documentation.
 	-- @function bcmath:div
-	-- @tparam string|number|table divisor operand
+	-- @tparam string|number|table divisor an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:div( divisor, scale )
@@ -907,7 +907,7 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcmod](https://www.php.net/manual/en/function.bcmod.php) for further documentation.
 	-- @function bcmath:mod
-	-- @tparam string|number|table divisor operand
+	-- @tparam string|number|table divisor an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:mod( divisor, scale )
@@ -925,7 +925,7 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcpow](https://www.php.net/manual/en/function.bcpow.php) for further documentation.
 	-- @function bcmath:pow
-	-- @tparam string|number|table exponent operand
+	-- @tparam string|number|table exponent an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:pow( exponent, scale )
@@ -943,8 +943,8 @@ local function makeBCmath( value, scale )
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcpowmod](https://www.php.net/manual/en/function.bcpowmod.php) for further documentation.
 	-- @function bcmath:powmod
-	-- @tparam string|number|table exponent operand
-	-- @tparam string|number|table divisor operand
+	-- @tparam string|number|table exponent an operand
+	-- @tparam string|number|table divisor an operand
 	-- @tparam nil|number scale of decimal digits
 	-- @treturn self
 	function obj:powmod( exponent, divisor, scale )
@@ -991,8 +991,8 @@ end
 -- This function is available as a metamethod.
 -- See [PHP: bcadd](https://www.php.net/manual/en/function.bcadd.php) for further documentation.
 -- @function mw.bcmath.add
--- @tparam string|number|table augend operand
--- @tparam string|number|table addend operand
+-- @tparam string|number|table augend an operand
+-- @tparam string|number|table addend an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.add( augend, addend, scale )
@@ -1042,8 +1042,8 @@ bcmeta.__add = bcmath.add
 -- This function is available as a metamethod.
 -- See [PHP: bcsub](https://www.php.net/manual/en/function.bcsub.php) for further documentation.
 -- @function mw.bcmath.sub
--- @tparam string|number|table minuend operand
--- @tparam string|number|table subtrahend operand
+-- @tparam string|number|table minuend an operand
+-- @tparam string|number|table subtrahend an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.sub( minuend, subtrahend, scale )
@@ -1095,8 +1095,8 @@ bcmeta.__sub = bcmath.sub
 -- This function is available as a metamethod.
 -- See [PHP: bcmul](https://www.php.net/manual/en/function.bcmul.php) for further documentation.
 -- @function mw.bcmath.mul
--- @tparam string|number|table multiplier operand
--- @tparam string|number|table multiplicator operand
+-- @tparam string|number|table multiplier an operand
+-- @tparam string|number|table multiplicator an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.mul( multiplier, multiplicator, scale )
@@ -1116,8 +1116,8 @@ bcmeta.__mul = bcmath.mul
 -- This function is available as a metamethod.
 -- See [PHP: bcdiv](https://www.php.net/manual/en/function.bcdiv.php) for further documentation.
 -- @function mw.bcmath.div
--- @tparam string|number|table dividend operand
--- @tparam string|number|table divisor operand
+-- @tparam string|number|table dividend an operand
+-- @tparam string|number|table divisor an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.div( dividend, divisor, scale )
@@ -1137,8 +1137,8 @@ bcmeta.__div = bcmath.div
 -- This function is available as a metamethod.
 -- See [PHP: bcmod](https://www.php.net/manual/en/function.bcmod.php) for further documentation.
 -- @function mw.bcmath.mod
--- @tparam string|number|table dividend operand
--- @tparam string|number|table divisor operand
+-- @tparam string|number|table dividend an operand
+-- @tparam string|number|table divisor an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.mod( dividend, divisor, scale )
@@ -1158,8 +1158,8 @@ bcmeta.__mod = bcmath.mod
 -- This function is available as a metamethod.
 -- See [PHP: bcpow](https://www.php.net/manual/en/function.bcpow.php) for further documentation.
 -- @function mw.bcmath.pow
--- @tparam string|number|table base operand
--- @tparam string|number|table exponent operand
+-- @tparam string|number|table base an operand
+-- @tparam string|number|table exponent an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.pow( base, exponent, scale )
@@ -1179,9 +1179,9 @@ bcmeta.__pow = bcmath.pow
 -- This function is not available as a metamethod.
 -- See [PHP: bcpowmod](https://www.php.net/manual/en/function.bcpowmod.php) for further documentation.
 -- @function mw.bcmath.powmod
--- @tparam string|number|table base operand
--- @tparam string|number|table exponent operand
--- @tparam string|number|table divisor operand
+-- @tparam string|number|table base an operand
+-- @tparam string|number|table exponent an operand
+-- @tparam string|number|table divisor an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.powmod( base, exponent, divisor, scale )
@@ -1204,7 +1204,7 @@ end
 -- This function is not available as a metamethod.
 -- See [PHP: bcsqrt](https://www.php.net/manual/en/function.bcsqrt.php) for further documentation.
 -- @function mw.bcmath.sqrt
--- @tparam string|number|table operand
+-- @tparam string|number|table an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.sqrt( operand, scale )
@@ -1220,8 +1220,8 @@ end
 -- This function is not available as a metamethod.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.eq
--- @tparam string|number|table left operand
--- @tparam string|number|table right operand
+-- @tparam string|number|table left an operand
+-- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.comp( left, right, scale )
@@ -1243,8 +1243,8 @@ end
 -- This function is available as a metamethod.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.eq
--- @tparam string|number|table left operand
--- @tparam string|number|table right operand
+-- @tparam string|number|table left an operand
+-- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.eq( left, right, scale )
@@ -1256,8 +1256,8 @@ bcmeta.__eq = bcmath.eq
 -- This function is available as a metamethod.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.lt
--- @tparam string|number|table left operand
--- @tparam string|number|table right operand
+-- @tparam string|number|table left an operand
+-- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.lt( left, right, scale )
@@ -1269,8 +1269,8 @@ bcmeta.__lt = bcmath.lt
 -- This function is not available as a metamethod.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.ge
--- @tparam string|number|table left operand
--- @tparam string|number|table right operand
+-- @tparam string|number|table left an operand
+-- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.ge( left, right, scale )
@@ -1281,8 +1281,8 @@ end
 -- This function is available as a metamethod.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.le
--- @tparam string|number|table left operand
--- @tparam string|number|table right operand
+-- @tparam string|number|table left an operand
+-- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.le( left, right, scale )
@@ -1294,8 +1294,8 @@ bcmeta.__le = bcmath.le
 -- This function is not available as a metamethod.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.gt
--- @tparam string|number|table left operand
--- @tparam string|number|table right operand
+-- @tparam string|number|table left an operand
+-- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.gt( left, right, scale )
