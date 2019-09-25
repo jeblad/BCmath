@@ -341,37 +341,59 @@ local function parseNumScale( value, operator, operand )
 	return _value, _scale
 end
 
--- @todo
-local function extractSign( num )
-	local str = string.match( num or '', '^([-+]?)' ) or ''
+--- Extract sign and length from a bignum string.
+-- The value should be a string, not a unicode string.
+-- @tparam string value to be processed
+-- @treturn string
+-- @treturn number
+local function extractSign( value )
+	local str = string.match( value or '', '^([-+]?)' ) or ''
 	return str, string.len( str )
 end
 
--- @todo
-local function extractIntegral( num )
-	local str = string.match( num or '', '^[-+]?0*(%d*)' ) or ''
+--- Extract integral and length from a bignum string.
+-- The value should be a string, not a unicode string.
+-- @tparam string value to be processed
+-- @treturn string
+-- @treturn number
+local function extractIntegral( value )
+	local str = string.match( value or '', '^[-+]?0*(%d*)' ) or ''
 	return str, string.len( str )
 end
 
--- @todo
-local function extractFraction( num )
-	local str = string.match( num or '', '%.(%d*)' ) or ''
+--- Extract fraction and length from a bignum string.
+-- The value should be a string, not a unicode string.
+-- @tparam string value to be processed
+-- @treturn string
+-- @treturn number
+local function extractFraction( value )
+	local str = string.match( value or '', '%.(%d*)' ) or ''
 	return str, string.len( str )
 end
 
--- @todo
-local function extractLead( num )
-	local str = string.match( num or '', '^(0*)' ) or ''
+--- Extract lead and length from a bignum string.
+-- The value should be a string, not a unicode string.
+-- @tparam string value to be processed
+-- @treturn string
+-- @treturn number
+local function extractLead( value )
+	local str = string.match( value or '', '^(0*)' ) or ''
 	return str, string.len( str )
 end
 
--- @todo
-local function extractMantissa( num )
-	local str = string.match( num or '', '^0*(%d*)' ) or ''
+--- Extract mantissa and length from a bignum string.
+-- The value should be a string, not a unicode string.
+-- @tparam string value to be processed
+-- @treturn string
+-- @treturn number
+local function extractMantissa( value )
+	local str = string.match( value or '', '^0*(%d*)' ) or ''
 	return str, string.len( str )
 end
 
--- @todo
+--- Format the sign for output.
+-- @tparam string sign
+-- @treturn string
 local function formatSign( sign )
 	if not sign then
 		return ''
@@ -384,7 +406,9 @@ local function formatSign( sign )
 	return ''
 end
 
--- @todo
+--- Format the integral for output.
+-- @tparam string integral
+-- @treturn string
 local function formatIntegral( integral )
 	if not integral then
 		return '0'
@@ -397,7 +421,9 @@ local function formatIntegral( integral )
 	return integral
 end
 
--- @todo
+--- Format the fraction for output.
+-- @tparam string fraction
+-- @treturn string
 local function formatFraction( fraction )
 	if not fraction then
 		return ''
@@ -410,7 +436,9 @@ local function formatFraction( fraction )
 	return string.format( '.%s', fraction )
 end
 
--- @todo
+--- Format the exponent for output.
+-- @tparam string exponent
+-- @treturn string
 local function formatExponent( exponent )
 	if not exponent then
 		return ''
