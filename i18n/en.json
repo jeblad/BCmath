@@ -8,7 +8,7 @@
 	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Functionality “$1” isn't implemented yet!",
 	"bcmath-check-self-nan": "“self” does not have a valid value",
-	"bcmath-check-operand-nan": "operand “$1” does not have a valid value",
+	"bcmath-check-operand-nan": "operator “$1” with operand “$2” does not have a valid value",
 	"bcmath-add-opposite-infinites": "Adding two infinite values of opposite direction",
 	"bcmath-add-similar-infinites": "Adding two infinite values of similar direction",
 	"bcmath-sub-opposite-infinites": "Subtract two infinite values of opposite direction",
