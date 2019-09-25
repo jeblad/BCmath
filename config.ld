@@ -15,7 +15,7 @@ dir = 'docs'
 --output = 'mw.bcmath'
 --all = true
 
-kind_names={topics='Manual'}
+kind_names={topic='Manual'}
 
 readme = {
 	-- 'topics/introduction.md',
