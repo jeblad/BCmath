@@ -64,14 +64,6 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name nowrap"><a href="#parseNumScale">parseNumScale ()</a></td>
-	<td class="summary">Convert provided value into bc num-scale pair.</td>
-	</tr>
-	<tr>
-	<td class="name nowrap"><a href="#selfConvs.fix">selfConvs.fix ()</a></td>
-	<td class="summary">Convert a bc number according to a CLDR pattern.</td>
-	</tr>
-	<tr>
 	<td class="name nowrap"><a href="#bcmath:__call">bcmath:__call ()</a></td>
 	<td class="summary">Instance is callable.</td>
 	</tr>
@@ -200,83 +192,6 @@
     <h2 class="section-header "><a name="Functions"></a>Functions</h2>
 
     <dl class="function">
-    <dt>
-    <a name = "parseNumScale"></a>
-    <strong>parseNumScale ()</strong>
-    </dt>
-    <dd>
-    Convert provided value into bc num-scale pair.
- Dispatches value to type-specific converters.
- If operator is given, then a failure will rise an exception.
- This is a real bottleneck due to the dispatched function calls.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">value</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <span class="type">number</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         to be parsed
-        </li>
-        <li><span class="parameter">operator</span>
-            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         to be reported
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-        holding bcnumber</li>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        holding an estimate</li>
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "selfConvs.fix"></a>
-    <strong>selfConvs.fix ()</strong>
-    </dt>
-    <dd>
-    Convert a bc number according to a CLDR pattern.
- This is called from <a href="index.html#bcmath:__call">bcmath:__call</a>.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">num</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-         to be parsed
-        </li>
-        <li><span class="parameter">precision</span>
-            <span class="types"><span class="type">number</span></span>
-
-
-
-        </li>
-        <li><span class="parameter">style</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-
-
-
-
-
-
-
-</dd>
     <dt>
     <a name = "bcmath:__call"></a>
     <strong>bcmath:__call ()</strong>
