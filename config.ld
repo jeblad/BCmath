@@ -1,7 +1,7 @@
 
 project = 'BCmath'
 title = 'BCmath documentation'
-description = 'Assertion framework for Lua embedded within Mediawiki.'
+description = 'Access to bignum calculus for Lua embedded within Mediawiki.'
 full_description = [[The [BCmath extension](https://mediawiki.org/wiki/Extension:BCmath) is a
 project to make [arbitrary-precision arithmetic](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic)
 avaiable to [Lua-scripts](https://en.wikipedia.org/wiki/Lua_programming_language) for the
@@ -14,6 +14,8 @@ format = 'markdown'
 dir = 'docs'
 --output = 'mw.bcmath'
 --all = true
+
+kind_names={topics='Manual'}
 
 readme = {
 	-- 'topics/introduction.md',
