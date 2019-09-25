@@ -12,15 +12,22 @@ local checkType = libUtil.checkType
 local checkTypeMulti = libUtil.checkTypeMulti
 local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
 
---- Check whether operator is defined.
--- This is a simple assertion-like function with a localizable message.
--- @raise if value argument is nil
--- @tparam any value to assert
--- @tparam string name to blame
-local function checkOperator( value, name )
-	if not value then
-		error( mw.message.new( 'bcmath-check-operand-nan', name ):plain() )
-	end
+local function checkUnaryOperand( name, operand1, scale )
+	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
+	checkType( name, 2, scale, 'number', true )
+end
+
+local function checkBinaryOperands( name, operand1, operand2, scale )
+	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
+	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
+	checkType( name, 2, scale, 'number', true )
+end
+
+local function checkTrinaryOperands( name, operand1, operand2, operand3, scale )
+	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
+	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
+	checkTypeMulti( name, 3, operand3, { 'string', 'number', 'table', 'nil' } )
+	checkType( name, 2, scale, 'number', true )
 end
 
 -- this is how the number is parsed
@@ -313,12 +320,17 @@ end
 
 --- Convert provided value into bc num-scale pair.
 -- Dispatches value to type-specific converters.
+-- If operator is given, then a failure will rise an exception.
 -- This is a real bottleneck due to the dispatched function calls.
 -- @function parseNumScale
 -- @tparam string|number|table value to be parsed
+-- @tparam nil|string operator to be reported
 -- @treturn string holding bcnumber
 -- @treturn number holding an estimate
-local function parseNumScale( value )
+local function parseNumScale( value, operator, operand )
+	if operator and not value then
+		error( mw.message.new( 'bcmath-check-operand-nan', operator, operand ):plain() )
+	end
 	local conv = argConvs[type( value )]
 	if not conv then
 		return nil
@@ -785,12 +797,11 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:add( addend, scale )
 		checkSelf( self, 'add' )
-		checkTypeMulti( 'bcmath:add', 1, addend, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:add', 2, scale, 'number', true )
+		checkUnaryOperand( 'bcmath:add', addend, scale )
 		checkSelfValue()
-		local bval, bscl = parseNumScale( addend )
-		checkOperator( bval, 'addend' )
+		local bval, bscl = parseNumScale( addend, 'bcmath:add', 'addend' )
 
+		-- normal calculation
 		if checkInfinity( _value ) == 0 and checkInfinity( bval ) == 0 then
 			_value = php.bcadd( _value, bval, scale or math.max( _scale, bscl ) )
 			return self
@@ -831,11 +842,9 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:sub( subtrahend, scale )
 		checkSelf( self, 'sub' )
-		checkTypeMulti( 'bcmath:sub', 1, subtrahend, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:sub', 2, scale, 'number', true )
+		checkUnaryOperand( 'bcmath:sub', subtrahend, scale )
 		checkSelfValue()
-		local bval, bscl = parseNumScale( subtrahend )
-		checkOperator( bval, 'subtrahend' )
+		local bval, bscl = parseNumScale( subtrahend, 'bcmath:sub', 'subtrahend' )
 
 		if checkInfinity( _value ) == 0 and checkInfinity( bval ) == 0 then
 			_value = php.bcsub( _value, bval, scale or math.max( _scale, bscl ) )
@@ -876,11 +885,9 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:mul( multiplicator, scale )
 		checkSelf( self, 'mul' )
-		checkTypeMulti( 'bcmath:mul', 1, multiplicator, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:mul', 2, scale, 'number', true )
+		checkUnaryOperand( 'bcmath:mul', multiplicator, scale )
 		checkSelfValue()
-		local bval, bscl = parseNumScale( multiplicator )
-		checkOperator( bval, 'multiplicator' )
+		local bval, bscl = parseNumScale( multiplicator, 'bcmath:mul', 'multiplicator' )
 		_value = php.bcmul( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
@@ -894,11 +901,9 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:div( divisor, scale )
 		checkSelf( self, 'div' )
-		checkTypeMulti( 'bcmath:div', 1, divisor, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:div', 2, scale, 'number', true )
+		checkUnaryOperand( 'bcmath:div', divisor, scale )
 		checkSelfValue()
-		local bval, bscl = parseNumScale( divisor )
-		checkOperator( bval, 'divisor' )
+		local bval, bscl = parseNumScale( divisor, 'bcmath:div', 'divisor' )
 		_value = php.bcdiv( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
@@ -912,11 +917,9 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:mod( divisor, scale )
 		checkSelf( self, 'mod' )
-		checkTypeMulti( 'bcmath:mod', 1, divisor, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:mod', 2, scale, 'number', true )
+		checkUnaryOperand( 'bcmath:mod', divisor, scale )
 		checkSelfValue()
-		local bval, bscl = parseNumScale( divisor )
-		checkOperator( bval, 'divisor' )
+		local bval, bscl = parseNumScale( divisor, 'bcmath:mod', 'divisor' )
 		_value = php.bcmod( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
@@ -930,11 +933,9 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:pow( exponent, scale )
 		checkSelf( self, 'pow' )
-		checkTypeMulti( 'bcmath:pow', 1, exponent, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:pow', 2, scale, 'number', true )
+		checkUnaryOperand( 'bcmath:pow', exponent, scale )
 		checkSelfValue()
-		local bval, bscl = parseNumScale( exponent )
-		checkOperator( bval, 'exponent' )
+		local bval, bscl = parseNumScale( exponent, 'bcmath:pow', 'exponent' )
 		_value = php.bcpow( _value, bval, scale or math.max( _scale, bscl ) )
 		return self
 	end
@@ -949,14 +950,10 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:powmod( exponent, divisor, scale )
 		checkSelf( self, 'powmod' )
-		checkTypeMulti( 'bcmath:powmod', 1, exponent, { 'string', 'number', 'table', 'nil' } )
-		checkTypeMulti( 'bcmath:powmod', 2, divisor, { 'string', 'number', 'table', 'nil' } )
-		checkType( 'bcmath:powmod', 3, scale, 'number', true )
+		checkBinaryOperands( 'bcmath:powmod', exponent, divisor, scale )
 		checkSelfValue()
-		local bval1, bscl1 = parseNumScale( exponent )
-		checkOperator( bval1, 'exponent' )
-		local bval2, bscl2 = parseNumScale( divisor )
-		checkOperator( bval2, 'divisor' )
+		local bval1, bscl1 = parseNumScale( exponent, 'bcmath:powmod', 'exponent' )
+		local bval2, bscl2 = parseNumScale( divisor, 'bcmath:powmod', 'divisor' )
 		_value = php.bcpowmod( _value, bval1, bval2, scale or math.max( _scale, bscl1, bscl2 ) )
 		return self
 	end
@@ -969,7 +966,7 @@ local function makeBCmath( value, scale )
 	-- @treturn self
 	function obj:sqrt( scale )
 		checkSelf( self, 'sqrt' )
-		checkType( 'bcmath:add', 1, scale, 'number', true )
+		checkType( 'bcmath:sqrt', 1, scale, 'number', true )
 		checkSelfValue()
 		_value = php.bcsqrt( _value, scale or _scale )
 		return self
@@ -996,13 +993,9 @@ end
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.add( augend, addend, scale )
-	checkTypeMulti( 'bcmath.add', 1, augend, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.add', 2, addend, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.add', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( augend )
-	checkOperator( bval1, 'augend' )
-	local bval2, bscl2 = parseNumScale( addend )
-	checkOperator( bval2, 'addend' )
+	checkBinaryOperands( 'bcmath.add', augend, addend, scale )
+	local bval1, bscl1 = parseNumScale( augend, 'bcmath.add', 'augend' )
+	local bval2, bscl2 = parseNumScale( addend, 'bcmath.add', 'addend' )
 
 	if checkInfinity( bval1 ) == 0 and checkInfinity( bval2 ) == 0 then
 		local bscl = scale or math.max( bscl1, bscl2 )
@@ -1047,13 +1040,9 @@ bcmeta.__add = bcmath.add
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.sub( minuend, subtrahend, scale )
-	checkTypeMulti( 'bcmath.sub', 1, minuend, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.sub', 2, subtrahend, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.sub', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( minuend )
-	checkOperator( bval1, 'minuend' )
-	local bval2, bscl2 = parseNumScale( subtrahend )
-	checkOperator( bval2, 'subtrahend' )
+	checkBinaryOperands( 'bcmath:sub', minuend, subtrahend, scale )
+	local bval1, bscl1 = parseNumScale( minuend, 'bcmath.sub', 'minuend' )
+	local bval2, bscl2 = parseNumScale( subtrahend, 'bcmath.sub', 'subtrahend' )
 
 	if checkInfinity( bval1 ) == 0 and checkInfinity( bval2 ) == 0 then
 		local bscl = scale or math.max( bscl1, bscl2 )
@@ -1100,13 +1089,9 @@ bcmeta.__sub = bcmath.sub
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.mul( multiplier, multiplicator, scale )
-	checkTypeMulti( 'bcmath.mul', 1, multiplier, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.mul', 2, multiplicator, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.mul', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( multiplier )
-	checkOperator( bval1, 'multiplier' )
-	local bval2, bscl2 = parseNumScale( multiplicator )
-	checkOperator( bval2, 'multiplicator' )
+	checkBinaryOperands( 'bcmath:mul', multiplier, multiplicator, scale )
+	local bval1, bscl1 = parseNumScale( multiplier, 'bcmath.mul', 'multiplier' )
+	local bval2, bscl2 = parseNumScale( multiplicator, 'bcmath.mul', 'multiplicator' )
 	local bscl = scale or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcmul( bval1, bval2, bscl ), bscl )
 end
@@ -1121,13 +1106,9 @@ bcmeta.__mul = bcmath.mul
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.div( dividend, divisor, scale )
-	checkTypeMulti( 'bcmath.div', 1, dividend, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.div', 2, divisor, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.div', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( dividend )
-	checkOperator( bval1, 'dividend' )
-	local bval2, bscl2 = parseNumScale( divisor )
-	checkOperator( bval2, 'divisor' )
+	checkBinaryOperands( 'bcmath:div', dividend, divisor, scale )
+	local bval1, bscl1 = parseNumScale( dividend, 'bcmath.div', 'dividend' )
+	local bval2, bscl2 = parseNumScale( divisor, 'bcmath.div', 'divisor' )
 	local bscl = scale or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcdiv( bval1, bval2, bscl ), bscl )
 end
@@ -1142,13 +1123,9 @@ bcmeta.__div = bcmath.div
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.mod( dividend, divisor, scale )
-	checkTypeMulti( 'bcmath.mod', 1, dividend, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.mod', 2, divisor, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.div', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( dividend )
-	checkOperator( bval1, 'dividend' )
-	local bval2, bscl2 = parseNumScale( divisor )
-	checkOperator( bval2, 'divisor' )
+	checkBinaryOperands( 'bcmath:mod', dividend, divisor, scale )
+	local bval1, bscl1 = parseNumScale( dividend, 'bcmath.mod', 'dividend' )
+	local bval2, bscl2 = parseNumScale( divisor, 'bcmath.mod', 'divisor' )
 	local bscl = scale or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcmod( bval1, bval2, bscl ), bscl )
 end
@@ -1163,13 +1140,9 @@ bcmeta.__mod = bcmath.mod
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.pow( base, exponent, scale )
-	checkTypeMulti( 'bcmath.pow', 1, base, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.pow', 2, exponent, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.pow', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( base )
-	checkOperator( bval1, 'base' )
-	local bval2, bscl2 = parseNumScale( exponent )
-	checkOperator( bval2, 'exponent' )
+	checkBinaryOperands( 'bcmath:pow', base, exponent, scale )
+	local bval1, bscl1 = parseNumScale( base, 'bcmath.pow', 'base' )
+	local bval2, bscl2 = parseNumScale( exponent, 'bcmath.pow', 'exponent' )
 	local bscl = scale or math.max( bscl1, bscl2 )
 	return makeBCmath( php.bcpow( bval1, bval2, bscl ), bscl )
 end
@@ -1185,17 +1158,10 @@ bcmeta.__pow = bcmath.pow
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.powmod( base, exponent, divisor, scale )
-	checkTypeMulti( 'bcmath.powmod', 1, base, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.powmod', 2, exponent, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.powmod', 3, divisor, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.powmod', 4, scale, 'number', true )
-	checkType( 'bcmath.pow', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( base )
-	checkOperator( bval1, 'base' )
-	local bval2, bscl2 = parseNumScale( exponent )
-	checkOperator( bval2, 'exponent' )
-	local bval3, bscl3 = parseNumScale( divisor )
-	checkOperator( bval3, 'divisor' )
+	checkTrinaryOperands( 'bcmath:powmod', base, exponent, divisor, scale )
+	local bval1, bscl1 = parseNumScale( base, 'bcmath.powmod', 'base' )
+	local bval2, bscl2 = parseNumScale( exponent, 'bcmath.powmod', 'exponent' )
+	local bval3, bscl3 = parseNumScale( divisor, 'bcmath.powmod', 'divisor' )
 	local bscl = scale or math.max( bscl1, bscl2, bscl3 )
 	return makeBCmath( php.bcpowmod( bval1, bval2, bval3, bscl ), bscl )
 end
@@ -1208,16 +1174,16 @@ end
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.sqrt( operand, scale )
-	checkTypeMulti( 'bcmath.sqrt', 1, operand, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.sqrt', 2, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( operand )
-	checkOperator( bval1, 'operand' )
+	checkUnaryOperand( 'bcmath:sqrt', operand, scale )
+	local bval1, bscl1 = parseNumScale( operand, 'bcmath.sqrt', 'operand' )
 	local bscl = scale or bscl1
 	return makeBCmath( php.bcsqrt( bval1, bscl ), bscl )
 end
 
 --- Compare the left operand with the right operand.
 -- This function is not available as a metamethod.
+-- All [comparisons involving a NaN](https://en.wikipedia.org/wiki/NaN#Comparison_with_NaN) will
+-- fail silently and return false.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
 -- @function mw.bcmath.eq
 -- @tparam string|number|table left an operand
@@ -1225,13 +1191,9 @@ end
 -- @tparam nil|number scale of decimal digits
 -- @treturn bcmath
 function bcmath.comp( left, right, scale )
-	checkTypeMulti( 'bcmath.comp', 1, left, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( 'bcmath.comp', 2, right, { 'string', 'number', 'table', 'nil' } )
-	checkType( 'bcmath.comp', 3, scale, 'number', true )
-	local bval1, bscl1 = parseNumScale( left )
-	checkOperator( bval1, 'left' )
-	local bval2, bscl2 = parseNumScale( right )
-	checkOperator( bval2, 'right' )
+	checkBinaryOperands( 'bcmath:comp', left, right, scale )
+	local bval1, bscl1 = parseNumScale( left, 'bcmath.comp', 'left' )
+	local bval2, bscl2 = parseNumScale( right, 'bcmath.comp', 'right' )
 	if not( bval1 ) or not( bval2 ) then
 		return false
 	end
