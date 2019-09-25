@@ -90,6 +90,7 @@ end
 --- Parse a string representing a float number.
 -- This should only be called by @{parseNumScale}, and in particular not
 -- from @{argConvs.table} to avoid repeated parsing.
+-- @local
 -- @tparam string num to be parsed
 -- @treturn string
 -- @treturn scale
@@ -322,6 +323,7 @@ end
 -- Dispatches value to type-specific converters.
 -- If operator is given, then a failure will rise an exception.
 -- This is a real bottleneck due to the dispatched function calls.
+-- @local
 -- @function parseNumScale
 -- @tparam string|number|table value to be parsed
 -- @tparam nil|string operator to be reported
@@ -568,7 +570,7 @@ end
 
 --- Convert a bc number according to a CLDR pattern.
 -- This is called from @{bcmath:__call}.
--- @function selfConvs.fix
+-- @local
 -- @tparam table num to be parsed
 -- @tparam number precision
 -- @tparam string style
