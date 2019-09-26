@@ -327,6 +327,42 @@ local tests = {
 		args = { mw.bcmath.new( '21.0', 3 ), 'mul', '2' },
 		expect = { '42.0', 3 }
 	},
+	{ -- 47
+		name = 'Mul 42 with 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '42.0', 3 ), 'mul', '0' },
+		expect = { '0.0', 3 }
+	},
+	{ -- 47
+		name = 'Mul 0 with 42',
+		func = callInstance,
+		args = { mw.bcmath.new( '0', 3 ), 'mul', '42.0' },
+		expect = { '0.0', 3 }
+	},
+	{ -- 47
+		name = 'Mul ∞ with 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '∞', 3 ), 'mul', '0' },
+		expect = { nil, 3 }
+	},
+	{ -- 47
+		name = 'Mul 0 with ∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '0', 3 ), 'mul', '∞' },
+		expect = { nil, 3 }
+	},
+	{ -- 47
+		name = 'Mul +∞ with -∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '+∞', 3 ), 'mul', '-∞' },
+		expect = { '-∞', 3 }
+	},
+	{ -- 47
+		name = 'Mul +∞ with +∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '+∞', 3 ), 'mul', '+∞' },
+		expect = { '+∞', 3 }
+	},
 	{ -- 48
 		name = 'Div 42 with 2',
 		func = callInstance,
