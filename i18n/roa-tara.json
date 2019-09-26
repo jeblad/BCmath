@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joetaras"
+		]
+	},
+	"bcmath-desc": "Dèje 'na precisione aritmeteche arbitrarie pe le module Lua",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "'A funzione \"$1\" non g'ha state angore implemendate!",
+	"bcmath-check-self-nan": "“self” non g'ave 'nu numere valide",
+	"bcmath-check-operand-nan": "l'operande “$1” non g'ave 'nu numere valide",
+	"bcmath-add-opposite-infinites": "Aggiunge doje valore infinite de direzione diverse",
+	"bcmath-add-similar-infinites": "Aggiunge doje valore infinite de direzione simile",
+	"bcmath-sub-opposite-infinites": "Sottraie doje valore infinite de direzione diverse",
+	"bcmath-sub-similar-infinites": "Sottraie doje valore infinite de direzione simile"
+}

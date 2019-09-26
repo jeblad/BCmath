@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Gomoko"
+		]
+	},
+	"bcmath-desc": "Fournit une arithmétique de précision arbitraire aux modules Lua",
+	"bcmath-payload-counter": "$1 : $2",
+	"bcmath-check-not-implemented": "La fonctionnalité « $1 » n’est pas encore implémentée !",
+	"bcmath-check-self-nan": "« self » n’a pas une valeur valide",
+	"bcmath-check-operand-nan": "l’opérande « $1 »» n’a pas une valeur valide",
+	"bcmath-add-opposite-infinites": "Ajout de deux valeurs infinies de directions opposées",
+	"bcmath-add-similar-infinites": "Ajout de deux valeurs infinies de même direction",
+	"bcmath-sub-opposite-infinites": "Soustraire deux valeurs infinies de directions opposées",
+	"bcmath-sub-similar-infinites": "Soustraire deux valeurs infinies de mêmes directions"
+}

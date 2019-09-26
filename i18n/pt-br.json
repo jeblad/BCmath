@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eduardo Addad de Oliveira"
+		]
+	},
+	"bcmath-desc": "Fornece aritmética de precisão arbitrária para módulos Lua",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "A funcionalidade \"$1\" ainda não foi implementada!",
+	"bcmath-check-self-nan": "\"self\" não tem um valor válido",
+	"bcmath-check-operand-nan": "O operando \"$1\" não possui um valor válido",
+	"bcmath-add-opposite-infinites": "Adicionando dois valores infinitos de direção oposta",
+	"bcmath-add-similar-infinites": "Adicionando dois valores infinitos de direção semelhante",
+	"bcmath-sub-opposite-infinites": "Subtrair dois valores infinitos de direção oposta",
+	"bcmath-sub-similar-infinites": "Subtrair dois valores infinitos de direção semelhante"
+}

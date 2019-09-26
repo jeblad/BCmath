@@ -4,7 +4,13 @@
 			"Jeblad"
 		]
 	},
-	"bcmath-desc": "Legger til aritmetikk med vilkårlig presisjon for Lua moduler",
-	"bcmath-check-self-nan": "«selv» er «NaN», det har ikke et gyldig nummer",
-	"bcmath-check-operand-nan": "operanden «$1» er «NaN», den har ikke et gyldig nummer"
+	"bcmath-desc": "Legger til vilkårlig presisjonsaritmetikk for Lua moduler",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Funksjonaliteten «$1» er ennå ikke implementert!",
+	"bcmath-check-self-nan": "«self» er «NaN», det har ikke en gyldig verdi",
+	"bcmath-check-operand-nan": "operanden «$1» er «NaN», den har ikke en gyldig verdi",
+	"bcmath-add-opposite-infinites": "Adderer to uendelige verdier av motsatt retning",
+	"bcmath-add-similar-infinites": "Adderer to uendelige verdier av samme retning",
+	"bcmath-sub-opposite-infinites": "Subraherer to uendelige verdier av motsatt retning",
+	"bcmath-sub-similar-infinites": "Subtraherer to uendelige verdier av samme retning"
 }

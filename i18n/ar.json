@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"ديفيد"
+		]
+	},
+	"bcmath-desc": "يوفر الحساب التعسفي الدقيق لوحدات لوا",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "الوظيفة \"$1\" لم تُنفَّذ بعد!",
+	"bcmath-check-self-nan": "“self” ليست له قيمة صالحة",
+	"bcmath-check-operand-nan": "العامل \"$1\" مع المعامل \"$2\" ليست له قيمة صالحة",
+	"bcmath-invalid-state": "وصلت إلى حالة غير صالحة",
+	"bcmath-add-opposite-infinites": "إضافة قيمتين لانهائيتين من الاتجاه المعاكس",
+	"bcmath-add-similar-infinites": "إضافة قيمتين لانهائيتين من اتجاه مماثل",
+	"bcmath-sub-opposite-infinites": "طرح قيمتين لانهائيتين من الاتجاه المعاكس",
+	"bcmath-sub-similar-infinites": "طرح قيمتين لانهائيتين من اتجاه مماثل",
+	"bcmath-mul-opposite-infinites": "ضرب قيمتين غير محدودتين من الاتجاه المعاكس",
+	"bcmath-mul-similar-infinites": "ضرب قيمتين لانهائيتين من اتجاه مماثل"
+}
