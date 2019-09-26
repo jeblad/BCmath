@@ -84,6 +84,18 @@
 	<td class="summary">Get payload from self.</td>
 	</tr>
 	<tr>
+	<td class="name nowrap"><a href="#bcmath:getInfinite">bcmath:getInfinite ()</a></td>
+	<td class="summary">Get infinite.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#bcmath:isInfinite">bcmath:isInfinite ()</a></td>
+	<td class="summary">Is infinite.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#bcmath:isZero">bcmath:isZero ()</a></td>
+	<td class="summary">Is zero.</td>
+	</tr>
+	<tr>
 	<td class="name nowrap"><a href="#bcmath:isNaN">bcmath:isNaN ()</a></td>
 	<td class="summary">Is a NaN.</td>
 	</tr>
@@ -126,6 +138,18 @@
 	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.new">mw.bcmath.new ()</a></td>
 	<td class="summary">Create new instance.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.isZero">mw.bcmath.isZero ()</a></td>
+	<td class="summary">Is the string zero.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.getInfinity">mw.bcmath.getInfinity ()</a></td>
+	<td class="summary">Get the strings infinite part.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.isInfinite">mw.bcmath.isInfinite ()</a></td>
+	<td class="summary">Is the string infinite.</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.add">mw.bcmath.add ()</a></td>
@@ -315,6 +339,81 @@
     <h3>Returns:</h3>
 
         none, one or several keys
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:getInfinite"></a>
+    <strong>bcmath:getInfinite ()</strong>
+    </dt>
+    <dd>
+    Get infinite.
+ The value is stored in the closure.
+
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:getInf
+    </ul "@todo">
+
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:isInfinite"></a>
+    <strong>bcmath:isInfinite ()</strong>
+    </dt>
+    <dd>
+    Is infinite.
+ The value is stored in the closure.
+
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:isInf
+    </ul "@todo">
+
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:isZero"></a>
+    <strong>bcmath:isZero ()</strong>
+    </dt>
+    <dd>
+    Is zero.
+ The value is stored in the closure.
+
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:isNull
+    </ul "@todo">
+
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">boolean</span></span>
+
+
+
 
 
 
@@ -658,6 +757,92 @@
     <h3>Returns:</h3>
 
            <span class="types"><span class="type">bcmath</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mw.bcmath.isZero"></a>
+    <strong>mw.bcmath.isZero ()</strong>
+    </dt>
+    <dd>
+    Is the string zero.
+ Returns true if zero is found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         to be parsed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">nil</span> or <span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mw.bcmath.getInfinity"></a>
+    <strong>mw.bcmath.getInfinity ()</strong>
+    </dt>
+    <dd>
+    Get the strings infinite part.
+ Returned string is normalized,
+ and nil if no infinity is found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         to be parsed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mw.bcmath.isInfinite"></a>
+    <strong>mw.bcmath.isInfinite ()</strong>
+    </dt>
+    <dd>
+    Is the string infinite.
+ Returned string is normalized,
+ and nil if no infinity is found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         to be parsed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">boolean</span></span>
 
 
 
