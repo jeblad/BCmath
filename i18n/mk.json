@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"bcmath-desc": "Овозможува произволно уточнета аритметика за Lua-модули",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Можноста „$1“ сè уште не е воведена!",
+	"bcmath-check-self-nan": "„self“ нема важечка вредност",
+	"bcmath-check-operand-nan": "операндот „$1“ нема важечка вредност",
+	"bcmath-add-opposite-infinites": "Собирање на две бесконечни вредности со спротивна насока",
+	"bcmath-add-similar-infinites": "Собирање на две бесконечни вредности со слична насока",
+	"bcmath-sub-opposite-infinites": "Одземање на две бесконечни вредности со спротивна насока",
+	"bcmath-sub-similar-infinites": "Одземање на две бесконечни вредности со слична насока"
+}

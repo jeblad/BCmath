@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Katunchik"
+		]
+	},
+	"bcmath-desc": "Предоставляет арифметику произвольной точности для модулей Lua",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Функциональность \"$1\" еще не реализована!",
+	"bcmath-check-self-nan": "“self” имеет недопустимое значение",
+	"bcmath-check-operand-nan": "операнд $1 имеет недопустимое значение",
+	"bcmath-add-opposite-infinites": "Добавление двух бесконечных значений противоположного направления",
+	"bcmath-add-similar-infinites": "Сложение двух бесконечных значений одинакового направления",
+	"bcmath-sub-opposite-infinites": "Вычтите два бесконечных значения противоположного направления",
+	"bcmath-sub-similar-infinites": "Вычтите два бесконечных значения одинакового направления"
+}
