@@ -25,11 +25,13 @@ end
 
 local function callMet( obj, name, ... )
 	assert( obj )
+	assert( obj[name] )
 	return obj[name]( obj, ... )
 end
 
 local function callInstance( obj, name, ... )
 	assert( obj )
+	assert( obj[name] )
 	obj[name]( obj, ... )
 	return obj:value(), obj:scale()
 end
@@ -41,6 +43,7 @@ local function callFunc( name, ... )
 end
 
 local function compFunc( name, ... )
+	assert( mw.bcmath[name] )
 	return mw.bcmath[name]( ... )
 end
 
@@ -327,379 +330,577 @@ local tests = {
 		args = { mw.bcmath.new( '21.0', 3 ), 'mul', '2' },
 		expect = { '42.0', 3 }
 	},
-	{ -- 47
+	{ -- 48
 		name = 'Mul 42 with 0',
 		func = callInstance,
 		args = { mw.bcmath.new( '42.0', 3 ), 'mul', '0' },
 		expect = { '0.0', 3 }
 	},
-	{ -- 47
+	{ -- 49
 		name = 'Mul 0 with 42',
 		func = callInstance,
 		args = { mw.bcmath.new( '0', 3 ), 'mul', '42.0' },
 		expect = { '0.0', 3 }
 	},
-	{ -- 47
+	{ -- 50
 		name = 'Mul ∞ with 0',
 		func = callInstance,
 		args = { mw.bcmath.new( '∞', 3 ), 'mul', '0' },
 		expect = { nil, 3 }
 	},
-	{ -- 47
+	{ -- 51
 		name = 'Mul 0 with ∞',
 		func = callInstance,
 		args = { mw.bcmath.new( '0', 3 ), 'mul', '∞' },
 		expect = { nil, 3 }
 	},
-	{ -- 47
+	{ -- 52
 		name = 'Mul +∞ with -∞',
 		func = callInstance,
 		args = { mw.bcmath.new( '+∞', 3 ), 'mul', '-∞' },
 		expect = { '-∞', 3 }
 	},
-	{ -- 47
+	{ -- 53
 		name = 'Mul +∞ with +∞',
 		func = callInstance,
 		args = { mw.bcmath.new( '+∞', 3 ), 'mul', '+∞' },
 		expect = { '+∞', 3 }
 	},
-	{ -- 48
+	{ -- 54
 		name = 'Div 42 with 2',
 		func = callInstance,
 		args = { mw.bcmath.new( '42.0', 3 ), 'div', '2' },
 		expect = { '21.000', 3 }
 	},
-	{ -- 49
+	{ -- 55
+		name = 'Div 42 with 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '42.0', 3 ), 'div', '0' },
+		expect = { nil, 3 }
+	},
+	{ -- 56
+		name = 'Div 0 with 42',
+		func = callInstance,
+		args = { mw.bcmath.new( '0', 3 ), 'div', '42' },
+		expect = { '0.000', 3 }
+	},
+	{ -- 57
+		name = 'Div 42 with +∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '42.0', 3 ), 'div', '+∞' },
+		expect = { '0', 3 }
+	},
+	{ -- 58
+		name = 'Div +∞ with 42',
+		func = callInstance,
+		args = { mw.bcmath.new( '+∞', 3 ), 'div', '42' },
+		expect = { '+∞', 3 }
+	},
+	{ -- 59
+		name = 'Div +∞ with +∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '+∞', 3 ), 'div', '+∞' },
+		expect = { nil, 3 }
+	},
+	{ -- 60
 		name = 'Mod 42 with 6',
 		func = callInstance,
 		args = { mw.bcmath.new( '42.0', 3 ), 'mod', '6' },
 		expect = { '0.000', 3 }
 	},
-	{ -- 50
+	{ -- 61
+		name = 'Mod 42 with 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '42.0', 3 ), 'mod', '0' },
+		expect = { nil, 3 }
+	},
+	{ -- 62
+		name = 'Mod 0 with 42',
+		func = callInstance,
+		args = { mw.bcmath.new( '0', 3 ), 'mod', '42' },
+		expect = { '0.000', 3 }
+	},
+	{ -- 63
+		name = 'Mod 42 with +∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '42.0', 3 ), 'mod', '+∞' },
+		expect = { '0', 3 }
+	},
+	{ -- 64
+		name = 'Mod +∞ with 42',
+		func = callInstance,
+		args = { mw.bcmath.new( '+∞', 3 ), 'mod', '42' },
+		expect = { nil, 3 }
+	},
+	{ -- 65
+		name = 'Mod +∞ with +∞',
+		func = callInstance,
+		args = { mw.bcmath.new( '+∞', 3 ), 'mod', '+∞' },
+		expect = { nil, 3 }
+	},
+	{ -- 66
 		name = 'Pow 42 with 2',
 		func = callInstance,
 		args = { mw.bcmath.new( '42', 0 ), 'pow', '2' },
 		expect = { '1764', 0 }
 	},
-	{ -- 51
+	{ -- 67
+		name = 'Pow 42 with 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '42', 0 ), 'pow', '0' },
+		expect = { '1', 0 }
+	},
+	{ -- 68
+		name = 'Pow 1 with 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '1', 0 ), 'pow', '0' },
+		expect = { '1', 0 }
+	},
+	{ -- 69
+		name = 'Pow 1 with 2',
+		func = callInstance,
+		args = { mw.bcmath.new( '1', 0 ), 'pow', '2' },
+		expect = { '1', 0 }
+	},
+	{ -- 70
 		name = 'Powmod 42 with 2 and 6',
 		func = callInstance,
 		args = { mw.bcmath.new( '42', 0 ), 'powmod', '2', '6' },
 		expect = { '0', 0 }
 	},
-	{ -- 52
+	{ -- 71
+		name = 'Powmod 42 with -2 and 6',
+		func = callInstance,
+		args = { mw.bcmath.new( '42', 0 ), 'powmod', '-2', '6' },
+		expect = { nil, 0 }
+	},
+	{ -- 72
+		name = 'Powmod 42 with 2 and 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '42', 0 ), 'powmod', '2', '0' },
+		expect = { nil, 0 }
+	},
+	{ -- 72
 		name = 'Sqrt 1764',
 		func = callInstance,
 		args = { mw.bcmath.new( '1764', 0 ), 'sqrt' },
 		expect = { '42', 0 }
 	},
-	{ -- 53
+	{ -- 73
+		name = 'Sqrt 0',
+		func = callInstance,
+		args = { mw.bcmath.new( '0', 0 ), 'sqrt' },
+		expect = { '0', 0 }
+	},
+	{ -- 74
+		name = 'Sqrt -1764',
+		func = callInstance,
+		args = { mw.bcmath.new( '-1764', 0 ), 'sqrt' },
+		expect = { nil, 0 }
+	},
+	{ -- 75
 		name = 'Add 21 + 21',
 		func = callFunc,
 		args = { 'add', '21', '21' },
 		expect = { '42', 0 }
 	},
-	{ -- 54
+	{ -- 76
 		name = 'Add ∞ + 42',
 		func = callFunc,
 		args = { 'add', '+∞', '42' },
 		expect = { '+∞', 0 }
 	},
-	{ -- 55
+	{ -- 77
 		name = 'Add 42 + ∞',
 		func = callFunc,
 		args = { 'add', '42', '+∞' },
 		expect = { '+∞', 0 }
 	},
-	{ -- 56
+	{ -- 78
 		name = 'Add ∞ + ∞',
 		func = callFunc,
 		args = { 'add', '+∞', '+∞' },
 		expect = { '+∞', 0 }
 	},
-	{ -- 57
+	{ -- 79
 		name = 'Add -∞ + ∞',
 		func = callFunc,
 		args = { 'add', '-∞', '+∞' },
 		expect = { nil, 0 }
 	},
-	{ -- 58
+	{ -- 80
 		name = 'Sub 21 - 21',
 		func = callFunc,
 		args = { 'sub', '21', '21' },
 		expect = { '0', 0 }
 	},
-	{ -- 59
+	{ -- 81
 		name = 'Sub 42 - ∞',
 		func = callFunc,
 		args = { 'sub', '42', '+∞' },
 		expect = { '-∞', 0 }
 	},
-	{ -- 60
+	{ -- 82
 		name = 'Sub ∞ - ∞',
 		func = callFunc,
 		args = { 'sub', '+∞', '+∞' },
 		expect = { nil, 0 }
 	},
-	{ -- 61
+	{ -- 83
 		name = 'Sub -∞ + ∞',
 		func = callFunc,
 		args = { 'sub', '-∞', '+∞' },
 		expect = { '-∞', 0 }
 	},
-	{ -- 62
+	{ -- 84
 		name = 'Mul 42 * 42',
 		func = callFunc,
 		args = { 'mul', '42', '42' },
 		expect = { '1764', 0 }
 	},
-	{ -- 63
+	{ -- 85
 		name = 'Div 42 / 42',
 		func = callFunc,
 		args = { 'div', '42', '42' },
 		expect = { '1', 0 }
 	},
-	{ -- 64
-		name = 'Mod 42 % 6',
+	{ -- 86
+		name = 'Div 42 / 0',
+		func = callFunc,
+		args = { 'div', '42.0', '0' },
+		expect = { nil, 1 }
+	},
+	{ -- 87
+		name = 'Div 0 / 42',
+		func = callFunc,
+		args = { 'div', '0', '42' },
+		expect = { '0', 0 }
+	},
+	{ -- 88
+		name = 'Div 42 / +∞',
+		func = callFunc,
+		args = { 'div', '42.0', '+∞' },
+		expect = { '0', 1 }
+	},
+	{ -- 89
+		name = 'Div +∞ / 42',
+		func = callFunc,
+		args = { 'div', '+∞', '42' },
+		expect = { '+∞', 0 }
+	},
+	{ -- 90
+		name = 'Div +∞ / +∞',
+		func = callFunc,
+		args = { 'div', '+∞', '+∞' },
+		expect = { nil, 0 }
+	},
+	{ -- 91
+		name = 'Mod 42 / 6',
 		func = callFunc,
 		args = { 'mod', '42', '6' },
 		expect = { '0', 0 }
 	},
-	{ -- 65
+	{ -- 92
+		name = 'Mod 42 / 0',
+		func = callFunc,
+		args = { 'mod', '42.0', '0' },
+		expect = { nil, 1 }
+	},
+	{ -- 93
+		name = 'Mod 0 / 42',
+		func = callFunc,
+		args = { 'mod', '0', '42' },
+		expect = { '0', 0 }
+	},
+	{ -- 94
+		name = 'Mod 42 / +∞',
+		func = callFunc,
+		args = { 'mod', '42.0', '+∞' },
+		expect = { '0', 1 }
+	},
+	{ -- 95
+		name = 'Mod +∞ / 42',
+		func = callFunc,
+		args = { 'mod', '+∞', '42' },
+		expect = { '+∞', 0 }
+	},
+	{ -- 96
+		name = 'Mod +∞ / +∞',
+		func = callFunc,
+		args = { 'mod', '+∞', '+∞' },
+		expect = { nil, 0 }
+	},
+	{ -- 97
 		name = 'Pow 3 ^ 2',
 		func = callFunc,
 		args = { 'pow', '3', '2' },
 		expect = { '9', 0 }
 	},
-	{ -- 66
+	{ -- 98
+		name = 'Pow 3 ^ 0',
+		func = callFunc,
+		args = { 'pow', '3', '0' },
+		expect = { '1', 0 }
+	},
+	{ -- 99
+		name = 'Pow 1 ^ 0',
+		func = callFunc,
+		args = { 'pow', '1', '0' },
+		expect = { '1', 0 }
+	},
+	{ -- 100
+		name = 'Pow 1 ^ 2',
+		func = callFunc,
+		args = { 'pow', '1', '2' },
+		expect = { '1', 0 }
+	},
+	{ -- 101
 		name = 'Powmod 3 ^ 2 % 7',
 		func = callFunc,
 		args = { 'powmod', '3', '2', '7' },
 		expect = { '2', 0 }
 	},
-	{ -- 67
+	{ -- 102
+		name = 'Powmod 3 ^ 2 % 0',
+		func = callFunc,
+		args = { 'powmod', '3', '2', '0' },
+		expect = { nil, 0 }
+	},
+	{ -- 103
 		name = 'Sqrt 9',
 		func = callFunc,
 		args = { 'sqrt', '9' },
 		expect = { '3', 0 }
 	},
-	{ -- 68
+	{ -- 104
+		name = 'Sqrt 0',
+		func = callFunc,
+		args = { 'sqrt', '0' },
+		expect = { '0', 0 }
+	},
+	{ -- 105
+		name = 'Sqrt -1764',
+		func = callFunc,
+		args = { 'sqrt', '-1764' },
+		expect = { nil, 0 }
+	},
+	{ -- 106
 		name = 'Comp 41 and 42',
 		func = compFunc,
 		args = { 'comp', '41', '42' },
 		expect = { -1 }
 	},
-	{ -- 69
+	{ -- 107
 		name = 'Comp 42 and 42',
 		func = compFunc,
 		args = { 'comp', '42', '42' },
 		expect = { 0 }
 	},
-	{ -- 70
+	{ -- 108
 		name = 'Comp 43 and 42',
 		func = compFunc,
 		args = { 'comp', '43', '42' },
 		expect = { 1 }
 	},
-	{ -- 71
+	{ -- 109
 		name = 'Eq 42 == 42',
 		func = compFunc,
 		args = { 'eq', '42', '42' },
 		expect = { true }
 	},
-	{ -- 72
+	{ -- 110
 		name = 'Eq 41 == 42',
 		func = compFunc,
 		args = { 'eq', '41', '42' },
 		expect = { false }
 	},
-	{ -- 73
+	{ -- 111
 		name = 'Lt 41 < 42',
 		func = compFunc,
 		args = { 'lt', '41', '42' },
 		expect = { true }
 	},
-	{ -- 74
+	{ -- 112
 		name = 'Lt 42 < 42',
 		func = compFunc,
 		args = { 'lt', '42', '42' },
 		expect = { false }
 	},
-	{ -- 75
+	{ -- 113
 		name = 'Lt 43 < 42',
 		func = compFunc,
 		args = { 'lt', '43', '42' },
 		expect = { false }
 	},
-	{ -- 76
+	{ -- 114
 		name = 'Le 41 <= 42',
 		func = compFunc,
 		args = { 'le', '41', '42' },
 		expect = { true }
 	},
-	{ -- 77
+	{ -- 115
 		name = 'Le 42 <= 42',
 		func = compFunc,
 		args = { 'le', '42', '42' },
 		expect = { true }
 	},
-	{ -- 78
+	{ -- 116
 		name = 'Le 43 <= 42',
 		func = compFunc,
 		args = { 'le', '43', '42' },
 		expect = { false }
 	},
-	{ -- 79
+	{ -- 117
 		name = 'Gt 41 > 42',
 		func = compFunc,
 		args = { 'gt', '41', '42' },
 		expect = { false }
 	},
-	{ -- 80
+	{ -- 118
 		name = 'Gt 42 > 42',
 		func = compFunc,
 		args = { 'gt', '42', '42' },
 		expect = { false }
 	},
-	{ -- 81
+	{ -- 119
 		name = 'Gt 43 > 42',
 		func = compFunc,
 		args = { 'gt', '43', '42' },
 		expect = { true }
 	},
-	{ -- 82
+	{ -- 120
 		name = 'Ge 41 >= 42',
 		func = compFunc,
 		args = { 'ge', '41', '42' },
 		expect = { false }
 	},
-	{ -- 83
+	{ -- 121
 		name = 'Ge 42 >= 42',
 		func = compFunc,
 		args = { 'ge', '42', '42' },
 		expect = { true }
 	},
-	{ -- 84
+	{ -- 122
 		name = 'Ge 43 >= 42',
 		func = compFunc,
 		args = { 'ge', '43', '42' },
 		expect = { true }
 	},
-	{ -- 85
+	{ -- 123
 		name = 'fix 1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('1.23456'), 'fix' },
 		expect = { '1.23456' }
 	},
-	{ -- 86
+	{ -- 124
 		name = 'fix -1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('-1.23456'), 'fix' },
 		expect = { '-1.23456' }
 	},
-	{ -- 87
+	{ -- 125
 		name = 'fix -12.3456',
 		func = makeCall,
 		args = { mw.bcmath.new('-12.3456'), 'fix', 3 },
 		expect = { '-12.3' }
 	},
-	{ -- 88
+	{ -- 126
 		name = 'fix -12.3456',
 		func = makeCall,
 		args = { mw.bcmath.new('-12.3456'), 'fix', 3 },
 		expect = { '-12.3' }
 	},
-	{ -- 89
+	{ -- 127
 		name = 'fix -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'fix', 3 },
 		expect = { '-123' }
 	},
-	{ -- 90
+	{ -- 128
 		name = 'fix -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'fix', 3 },
 		expect = { '-123' }
 	},
-	{ -- 91
+	{ -- 129
 		name = 'eng 1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('1.23456'), 'eng' },
 		expect = { '1.23456' }
 	},
-	{ -- 92
+	{ -- 130
 		name = 'eng -1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('-1.23456'), 'eng' },
 		expect = { '-1.23456' }
 	},
-	{ -- 93
+	{ -- 131
 		name = 'eng 12.3456',
 		func = makeCall,
 		args = { mw.bcmath.new('12.3456'), 'eng', 3 },
 		expect = { '12.34e1' }
 	},
-	{ -- 94
+	{ -- 132
 		name = 'eng -12.3456',
 		func = makeCall,
 		args = { mw.bcmath.new('-12.3456'), 'eng', 3 },
 		expect = { '-12.34e1' }
 	},
-	{ -- 95
+	{ -- 133
 		name = 'eng 123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('123.456'), 'eng', 3 },
 		expect = { '123.45e2' }
 	},
-	{ -- 96
+	{ -- 134
 		name = 'eng -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'eng', 3 },
 		expect = { '-123.45e2' }
 	},
-	{ -- 97
+	{ -- 135
 		name = 'eng 1234.56',
 		func = makeCall,
 		args = { mw.bcmath.new('1234.56'), 'eng', 3 },
 		expect = { '1.23e3' }
 	},
-	{ -- 98
+	{ -- 136
 		name = 'eng -1234.56',
 		func = makeCall,
 		args = { mw.bcmath.new('-1234.56'), 'eng', 3 },
 		expect = { '-1.23e3' }
 	},
-	{ -- 99
+	{ -- 137
 		name = 'sci 1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('1.23456'), 'sci' },
 		expect = { '1.23456' }
 	},
-	{ -- 100
+	{ -- 138
 		name = 'sci -1.23456',
 		func = makeCall,
 		args = { mw.bcmath.new('-1.23456'), 'sci' },
 		expect = { '-1.23456' }
 	},
-	{ -- 101
+	{ -- 139
 		name = 'sci -12.3456',
 		func = makeCall,
 		args = { mw.bcmath.new('-12.3456'), 'sci', 3 },
 		expect = { '-1.23e1' }
 	},
-	{ -- 102
+	{ -- 140
 		name = 'sci -12.3456',
 		func = makeCall,
 		args = { mw.bcmath.new('-12.3456'), 'sci', 3 },
 		expect = { '-1.23e1' }
 	},
-	{ -- 103
+	{ -- 141
 		name = 'sci -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'sci', 3 },
 		expect = { '-1.23e2' }
 	},
-	{ -- 104
+	{ -- 142
 		name = 'sci -123.456',
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'sci', 3 },

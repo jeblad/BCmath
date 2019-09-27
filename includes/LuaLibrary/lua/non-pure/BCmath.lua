@@ -12,17 +12,32 @@ local checkType = libUtil.checkType
 local checkTypeMulti = libUtil.checkTypeMulti
 local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
 
+--- Check one operand and the scale for valid types.
+-- @rise On wrong types
+-- @tparam nil|string|number|table operand1
+-- @tparam nil|number scale
 local function checkUnaryOperand( name, operand1, scale )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
+--- Check two operands and the scale for valid types.
+-- @rise On wrong types
+-- @tparam nil|string|number|table operand1
+-- @tparam nil|string|number|table operand2
+-- @tparam nil|number scale
 local function checkBinaryOperands( name, operand1, operand2, scale )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
+--- Check three operands and the scale for valid types.
+-- @rise On wrong types
+-- @tparam nil|string|number|table operand1
+-- @tparam nil|string|number|table operand2
+-- @tparam nil|string|number|table operand3
+-- @tparam nil|number scale
 local function checkTernaryOperands( name, operand1, operand2, operand3, scale )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
@@ -577,7 +592,7 @@ end
 -- @tparam string style
 -- @treturn string
 local function convertPattern( num, precision, style ) -- luacheck: no unused args
-	error( mw.message.new( 'bcmath-check-self-style', 'CLDR Pattern' ):plain() )
+	error( mw.message.new( 'bcmath-check-not-implemented', 'CLDR Pattern' ):plain() )
 end
 
 -- @var structure used as metatable for bsmath
@@ -785,9 +800,31 @@ local function makeBCmath( value, scale )
 	-- @treturn boolean
 	function obj:isInfinite()
 		checkSelf( self, 'value' )
-		return not not bcmath.isInfinite( _value )
+		return not bcmath.isFinite( _value )
 	end
 	obj.isInf = obj.isInfinite
+
+	--- Is finite.
+	-- The value is stored in the closure.
+	-- @nick bcmath:isFin
+	-- @function bcmath:isFinite
+	-- @treturn boolean
+	function obj:isFinite()
+		checkSelf( self, 'value' )
+		return bcmath.isFinite( _value )
+	end
+	obj.isFin = obj.isFinite
+
+	--- Get zero.
+	-- The value is stored in the closure.
+	-- @nick bcmath:getNull
+	-- @function bcmath:getZero
+	-- @treturn nil|string
+	function obj:getZero()
+		checkSelf( self, 'value' )
+		return bcmath.getZero( _value )
+	end
+	obj.getNull = obj.getZero
 
 	--- Is zero.
 	-- The value is stored in the closure.
@@ -836,21 +873,19 @@ local function makeBCmath( value, scale )
 		checkUnaryOperand( 'bcmath:add', addend, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( addend, 'bcmath:add', 'addend' )
-		local scl = scale or math.max( _scale, bscl )
+		_scale = scale or math.max( _scale, bscl )
 
 		-- both sides finite – normal calculation
-		if not self:isInfinite() and not bcmath.isInfinite( bval ) then
-			_value = php.bcadd( _value, bval, scl )
+		if self:isFinite() and bcmath.isFinite( bval ) then
+			_value = php.bcadd( _value, bval, _scale ) or nil
 			return self
 		end
 
-		_scale = scl
-
 		-- self infinite, operand finite
-		if self:isInfinite() and not bcmath.isInfinite( bval ) then
+		if self:isInfinite() and bcmath.isFinite( bval ) then
 			return self:addPayload ( 'bcmath-add-singlesided-infinite' )
 		-- self finite, operand infinite
-		elseif not self:isInfinite() and bcmath.isInfinite( bval ) then
+		elseif self:isFinite() and bcmath.isInfinite( bval ) then
 			_value = bval
 			return self:addPayload ( 'bcmath-add-singlesided-infinite' )
 		end
@@ -864,7 +899,7 @@ local function makeBCmath( value, scale )
 			return self:addPayload ( 'bcmath-add-similar-infinites' )
 		end
 
-		-- should not be here – NaN
+		-- should be unreachable – NaN
 		_value = nil
 		return self:addPayload ( 'bcmath-invalid-state' )
 	end
@@ -881,21 +916,19 @@ local function makeBCmath( value, scale )
 		checkUnaryOperand( 'bcmath:sub', subtrahend, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( subtrahend, 'bcmath:sub', 'subtrahend' )
-		local scl = scale or math.max( _scale, bscl )
+		_scale = scale or math.max( _scale, bscl )
 
 		-- both sides finite – normal calculation
-		if not self:isInfinite() and not bcmath.isInfinite( bval ) then
-			_value = php.bcsub( _value, bval, scl )
+		if self:isFinite() and bcmath.isFinite( bval ) then
+			_value = php.bcsub( _value, bval, _scale ) or nil
 			return self
 		end
 
-		_scale = scl
-
 		-- self infinite, operand finite
-		if self:isInfinite() and not bcmath.isInfinite( bval ) then
+		if self:isInfinite() and bcmath.isFinite( bval ) then
 			return self:addPayload ( 'bcmath-sub-singlesided-infinite' )
 		-- self finite, operand infinite
-		elseif not self:isInfinite() and bcmath.isInfinite( bval ) then
+		elseif self:isFinite() and bcmath.isInfinite( bval ) then
 			_value = bcmath.neg( bval )
 			return self:addPayload ( 'bcmath-sub-singlesided-infinite' )
 		end
@@ -909,7 +942,7 @@ local function makeBCmath( value, scale )
 			return self:addPayload ( 'bcmath-sub-similar-infinites' )
 		end
 
-		-- should not be here – NaN
+		-- should be unreachable – NaN
 		_value = nil
 		return self:addPayload ( 'bcmath-invalid-state' )
 	end
@@ -926,15 +959,13 @@ local function makeBCmath( value, scale )
 		checkUnaryOperand( 'bcmath:mul', multiplicator, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( multiplicator, 'bcmath:mul', 'multiplicator' )
-		local scl = scale or math.max( _scale, bscl )
+		_scale = scale or math.max( _scale, bscl )
 
 		-- both sides finite – normal calculation
-		if not self:isInfinite() and not bcmath.isInfinite( bval ) then
-			_value = php.bcmul( _value, bval, scl )
+		if self:isFinite() and bcmath.isFinite( bval ) then
+			_value = php.bcmul( _value, bval, _scale ) or nil
 			return self
 		end
-
-		_scale = scl
 
 		-- self infinite, operand zero – NaN
 		if self:isInfinite() and bcmath.isZero( bval ) then
@@ -956,7 +987,7 @@ local function makeBCmath( value, scale )
 			return self:addPayload ( 'bcmath-mul-similar-infinites' )
 		end
 
-		-- should not be here – NaN
+		-- should be unreachable – NaN
 		_value = nil
 		return self:addPayload ( 'bcmath-invalid-state' )
 	end
@@ -973,8 +1004,34 @@ local function makeBCmath( value, scale )
 		checkUnaryOperand( 'bcmath:div', divisor, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( divisor, 'bcmath:div', 'divisor' )
-		_value = php.bcdiv( _value, bval, scale or math.max( _scale, bscl ) )
-		return self
+		_scale = scale or math.max( _scale, bscl )
+
+		-- divisor zero – NaN
+		if bcmath.isZero( bval ) then
+			_value = nil
+			return self:addPayload ( 'bcmath-div-divisor-zero' )
+		end
+
+		-- dividend finite – normal calculation
+		if self:isFinite() and bcmath.isFinite( bval ) then
+			_value = php.bcdiv( _value, bval, _scale ) or nil
+			return self
+		end
+
+		-- self infinite, operand finite
+		if self:isInfinite() and bcmath.isFinite( bval ) then
+			-- note sign shift
+			return self:addPayload ( 'bcmath-div-singlesided-infinite-or-zero' )
+		-- self infinite, operand infinite
+		elseif self:isFinite() and bcmath.isInfinite( bval ) then
+			-- sign on zero is not suppoted
+			_value = '0'
+			return self:addPayload ( 'bcmath-div-singlesided-infinite-or-zero' )
+		end
+
+		-- should be unreachable – NaN
+		_value = nil
+		return self:addPayload ( 'bcmath-invalid-state' )
 	end
 
 	--- Modulus self with divisor.
@@ -989,8 +1046,33 @@ local function makeBCmath( value, scale )
 		checkUnaryOperand( 'bcmath:mod', divisor, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( divisor, 'bcmath:mod', 'divisor' )
-		_value = php.bcmod( _value, bval, scale or math.max( _scale, bscl ) )
-		return self
+		_scale = scale or math.max( _scale, bscl )
+
+		-- divisor zero – NaN
+		if bcmath.isZero( bval ) then
+			_value = nil
+			return self:addPayload ( 'bcmath-mod-divisor-zero' )
+		end
+
+		-- dividend finite – normal calculation
+		if self:isFinite() and bcmath.isFinite( bval ) then
+			_value = php.bcmod( _value, bval, _scale ) or nil
+			return self
+		end
+
+		-- self infinite, operand finite
+		if self:isInfinite() and bcmath.isFinite( bval ) then
+			_value = nil
+			return self:addPayload ( 'bcmath-mod-singlesided-infinite-or-zero' )
+		-- self infinite, operand infinite
+		elseif self:isFinite() and bcmath.isInfinite( bval ) then
+			_value = '0'
+			return self:addPayload ( 'bcmath-mod-singlesided-infinite-or-zero' )
+		end
+
+		-- should be unreachable – NaN
+		_value = nil
+		return self:addPayload ( 'bcmath-invalid-state' )
 	end
 
 	--- Power self with exponent.
@@ -1005,7 +1087,20 @@ local function makeBCmath( value, scale )
 		checkUnaryOperand( 'bcmath:pow', exponent, scale )
 		checkSelfValue()
 		local bval, bscl = parseNumScale( exponent, 'bcmath:pow', 'exponent' )
-		_value = php.bcpow( _value, bval, scale or math.max( _scale, bscl ) )
+		_scale = scale or math.max( _scale, bscl )
+
+		-- exponent zero – always 1
+		if bcmath.eq( bval, '0' ) then
+			_value = '1'
+			return self:addPayload ( 'bcmath-pow-exponent-zero' )
+		end
+
+		-- base 1 – always 1
+		if bcmath.eq( _value, '1' ) then
+			return self:addPayload ( 'bcmath-pow-base-one' )
+		end
+
+		_value = php.bcpow( _value, bval, _scale ) or nil
 		return self
 	end
 
@@ -1023,7 +1118,21 @@ local function makeBCmath( value, scale )
 		checkSelfValue()
 		local bval1, bscl1 = parseNumScale( exponent, 'bcmath:powmod', 'exponent' )
 		local bval2, bscl2 = parseNumScale( divisor, 'bcmath:powmod', 'divisor' )
-		_value = php.bcpowmod( _value, bval1, bval2, scale or math.max( _scale, bscl1, bscl2 ) )
+		_scale = scale or math.max( _scale, bscl1, bscl2 )
+
+		-- divisor zero – NaN
+		if bcmath.eq( bval2, '0' ) then
+			_value = nil
+			return self:addPayload ( 'bcmath-powmod-divisor-zero' )
+		end
+
+		-- exponent negative – NaN
+		if bcmath.lt( bval1, '0' ) then
+			_value = nil
+			return self:addPayload ( 'bcmath-powmod-exponent-negative' )
+		end
+
+		_value = php.bcpowmod( _value, bval1, bval2, _scale ) or nil
 		return self
 	end
 
@@ -1037,7 +1146,16 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'sqrt' )
 		checkType( 'bcmath:sqrt', 1, scale, 'number', true )
 		checkSelfValue()
-		_value = php.bcsqrt( _value, scale or _scale )
+		local scl = scale or _scale
+
+		-- operand less than zero – NaN
+		if bcmath.lt( _value, 0 ) then
+			_value = nil
+			return self:addPayload ( 'bcmath-sqrt-operand-negative' )
+		end
+
+		-- num should be valid – normal calculation
+		_value = php.bcsqrt( _value, scl ) or nil
 		return self
 	end
 
@@ -1053,16 +1171,40 @@ function bcmath.new( value, scale )
 	return makeBCmath( value, scale )
 end
 
+--- Get the string zero.
+-- Returned string is normalized,
+-- and nil if no zero is found.
+-- @function mw.bcmath.getZero
+-- @tparam nil|string value to be parsed
+-- @treturn nil|string
+function bcmath.getZero( value )
+	if not value then
+		return nil
+	end
+	local pos = string.find( value, '[∞1-9]')
+	local sign = string.match( value, '^([-+]?)' )
+	if pos then
+		return nil
+	end
+	if not pos and sign == '' then
+		return '+0'
+	end
+	if pos and sign == '+' then
+		return '+0'
+	end
+	if pos and sign == '-' then
+		return '-0'
+	end
+	return nil
+end
+
 --- Is the string zero.
 -- Returns true if zero is found.
 -- @function mw.bcmath.isZero
 -- @tparam nil|string value to be parsed
 -- @treturn nil|boolean
 function bcmath.isZero( value )
-	if not value then
-		return nil
-	end
-	return not string.find( value, '[∞1-9]')
+	return not not bcmath.getZero( value )
 end
 
 --- Get the strings infinite part.
@@ -1088,8 +1230,7 @@ function bcmath.getInfinite( value )
 end
 
 --- Is the string infinite.
--- Returned string is normalized,
--- and nil if no infinity is found.
+-- Returned string is normalized.
 -- @function mw.bcmath.isInfinite
 -- @tparam nil|string value to be parsed
 -- @treturn boolean
@@ -1097,6 +1238,18 @@ function bcmath.isInfinite( value )
 	return not not bcmath.getInfinite( value )
 end
 
+--- Is the string finite.
+-- Returned string is normalized.
+-- @function mw.bcmath.isFinite
+-- @tparam nil|string value to be parsed
+-- @treturn boolean
+function bcmath.isFinite( value )
+	return not bcmath.getInfinite( value )
+end
+
+--- Negates the string representation of the number
+-- @tparam string value
+-- @treturn string
 function bcmath.neg( value )
 	local sign, len = extractSign( value )
 	if sign == '+' then
@@ -1124,15 +1277,15 @@ function bcmath.add( augend, addend, scale )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- both sides finite – normal calculation
-	if not bcmath.isInfinite( bval1 ) and not bcmath.isInfinite( bval2 ) then
-		return makeBCmath( php.bcadd( bval1, bval2, scl ) )
+	if bcmath.isFinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		return makeBCmath( php.bcadd( bval1, bval2, scl ) or nil, scl )
 	end
 
 	-- first operand infinite, second operand finite
-	if bcmath.isInfinite( bval1 ) and not bcmath.isInfinite( bval2 ) then
+	if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
 		return makeBCmath( bval1, scl ):addPayload( 'bcmath-add-singlesided-infinite' )
 	-- first operand finite, second operand infinite
-	elseif not bcmath.isInfinite( bval1 ) and bcmath.isInfinite( bval2 ) then
+	elseif bcmath.isFinite( bval1 ) and bcmath.isInfinite( bval2 ) then
 		return makeBCmath( bval2, scl ):addPayload( 'bcmath-add-singlesided-infinite' )
 	end
 
@@ -1145,8 +1298,7 @@ function bcmath.add( augend, addend, scale )
 	end
 
 	-- should not be here – NaN
-	_value = nil
-	return self:addPayload ( 'bcmath-invalid-state' )
+	return makeBCmath( nil, scl ):addPayload ( 'bcmath-invalid-state' )
 end
 bcmeta.__add = bcmath.add
 
@@ -1165,15 +1317,15 @@ function bcmath.sub( minuend, subtrahend, scale )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- both sides finite – normal calculation
-	if not bcmath.isInfinite( bval1 ) and not bcmath.isInfinite( bval2 ) then
-		return makeBCmath( php.bcsub( bval1, bval2, scl ) )
+	if bcmath.isFinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		return makeBCmath( php.bcsub( bval1, bval2, scl ) or nil, scl )
 	end
 
 	-- first operand infinite, second operand finite
-	if bcmath.isInfinite( bval1 ) and not bcmath.isInfinite( bval2 ) then
+	if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
 		return makeBCmath( bval1, scl ):addPayload( 'bcmath-sub-singlesided-infinite' )
 	-- first operand finite, second operand infinite
-	elseif not bcmath.isInfinite( bval1 ) and bcmath.isInfinite( bval2 ) then
+	elseif bcmath.isFinite( bval1 ) and bcmath.isInfinite( bval2 ) then
 		return makeBCmath( bcmath.neg( bval2 ), scl ):addPayload( 'bcmath-sub-singlesided-infinite' )
 	end
 
@@ -1185,9 +1337,8 @@ function bcmath.sub( minuend, subtrahend, scale )
 		return makeBCmath( nil, scl ):addPayload( 'bcmath-sub-similar-infinites' )
 	end
 
-	-- should not be here – NaN
-	_value = nil
-	return self:addPayload ( 'bcmath-invalid-state' )
+	-- should be unreachable – NaN
+	return makeBCmath( nil, scl ):addPayload ( 'bcmath-invalid-state' )
 end
 bcmeta.__sub = bcmath.sub
 
@@ -1206,8 +1357,8 @@ function bcmath.mul( multiplier, multiplicator, scale )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- both sides finite – normal calculation
-	if not bcmath.isInfinite( bval1 ) and not bcmath.isInfinite( bval2 ) then
-		return makeBCmath( php.bcmul( bval1, bval2, scl ), scl )
+	if bcmath.isFinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		return makeBCmath( php.bcmul( bval1, bval2, scl ) or nil, scl )
 	end
 
 	-- self infinite, operand zero – NaN
@@ -1227,7 +1378,7 @@ function bcmath.mul( multiplier, multiplicator, scale )
 		return makeBCmath( bval1, scl ):addPayload ( 'bcmath-mul-similar-infinites' )
 	end
 
-	-- should not be here – NaN
+	-- should be unreachable – NaN
 	return makeBCmath( nil, scl ):addPayload ( 'bcmath-invalid-state' )
 end
 bcmeta.__mul = bcmath.mul
@@ -1244,8 +1395,30 @@ function bcmath.div( dividend, divisor, scale )
 	checkBinaryOperands( 'bcmath:div', dividend, divisor, scale )
 	local bval1, bscl1 = parseNumScale( dividend, 'bcmath.div', 'dividend' )
 	local bval2, bscl2 = parseNumScale( divisor, 'bcmath.div', 'divisor' )
-	local bscl = scale or math.max( bscl1, bscl2 )
-	return makeBCmath( php.bcdiv( bval1, bval2, bscl ), bscl )
+	local scl = scale or math.max( bscl1, bscl2 )
+
+	-- divisor zero – NaN
+	if bcmath.isZero( bval2 ) then
+		return makeBCmath( nil, scl ):addPayload ( 'bcmath-div-divisor-zero' )
+	end
+
+	-- dividend finite – normal calculation
+	if bcmath.isFinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		return makeBCmath( php.bcdiv( bval1, bval2, scl ) or nil, scl )
+	end
+
+	-- self infinite, operand finite
+	if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		-- note sign shift
+		return makeBCmath( bval1, scl ):addPayload ( 'bcmath-div-singlesided-infinite-or-zero' )
+	-- self infinite, operand infinite
+	elseif bcmath.isFinite( bval1 ) and bcmath.isInfinite( bval2 ) then
+		-- sign on zero is not suppoted
+		return makeBCmath( '0', scl ):addPayload ( 'bcmath-div-singlesided-infinite-or-zero' )
+	end
+
+	-- should be unreachable – NaN
+	return makeBCmath( nil, scl ):addPayload ( 'bcmath-invalid-state' )
 end
 bcmeta.__div = bcmath.div
 
@@ -1261,8 +1434,30 @@ function bcmath.mod( dividend, divisor, scale )
 	checkBinaryOperands( 'bcmath:mod', dividend, divisor, scale )
 	local bval1, bscl1 = parseNumScale( dividend, 'bcmath.mod', 'dividend' )
 	local bval2, bscl2 = parseNumScale( divisor, 'bcmath.mod', 'divisor' )
-	local bscl = scale or math.max( bscl1, bscl2 )
-	return makeBCmath( php.bcmod( bval1, bval2, bscl ), bscl )
+	local scl = scale or math.max( bscl1, bscl2 )
+
+	-- divisor zero – NaN
+	if bcmath.isZero( bval2 ) then
+		return makeBCmath( nil, scl ):addPayload ( 'bcmath-mod-divisor-zero' )
+	end
+
+	-- dividend finite – normal calculation
+	if bcmath.isFinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		return makeBCmath( php.bcmod( bval1, bval2, scl ) or nil, scl )
+	end
+
+	-- self infinite, operand finite
+	if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
+		-- note sign shift
+		return makeBCmath( bval1, scl):addPayload ( 'bcmath-mod-singlesided-infinite-or-zero' )
+	-- self infinite, operand infinite
+	elseif bcmath.isFinite( bval1 ) and bcmath.isInfinite( bval2 ) then
+		-- sign on zero is not supported
+		return makeBCmath( '0', scl ):addPayload ( 'bcmath-mod-singlesided-infinite-or-zero' )
+	end
+
+	-- should be unreachable – NaN
+	return makeBCmath( nil, scl ):addPayload ( 'bcmath-invalid-state' )
 end
 bcmeta.__mod = bcmath.mod
 
@@ -1278,8 +1473,19 @@ function bcmath.pow( base, exponent, scale )
 	checkBinaryOperands( 'bcmath:pow', base, exponent, scale )
 	local bval1, bscl1 = parseNumScale( base, 'bcmath.pow', 'base' )
 	local bval2, bscl2 = parseNumScale( exponent, 'bcmath.pow', 'exponent' )
-	local bscl = scale or math.max( bscl1, bscl2 )
-	return makeBCmath( php.bcpow( bval1, bval2, bscl ), bscl )
+	local scl = scale or math.max( bscl1, bscl2 )
+
+	-- exponent zero – always 1
+	if bcmath.eq( bval2, '0' ) then
+		return makeBCmath( '1', scl ):addPayload ( 'bcmath-pow-exponent-zero' )
+	end
+
+	-- base 1 – always 1
+	if bcmath.eq( bval1, '1' ) then
+		return makeBCmath( '1', scl ):addPayload ( 'bcmath-pow-base-one' )
+	end
+
+	return makeBCmath( php.bcpow( bval1, bval2, scl ) or nil, scl )
 end
 bcmeta.__pow = bcmath.pow
 
@@ -1297,8 +1503,20 @@ function bcmath.powmod( base, exponent, divisor, scale )
 	local bval1, bscl1 = parseNumScale( base, 'bcmath.powmod', 'base' )
 	local bval2, bscl2 = parseNumScale( exponent, 'bcmath.powmod', 'exponent' )
 	local bval3, bscl3 = parseNumScale( divisor, 'bcmath.powmod', 'divisor' )
-	local bscl = scale or math.max( bscl1, bscl2, bscl3 )
-	return makeBCmath( php.bcpowmod( bval1, bval2, bval3, bscl ), bscl )
+	local scl = scale or math.max( bscl1, bscl2, bscl3 )
+
+	-- divisor zero – NaN
+	if bcmath.eq( bval3, '0' ) then
+		return makeBCmath( nil, scl ):addPayload ( 'bcmath-pow-divisor-zero' )
+	end
+
+	-- exponent negative – NaN
+	if bcmath.lt( bval2, '0' ) then
+		return makeBCmath( nil, scl ):addPayload ( 'bcmath-pow-exponent-negative' )
+	end
+
+	--return php.bcpowmod( bval1, bval2, bval3, scl )
+	return makeBCmath( php.bcpowmod( bval1, bval2, bval3, scl ) or nil, scl )
 end
 
 --- Square root of the operand.
@@ -1311,8 +1529,15 @@ end
 function bcmath.sqrt( operand, scale )
 	checkUnaryOperand( 'bcmath:sqrt', operand, scale )
 	local bval1, bscl1 = parseNumScale( operand, 'bcmath.sqrt', 'operand' )
-	local bscl = scale or bscl1
-	return makeBCmath( php.bcsqrt( bval1, bscl ), bscl )
+	local scl = scale or bscl1
+
+	-- operand less than zero – NaN
+	if bcmath.lt( bval1, 0 ) then
+		return makeBCmath( nil, scl ):addPayload ( 'bcmath-sqrt-operand-negative' )
+	end
+
+	-- num should be valid – normal calculation
+	return makeBCmath( php.bcsqrt( bval1, scl ), scl )
 end
 
 --- Compare the left operand with the right operand.
