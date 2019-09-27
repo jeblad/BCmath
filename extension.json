@@ -22,6 +22,10 @@
 	},
 	"config_prefix": "wgBCmath",
 	"config": {
+		"ExtFiltering": {
+			"value": true,
+			"description": "Turn on additional sanitizion of numbers"
+		}
 	},
 	"callback": "BCmath\\Hooks::onExtensionSetup",
 	"Hooks": {
