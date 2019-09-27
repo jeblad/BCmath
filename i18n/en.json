@@ -16,7 +16,16 @@
 	"bcmath-sub-singlesided-infinite": "Subtracted two values where one is infinite",
 	"bcmath-sub-opposite-infinites": "Subtracted two infinite values of opposite direction",
 	"bcmath-sub-similar-infinites": "Subtracted two infinite values of similar direction",
-	"bcmath-mul-singlesided-infinite-or-zero": "Multiplied two values where one is infinite and the other is zero",
+	"bcmath-mul-singlesided-infinite-or-zero": "Multiplied two values where one is infinite or zero",
 	"bcmath-mul-opposite-infinites": "Multiplied two infinite values of opposite direction",
-	"bcmath-mul-similar-infinites": "Multiplied two infinite values of similar direction"
+	"bcmath-mul-similar-infinites": "Multiplied two infinite values of similar direction",
+	"bcmath-div-singlesided-infinite-or-zero": "Divided values where one is infinite or zero",
+	"bcmath-div-divisor-zero": "Divided value where divisor is zero",
+	"bcmath-mod-singlesided-infinite-or-zero": "Modulus values where one is infinite or zero",
+	"bcmath-mod-divisor-zero": "Modulus two values where divisor is zero",
+	"bcmath-pow-exponent-zero": "Power where exponent is zero",
+	"bcmath-pow-base-one": "Power where base is one",
+	"bcmath-powmod-divisor-zero": "Powermod where divisor is zero",
+	"bcmath-powmod-exponent-negative": "Powermod where exponent is negative",
+	"bcmath-sqrt-operand-negative": "Square root where operand is negative"
 }

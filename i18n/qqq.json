@@ -5,6 +5,32 @@
 		]
 	},
 	"bcmath-desc": "{{bcmath-gloss}} {{desc|name=BCmath|url=https://www.mediawiki.org/wiki/Extension:BCmath }}",
-	"bcmath-check-self-nan": "{{bcmath-gloss}} An exception has been catched during parsing of a number. This can be because of an error in the cript logic, but can also be an erroneous entry by the user. The “self” is the internal instance, which has a non-valid number, or actually has no number at all. This is interpreted as a “NaN” or “Not a Number”.",
-	"bcmath-check-operand-nan": "{{bcmath-gloss}} An exception has been catched during parsing of a number. This can be because of an error in the cript logic, but can also be an erroneous entry by the user. The operand “$1” is the name or the role for the argument, which has a non-valid number, or actually has no number at all. This is interpreted as a “NaN” or “Not a Number”."
+	"bcmath-payload-counter": "{{bcmath-gloss}} A formatting string. Usually the default is sufficient. {{optional}}",
+	"bcmath-check-not-implemented": "{{bcmath-gloss}} A message to inform the user (s)he has hit some unimplemented feature.",
+	"bcmath-check-self-nan": "{{bcmath-gloss}} An exception has been catched during parsing of a number. This can be because of an error in the cript logic, but can also be an erroneous entry by the user. The “self” is the internal instance, which has a non-valid number, or actually has no number at all. This is interpreted as a “NaN” or “Not a Number”. The message is used when a method is evaluated, and the instance holds a NaN.",
+	"bcmath-check-operand-nan": "{{bcmath-gloss}} An exception has been catched during parsing of a number. This can be because of an error in the cript logic, but can also be an erroneous entry by the user. The operand “$1” is the name or the role for the argument, which has a non-valid number, or actually has no number at all. This is interpreted as a “NaN” or “Not a Number”. The message is used when an operation is evaluated, and the operands holds a NaN.",
+	"bcmath-invalid-state": "{{bcmath-gloss}} Evaluation reached an invalid or erroneous state.",
+	"bcmath-add-singlesided-infinite": "{{bcmath-gloss}} Addition of two values where one is finite and the other one is infinite will lead to a new infinite value.",
+	"bcmath-add-opposite-infinites": "{{bcmath-gloss}} Addition of two infinite values of opposite direction leads to a not-a-number (NaN).",
+	"bcmath-add-similar-infinites": "{{bcmath-gloss}} Addition of two infinite values of similar direction leads to a new infinite value.",
+	"bcmath-sub-singlesided-infinite": "{{bcmath-gloss}} Subtraction of two values where one is finite and the other one is infinite will lead to a new infinite value.",
+	"bcmath-sub-opposite-infinites": "{{bcmath-gloss}} Subtraction of two infinite values of opposite direction leads to a not-a-number (NaN).",
+	"bcmath-sub-similar-infinites": "{{bcmath-gloss}} Subtraction of two infinite values of similar direction leads to a new infinite value.",
+	"bcmath-mul-singlesided-infinite-or-zero": "{{bcmath-gloss}} Multiplication of two values where one is infinite or zero and the other is zero or infinite leads to a not-a-number (NaN).",
+	"bcmath-mul-opposite-infinites": "{{bcmath-gloss}} Multiplication of two infinite values of opposite direction gives a new infinite value of negative direction.",
+	"bcmath-mul-similar-infinites": "{{bcmath-gloss}} Multiplication of two infinite values of similar direction gives a new infinite value of positive direction.",
+
+	"bcmath-div-singlesided-infinite-or-zero": "{{bcmath-gloss}} Division with a infinite over finite or finite over infinite. First gives a not-a-number (NaN) while second gives zero.",
+	"bcmath-div-divisor-zero": "{{bcmath-gloss}} Division with a divisor of zero leads to a not-a-number (NaN).",
+
+	"bcmath-mod-singlesided-infinite-or-zero": "{{bcmath-gloss}} Modulus with a infinite over finite or finite over infinite. First gives a not-a-number (NaN) while second gives zero.",
+	"bcmath-mod-divisor-zero": "{{bcmath-gloss}} Modulus with a divisor of zero leads to a not-a-number (NaN).",
+
+	"bcmath-pow-exponent-zero": "{{bcmath-gloss}} Power with an exponent of zero leads to a one as result.",
+	"bcmath-pow-base-one": "{{bcmath-gloss}} Power with base one will always give a result of one. This message is only registered in the payload.",
+
+	"bcmath-powmod-divisor-zero": "{{bcmath-gloss}} Powermod with a divisor of zero leads to a not-a-number (NaN).",
+	"bcmath-powmod-exponent-negative": "{{bcmath-gloss}} Powermod with a negative exponent leads to a not-a-number (NaN).",
+
+	"bcmath-sqrt-operand-negative": "{{bcmath-gloss}} Square root of a negative value can only be resolved with complex numbers, so this evaluates to a not-a-number (NaN)."
 }
