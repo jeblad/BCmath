@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace BCmath;
 
 use Scribunto_LuaLibraryBase;
+use \Exception;
 
 /**
  * Registers our lua modules to Scribunto
@@ -42,7 +43,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	 * @param string $val
 	 * @return string
 	 */
-	public function sanitize( string $str ): string {
+	private static function sanitize( string $str ): string {
 		global $wgBCmathExtFiltering;
 		if ( $wgBCmathExtFiltering === false ) {
 			return $str;
@@ -50,7 +51,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 		if ( preg_match( '/^[-+]?[0-9]*(?:\.[0-9]*)?$/s', $str, $matches) === 1 ) {
 			return $matches[0]; // uses the untaint-trick from perl
 		}
-		throw new \Exception('Sanitizion failed.');
+		throw new Exception('Sanitizion failed.');
 	}
 
 
@@ -65,8 +66,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcAdd( string $lhs, string $rhs, ?int $scale = null ): array {
 		try {
 			return [ \bcadd(
-				$this->sanitize( $lhs ),
-				$this->sanitize( $rhs ),
+				self::sanitize( $lhs ),
+				self::sanitize( $rhs ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -85,8 +86,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcSub( string $lhs, string $rhs, ?int $scale = null ): array {
 		try {
 			return [ \bcsub(
-				$this->sanitize( $lhs ),
-				$this->sanitize( $rhs ),
+				self::sanitize( $lhs ),
+				self::sanitize( $rhs ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -105,8 +106,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcMul( string $lhs, string $rhs, ?int $scale = null ): array {
 		try {
 			return [ \bcmul(
-				$this->sanitize( $lhs ),
-				$this->sanitize( $rhs ),
+				self::sanitize( $lhs ),
+				self::sanitize( $rhs ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -125,8 +126,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcDiv( string $dividend, string $divisor, ?int $scale = null ): array {
 		try {
 			return [ \bcdiv(
-				$this->sanitize( $dividend ),
-				$this->sanitize( $divisor ),
+				self::sanitize( $dividend ),
+				self::sanitize( $divisor ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -145,8 +146,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcMod( string $dividend, string $divisor, ?int $scale = null ): array {
 		try {
 			return [ \bcmod(
-				$this->sanitize( $dividend ),
-				$this->sanitize( $divisor ),
+				self::sanitize( $dividend ),
+				self::sanitize( $divisor ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -165,8 +166,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcPow( string $base, string $exponent, ?int $scale = null ): array {
 		try {
 			return [ \bcpow(
-				$this->sanitize( $base ),
-				$this->sanitize( $exponent ),
+				self::sanitize( $base ),
+				self::sanitize( $exponent ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -186,8 +187,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcPowMod( string $base, string $exponent, string $modulus, ?int $scale = null ): array {
 		try {
 			return [ \bcpowmod(
-				$this->sanitize( $base ),
-				$this->sanitize( $exponent ),
+				self::sanitize( $base ),
+				self::sanitize( $exponent ),
 				$modulus, is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -205,7 +206,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcSqrt( string $operand, ?int $scale = null ): array {
 		try {
 			return [ \bcsqrt(
-				$this->sanitize( $operand ),
+				self::sanitize( $operand ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
@@ -224,8 +225,8 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function bcComp( string $lhs, string $rhs, ?int $scale = null ): array {
 		try {
 			return [ \bccomp(
-				$this->sanitize( $lhs ),
-				$this->sanitize( $rhs ),
+				self::sanitize( $lhs ),
+				self::sanitize( $rhs ),
 				is_null( $scale ) ? bcscale() : $scale
 			) ];
 		} catch ( MWException $ex ) {
