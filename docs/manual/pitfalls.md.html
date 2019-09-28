@@ -65,7 +65,9 @@
 <p><a name="Modulo_operation"></a></p>
 <h2>Modulo operation</h2>
 
-<p>The <a href="https://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a> exists in several variants. In particular Lua uses <em>floored division</em> while Bc uses <em>truncated division</em>. For the most common situations, where both dividend and divisor is positive, the results are the same. Any use where dividend or divisor, or both, are negative might give discrepancies. This does not imply that any specific variant is wrong, they are just different.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a> exists in several variants. In particular the modulus operator “%” Lua use is a <em>floored division</em>, while the version implemented in the math library is a <em>truncated division</em>. Bc also use the <em>truncated division</em>. For the most common situations, where both dividend and divisor is positive, the results are the same. Any use where dividend or divisor, or both, are negative give discrepancies. This does not imply that any specific variant is wrong, they are just different.</p>
+
+<p>See also <a href="http://lua-users.org/lists/lua-l/2008-01/msg00597.html">Subject: [Bug] math.mod behaves differently than the modulus operator.</a> from the Lua users list.</p>
 
 <p><a name="False_precision"></a></p>
 <h2>False precision</h2>
