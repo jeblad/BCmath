@@ -960,7 +960,6 @@ end
 		checkUnaryOperand( 'bcmath:mul', multiplicator, scale )
 		local bval, bscl = parseNumScale( multiplicator, 'bcmath:mul', 'multiplicator' )
 		_scale = scale or math.max( _scale, bscl )
-		mw.log('mul')
 
 		-- short circuit tests
 		if self:isInfinite() or bcmath.isInfinite( bval ) then
@@ -974,7 +973,6 @@ end
 				_value = nil
 				return self:addPayload ( 'bcmath-mul-infinite-and-zero' )
 			end
-			mw.log('mul 1')
 
 			-- special case: infiniteness are dissimilar
 			if self:getInfinite() ~= bcmath.getInfinite( bval ) then
@@ -988,7 +986,6 @@ end
 
 		end
 
-		mw.log('mul 2')
 		_value = php.bcmul( _value, bval, _scale ) or nil
 		return self
 end
@@ -1399,7 +1396,6 @@ function bcmath.div( dividend, divisor, scale )
 
 	-- special case: divisor zero – NaN
 	if bcmath.isZero( bval2 ) then
-		mw.log( 'bcmath-div-divisor-zero' )
 		return makeBCmath( nil, scl ):addPayload ( 'bcmath-div-divisor-zero' )
 	end
 
@@ -1407,10 +1403,8 @@ function bcmath.div( dividend, divisor, scale )
 	if bcmath.isInfinite( bval1 ) then
 		-- special case: divisor infinite – NaN
 		if bcmath.isInfinite( bval2 ) then
-			mw.log( 'bcmath-div-dividend-divisor-infinite' )
 			return makeBCmath( nil, scl):addPayload ( 'bcmath-div-dividend-divisor-infinite' )
 		end
-		mw.log( 'bcmath-div-dividend-infinite' )
 		-- special case: divisor finite – possible sign shift
 		local val = bcmath.lt( bval2, 0 ) and bcmath.neg( bval1 ) or bval1
 		return makeBCmath( val, scl):addPayload ( 'bcmath-div-dividend-infinite' )
@@ -1418,7 +1412,6 @@ function bcmath.div( dividend, divisor, scale )
 
 	-- special case: divisor infinite (note double infinite catched above)
 	if bcmath.isInfinite( bval2 ) then
-		mw.log( 'bcmath-div-divisor-divisor' )
 		-- sign on zero is not suppoted
 		return makeBCmath( '0', scl ):addPayload ( 'bcmath-div-divisor-infinite' )
 	end
