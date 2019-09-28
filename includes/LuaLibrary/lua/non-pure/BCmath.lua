@@ -13,32 +13,38 @@ local checkTypeMulti = libUtil.checkTypeMulti
 local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
 
 --- Check one operand and the scale for valid types.
--- @rise On wrong types
+-- @raise On wrong types
+-- @tparam string name
 -- @tparam nil|string|number|table operand1
 -- @tparam nil|number scale
 local function checkUnaryOperand( name, operand1, scale )
+	assert( name )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
 --- Check two operands and the scale for valid types.
--- @rise On wrong types
+-- @raise On wrong types
+-- @tparam string name
 -- @tparam nil|string|number|table operand1
 -- @tparam nil|string|number|table operand2
 -- @tparam nil|number scale
 local function checkBinaryOperands( name, operand1, operand2, scale )
+	assert( name )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
 --- Check three operands and the scale for valid types.
--- @rise On wrong types
+-- @raise On wrong types
+-- @tparam string name
 -- @tparam nil|string|number|table operand1
 -- @tparam nil|string|number|table operand2
 -- @tparam nil|string|number|table operand3
 -- @tparam nil|number scale
 local function checkTernaryOperands( name, operand1, operand2, operand3, scale )
+	assert( name )
 	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 3, operand3, { 'string', 'number', 'table', 'nil' } )
