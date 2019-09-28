@@ -430,7 +430,7 @@ local tests = {
 		name = 'Mod +∞ with 42',
 		func = callInstance,
 		args = { mw.bcmath.new( '+∞', 3 ), 'mod', '42' },
-		expect = { nil, 3 }
+		expect = { '+∞', 3 }
 	},
 	{ -- 65
 		name = 'Mod +∞ with +∞',
