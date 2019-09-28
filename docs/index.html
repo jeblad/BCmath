@@ -92,6 +92,14 @@
 	<td class="summary">Is infinite.</td>
 	</tr>
 	<tr>
+	<td class="name nowrap"><a href="#bcmath:isFinite">bcmath:isFinite ()</a></td>
+	<td class="summary">Is finite.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#bcmath:getZero">bcmath:getZero ()</a></td>
+	<td class="summary">Get zero.</td>
+	</tr>
+	<tr>
 	<td class="name nowrap"><a href="#bcmath:isZero">bcmath:isZero ()</a></td>
 	<td class="summary">Is zero.</td>
 	</tr>
@@ -140,6 +148,10 @@
 	<td class="summary">Create new instance.</td>
 	</tr>
 	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.getZero">mw.bcmath.getZero ()</a></td>
+	<td class="summary">Get the string zero.</td>
+	</tr>
+	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.isZero">mw.bcmath.isZero ()</a></td>
 	<td class="summary">Is the string zero.</td>
 	</tr>
@@ -150,6 +162,14 @@
 	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.isInfinite">mw.bcmath.isInfinite ()</a></td>
 	<td class="summary">Is the string infinite.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.isFinite">mw.bcmath.isFinite ()</a></td>
+	<td class="summary">Is the string finite.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#bcmath.neg">bcmath.neg ()</a></td>
+	<td class="summary">Negates the string representation of the number</td>
 	</tr>
 	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.add">mw.bcmath.add ()</a></td>
@@ -386,6 +406,56 @@
     <h3>Returns:</h3>
 
            <span class="types"><span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:isFinite"></a>
+    <strong>bcmath:isFinite ()</strong>
+    </dt>
+    <dd>
+    Is finite.
+ The value is stored in the closure.
+
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:isFin
+    </ul "@todo">
+
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:getZero"></a>
+    <strong>bcmath:getZero ()</strong>
+    </dt>
+    <dd>
+    Get zero.
+ The value is stored in the closure.
+
+    <h3>Nicknames:</h3>
+    <ul>
+         bcmath:getNull
+    </ul "@todo">
+
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
 
 
 
@@ -766,6 +836,35 @@
 
 </dd>
     <dt>
+    <a name = "mw.bcmath.getZero"></a>
+    <strong>mw.bcmath.getZero ()</strong>
+    </dt>
+    <dd>
+    Get the string zero.
+ Returned string is normalized,
+ and nil if no zero is found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         to be parsed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "mw.bcmath.isZero"></a>
     <strong>mw.bcmath.isZero ()</strong>
     </dt>
@@ -828,8 +927,7 @@
     </dt>
     <dd>
     Is the string infinite.
- Returned string is normalized,
- and nil if no infinity is found.
+ Returned string is normalized.
 
 
     <h3>Parameters:</h3>
@@ -843,6 +941,63 @@
     <h3>Returns:</h3>
 
            <span class="types"><span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mw.bcmath.isFinite"></a>
+    <strong>mw.bcmath.isFinite ()</strong>
+    </dt>
+    <dd>
+    Is the string finite.
+ Returned string is normalized.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         to be parsed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath.neg"></a>
+    <strong>bcmath.neg ()</strong>
+    </dt>
+    <dd>
+    Negates the string representation of the number
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
 
 
 
