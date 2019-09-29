@@ -3,7 +3,7 @@
 ![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues-raw/jeblad/BCmath?style=for-the-badge)
 
-This [extension for Mediawiki](https://www.mediawiki.org/wiki/Extension:Expect) adds [arbitrary-precision arithmetic](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic) to Lua modules. The modules call bcmath library for PHP through a minimal interface layer.
+This [extension for Mediawiki](https://www.mediawiki.org/wiki/Extension:Expect) adds [arbitrary-precision arithmetic](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic) to Lua modules provided by the [Scribunto extension](https://www.mediawiki.org/wiki/Extension:Scribunto). The modules call bcmath library for PHP through a minimal interface layer.
 
 Help is available at [BCmath documentation](https://jeblad.github.io/BCmath/), with an introduction, a reference, and examples.
 
