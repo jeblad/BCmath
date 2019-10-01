@@ -1,16 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
-			"Katunchik"
+			"Katunchik",
+			"Movses"
 		]
 	},
 	"bcmath-desc": "Предоставляет арифметику произвольной точности для модулей Lua",
 	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Функциональность \"$1\" еще не реализована!",
 	"bcmath-check-self-nan": "“self” имеет недопустимое значение",
-	"bcmath-check-operand-nan": "операнд $1 имеет недопустимое значение",
-	"bcmath-add-opposite-infinites": "Добавление двух бесконечных значений противоположного направления",
-	"bcmath-add-similar-infinites": "Сложение двух бесконечных значений одинакового направления",
-	"bcmath-sub-opposite-infinites": "Вычтите два бесконечных значения противоположного направления",
-	"bcmath-sub-similar-infinites": "Вычтите два бесконечных значения одинакового направления"
+	"bcmath-check-operand-nan": "оператор \"$1\" с операндом \"$2\" имеют недопустимые значения",
+	"bcmath-add-singlesided-infinite": "Были сложены два значения, одно из которых бесконечное",
+	"bcmath-add-opposite-infinites": "Добавлено два бесконечных значения противоположного направления",
+	"bcmath-add-similar-infinites": "Были сложены два бесконечных значения одинакового направления",
+	"bcmath-sub-singlesided-infinite": "Были вычтены два значения, одно из которых бесконечное",
+	"bcmath-sub-opposite-infinites": "Были вычтены два бесконечных значения противоположного направления",
+	"bcmath-sub-similar-infinites": "Были вычтены два бесконечных значения одинакового направления",
+	"bcmath-mul-opposite-infinites": "Были перемножены два бесконечных значения противоположного направления",
+	"bcmath-mul-similar-infinites": "Были перемножены два бесконечных значения одинакового направления"
 }

@@ -8,9 +8,13 @@
 	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "A funcionalidade \"$1\" ainda não foi implementada!",
 	"bcmath-check-self-nan": "\"self\" não tem um valor válido",
-	"bcmath-check-operand-nan": "O operando \"$1\" não possui um valor válido",
-	"bcmath-add-opposite-infinites": "Adicionando dois valores infinitos de direção oposta",
-	"bcmath-add-similar-infinites": "Adicionando dois valores infinitos de direção semelhante",
-	"bcmath-sub-opposite-infinites": "Subtrair dois valores infinitos de direção oposta",
-	"bcmath-sub-similar-infinites": "Subtrair dois valores infinitos de direção semelhante"
+	"bcmath-check-operand-nan": "O operador \"$1\" com o operando \"$2\" não possui um valor válido",
+	"bcmath-add-singlesided-infinite": "Adicionado dois valores em que um é infinito",
+	"bcmath-add-opposite-infinites": "Adicionado dois valores infinitos de direção oposta",
+	"bcmath-add-similar-infinites": "Adicionado dois valores infinitos de direção semelhante",
+	"bcmath-sub-singlesided-infinite": "Subtraídos dois valores em que um é infinito",
+	"bcmath-sub-opposite-infinites": "Subtraídos dois valores infinitos de direção semelhante",
+	"bcmath-sub-similar-infinites": "Subtraídos dois valores infinitos de direção semelhante",
+	"bcmath-mul-opposite-infinites": "Multiplicou dois valores infinitos de direção oposta",
+	"bcmath-mul-similar-infinites": "Multiplicou dois valores infinitos de direção semelhante"
 }

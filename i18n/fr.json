@@ -1,16 +1,33 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gomoko"
+			"Gomoko",
+			"Verdy p"
 		]
 	},
 	"bcmath-desc": "Fournit une arithmétique de précision arbitraire aux modules Lua",
-	"bcmath-payload-counter": "$1 : $2",
-	"bcmath-check-not-implemented": "La fonctionnalité « $1 » n’est pas encore implémentée !",
+	"bcmath-payload-counter": "$1 : $2",
+	"bcmath-check-not-implemented": "La fonctionnalité « $1 » n’est pas encore mise en œuvre !",
 	"bcmath-check-self-nan": "« self » n’a pas une valeur valide",
-	"bcmath-check-operand-nan": "l’opérande « $1 »» n’a pas une valeur valide",
-	"bcmath-add-opposite-infinites": "Ajout de deux valeurs infinies de directions opposées",
-	"bcmath-add-similar-infinites": "Ajout de deux valeurs infinies de même direction",
-	"bcmath-sub-opposite-infinites": "Soustraire deux valeurs infinies de directions opposées",
-	"bcmath-sub-similar-infinites": "Soustraire deux valeurs infinies de mêmes directions"
+	"bcmath-check-operand-nan": "l’opérateur « $1 » avec l’opérande « $2 » n’a pas une valeur valide",
+	"bcmath-add-singlesided-infinite": "Ajout de deux valeurs dont l’une est infinie",
+	"bcmath-add-opposite-infinites": "Ajout de deux valeurs infinies de signes opposés",
+	"bcmath-add-similar-infinites": "Ajout de deux valeurs infinies de mêmes signes",
+	"bcmath-sub-singlesided-infinite": "Différences de deux valeurs dont l’une est infinie",
+	"bcmath-sub-opposite-infinites": "Différence de deux valeurs infinies de signes opposés",
+	"bcmath-sub-similar-infinites": "Différence de deux valeurs infinies de mêmes signes",
+	"bcmath-mul-infinite-and-zero": "Infini et zéro multipliés",
+	"bcmath-mul-opposite-infinites": "Produit de deux valeurs infinies de signes opposés",
+	"bcmath-mul-similar-infinites": "Produit de deux valeurs infinies de mêmes signes",
+	"bcmath-div-divisor-infinite": "Diviser par un diviseur infini",
+	"bcmath-div-divisor-zero": "Diviser par un diviseur zéro",
+	"bcmath-div-dividend-infinite": "Diviser avec un dividende infini",
+	"bcmath-mod-divisor-infinite": "Modulo avec un diviseur infini",
+	"bcmath-mod-divisor-zero": "Modulo avec un diviseur zéro",
+	"bcmath-mod-dividend-infinite": "Modulo avec un dividende infini",
+	"bcmath-pow-exponent-zero": "Puissance avec un exposant à zéro",
+	"bcmath-pow-base-one": "Puissance avec une base un",
+	"bcmath-powmod-divisor-zero": "Exponentiation modulaire avec un diviseur à zéro",
+	"bcmath-powmod-exponent-negative": "Exponentiation modulaire avec un exposant négatif",
+	"bcmath-sqrt-operand-negative": "Racine carrée avec un opérande négatif"
 }
