@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeblad"
+		]
+	},
+	"bcmath-desc": "Læger til aritmetik med vilkårlig præcision for Lua moduler",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Funktionaliteten »$1« er endnu ikke implementeret!",
+	"bcmath-check-self-nan": "»self« har ikke en gyldig værdi",
+	"bcmath-check-operand-nan": "operator »$1« med operand »$2« har ikke en gyldig værdi",
+	"bcmath-add-singlesided-infinite": "Adderer to værdier hvor en er uendeligt",
+	"bcmath-add-opposite-infinites": "Adderer to uendelige værdier af modsat retning",
+	"bcmath-add-similar-infinites": "Adderer to uendelige værdier af samme retning",
+	"bcmath-sub-singlesided-infinite": "Subtraherede to værdier hvor en er uendeligt",
+	"bcmath-sub-opposite-infinites": "Subtraherede to uendelige værdier af modsat retning",
+	"bcmath-sub-similar-infinites": "Subtraherede to uendelige værdier af samme retning",
+	"bcmath-mul-infinite-and-zero": "Multiplicerede uendeligt og nul",
+	"bcmath-mul-opposite-infinites": "Multiplicerede to uendelige værdier af modsat retning",
+	"bcmath-mul-similar-infinites": "Multiplicerer to uendelige værdier af samme retning",
+	"bcmath-div-divisor-infinite": "Dividerede med uendelig divisor",
+	"bcmath-div-divisor-zero": "Dividerede med nul som divisor",
+	"bcmath-div-dividend-infinite": "Dividerede med uendeligt dividend",
+	"bcmath-mod-divisor-infinite": "Modulus med uendelig divisor",
+	"bcmath-mod-divisor-zero": "Modulus med nul som divisor",
+	"bcmath-mod-dividend-infinite": "Modulus med uendeligt dividend",
+	"bcmath-pow-exponent-zero": "Potens med nul som eksponent",
+	"bcmath-pow-base-one": "potens med en som base",
+	"bcmath-powmod-divisor-zero": "Potens-modulus med nul som divisor",
+	"bcmath-powmod-exponent-negative": "Potens-modulus med negativ eksponent",
+	"bcmath-sqrt-operand-negative": "Kvadratrod med negativ operand"
+}
