@@ -4,10 +4,36 @@
 -- accesspoints for the boilerplate
 local php      -- luacheck: ignore
 
+-- @var structure for storage of the lib
+local bcmath = {}
+
+--- Install the module in the global space.
+-- This function is removed as soon as it is called, so will
+-- not be accessible, and it is thus tagged as local.
+-- @local
+-- @tparam table options
+function bcmath.setupInterface( options )
+	-- Boilerplate
+	bcmath.setupInterface = nil
+	php = mw_interface
+	mw_interface = nil
+	php.options = options
+
+	-- Register this library in the "mw" global
+	mw = mw or {}
+	mw.bcmath = bcmath
+
+	package.loaded['mw.bcmath'] = bcmath
+end
+
 -- import pure libs
 local libUtil = require 'libraryUtil'
 
--- lookup
+-- this is how the Lua number is parsed
+local numberLength = 15
+local numberFormat = "%+." .. string.format( "%d", numberLength ) .. "e"
+
+-- lookup checks
 local checkType = libUtil.checkType
 local checkTypeMulti = libUtil.checkTypeMulti
 local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
@@ -49,33 +75,6 @@ local function checkTernaryOperands( name, operand1, operand2, operand3, scale )
 	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
 	checkTypeMulti( name, 3, operand3, { 'string', 'number', 'table', 'nil' } )
 	checkType( name, 2, scale, 'number', true )
-end
-
--- this is how the number is parsed
-local numberLength = 15
-local numberFormat = "%+." .. string.format( "%d", numberLength ) .. "e"
-
--- @var structure for storage of the lib
-local bcmath = {}
-
---- Install the module in the global space.
--- This function is removed as soon as it is called,
--- so will not be accessible. As a kind of protected api,
--- it is thus tagged as local.
--- @local
--- @tparam table options
-function bcmath.setupInterface( options )
-	-- Boilerplate
-	bcmath.setupInterface = nil
-	php = mw_interface
-	mw_interface = nil
-	php.options = options
-
-	-- Register this library in the "mw" global
-	mw = mw or {}
-	mw.bcmath = bcmath
-
-	package.loaded['mw.bcmath'] = bcmath
 end
 
 -- @var structure for caching zero strings
@@ -461,7 +460,8 @@ end
 local selfConvs = {}
 
 --- Convert a bc number into scientific notation.
--- This is called from @{bcmath:__call}.
+-- The function is called from @{bcmath:__call}.
+-- It only format the number, it does not do localization.
 -- @local
 -- @function selfConvs.sci
 -- @tparam table num to be parsed
@@ -510,7 +510,8 @@ selfConvs['sci'] = function( num, precision )
 end
 
 --- Convert a bc number into engineering notation.
--- This is called from @{bcmath:__call}.
+-- The function is called from @{bcmath:__call}.
+-- It only format the number, it does not do localization.
 -- @local
 -- @function selfConvs.eng
 -- @tparam table num to be parsed
@@ -564,7 +565,8 @@ selfConvs['eng'] = function( num, precision )
 end
 
 --- Convert a bc number into fixed notation.
--- This is called from @{bcmath:__call}.
+-- The function is called from @{bcmath:__call}.
+-- It only format the number, it does not do localization.
 -- @local
 -- @function selfConvs.fix
 -- @tparam table num to be parsed
