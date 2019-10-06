@@ -3,7 +3,7 @@
     <sitename>devwiki</sitename>
     <dbname>wiki</dbname>
     <base>http://dev.wiki.local.wmftest.net:8080/wiki/Main_Page</base>
-    <generator>MediaWiki 1.34.0-alpha</generator>
+    <generator>MediaWiki 1.35.0-alpha</generator>
     <case>first-letter</case>
     <namespaces>
       <namespace key="-2" case="first-letter">Media</namespace>
@@ -29,35 +29,11 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>VagrantRole/bcmath</title>
-    <ns>0</ns>
-    <id>6</id>
-    <revision>
-      <id>8</id>
-      <parentid>7</parentid>
-      <timestamp>2019-10-05T16:20:47Z</timestamp>
-      <contributor>
-        <ip>10.0.2.2</ip>
-      </contributor>
-      <model>wikitext</model>
-      <format>text/x-wiki</format>
-      <text xml:space="preserve" bytes="600">'''VagrantRole/bcmath''' enables the [[mw:Manual:Extensions|Mediawiki extension]] [[mw:Extension:BCmath|BCmath]]. This extension provides arbitrary-precision arithmetic for Lua modules. The module call [https://www.php.net/manual/en/book.bc.php BCMath Arbitrary Precision Mathematics] for PHP through a minimal interface layer.
-
-For a full Vagrant setup, see [https://jeblad.github.io/BCmath/topics/vagrant.md.html the documentation].
-
-== See also ==
-
-* [https://github.com/jeblad/BCmath Github: jeblad/BCmath] (Code repository)
-* [https://jeblad.github.io/BCmath/ Jeblad: BCmath] (Lua documentation)</text>
-      <sha1>b14l9iqohp0t8mzzhx13di75xz6fdtl</sha1>
-    </revision>
-  </page>
-  <page>
     <title>Module:Export-bcmath</title>
     <ns>828</ns>
-    <id>3</id>
+    <id>4</id>
     <revision>
-      <id>4</id>
+      <id>5</id>
       <timestamp>2019-09-18T00:42:17Z</timestamp>
       <contributor>
         <ip>10.0.2.2</ip>
@@ -72,9 +48,9 @@ For a full Vagrant setup, see [https://jeblad.github.io/BCmath/topics/vagrant.md
   <page>
     <title>Module:Hello-world</title>
     <ns>828</ns>
-    <id>4</id>
+    <id>5</id>
     <revision>
-      <id>5</id>
+      <id>6</id>
       <timestamp>2019-09-18T01:46:30Z</timestamp>
       <contributor>
         <ip>10.0.2.2</ip>
@@ -109,9 +85,9 @@ return h</text>
   <page>
     <title>Hello-world</title>
     <ns>0</ns>
-    <id>5</id>
+    <id>6</id>
     <revision>
-      <id>6</id>
+      <id>7</id>
       <timestamp>2019-09-18T01:41:32Z</timestamp>
       <contributor>
         <ip>10.0.2.2</ip>
