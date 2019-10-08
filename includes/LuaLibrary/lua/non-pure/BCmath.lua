@@ -783,15 +783,25 @@ local function makeBCmath( value, scale )
 	-- Method is semiprivate as payload should not be changed.
 	-- @local
 	-- @function bcmath:addPayload
-	-- @tparam string key
+	-- @tparam nil|string key
+	-- @tparam nil|message msg
 	-- @return self
-	function obj:addPayload( key )
+	function obj:addPayload( key, msg )
 		checkSelf( self, 'addPayload' )
-		checkType( 'bcmath:addPayload', 1, key, 'string', false )
+		checkType( 'bcmath:addPayload', 1, key, 'string', true )
+		checkType( 'bcmath:addPayload', 2, msg, 'table', true )
+
 		if not _payload then
 			_payload = {}
 		end
-		table.insert( _payload, key )
+
+		if key and not msg then
+			msg = mw.message.new( key )
+		end
+
+		local t = { key and string.sub( key, 8 ) or nil, msg }
+		table.insert( _payload, t )
+
 		return self
 	end
 
@@ -908,25 +918,26 @@ local function makeBCmath( value, scale )
 
 			-- special case: minuend infinite, subtrahend finite
 			if self:isInfinite() and bcmath.isFinite( bval ) then
-				return self:addPayload ( 'bcmath-add-singlesided-infinite' )
+				return self:addPayload( 'bcmath-add-singlesided-infinite' )
 			-- special case: minuend finite, subtrahend infinite
 			elseif self:isFinite() and bcmath.isInfinite( bval ) then
 				_value = bval
-				return self:addPayload ( 'bcmath-add-singlesided-infinite' )
+				return self:addPayload( 'bcmath-add-singlesided-infinite' )
 			end
 
 			-- special case: infiniteness are dissimilar – NaN
 			if self:getInfinite() ~= bcmath.getInfinite( bval ) then
 				_value = nil
-				return self:addPayload ( 'bcmath-add-opposite-infinites' )
+				return self:addPayload( 'bcmath-add-opposite-infinites' )
 			-- special case: infiniteness are similar
 			elseif self:getInfinite() == bcmath.getInfinite( bval ) then
-				return self:addPayload ( 'bcmath-add-similar-infinites' )
+				return self:addPayload( 'bcmath-add-similar-infinites' )
 			end
 
 		end
 
-		_value = php.bcadd( _value, bval, _scale ) or nil
+		_value = php.bcadd( _value, bval, _scale )
+
 		return self
 end
 
@@ -949,25 +960,26 @@ end
 
 			-- special case: minuend infinite, subtrahend finite
 			if self:isInfinite() and bcmath.isFinite( bval ) then
-				return self:addPayload ( 'bcmath-sub-singlesided-infinite' )
+				return self:addPayload( 'bcmath-sub-singlesided-infinite' )
 			-- special case: minuend finite, subtrahend infinite
 			elseif self:isFinite() and bcmath.isInfinite( bval ) then
 				_value = bcmath.neg( bval )
-				return self:addPayload ( 'bcmath-sub-singlesided-infinite' )
+				return self:addPayload( 'bcmath-sub-singlesided-infinite' )
 			end
 
 			-- special case: infiniteness are dissimilar
 			if self:getInfinite() ~= bcmath.getInfinite( bval ) then
-				return self:addPayload ( 'bcmath-sub-opposite-infinites' )
+				return self:addPayload( 'bcmath-sub-opposite-infinites' )
 			-- special case: infiniteness are similar – NaN
 			elseif self:getInfinite() == bcmath.getInfinite( bval ) then
 				_value = nil
-				return self:addPayload ( 'bcmath-sub-similar-infinites' )
+				return self:addPayload( 'bcmath-sub-similar-infinites' )
 			end
 
 		end
 
-		_value = php.bcsub( _value, bval, _scale ) or nil
+		_value = php.bcsub( _value, bval, _scale )
+
 		return self
 end
 
@@ -991,26 +1003,27 @@ end
 			-- special case: multiplier infinite, multiplicator zero – NaN
 			if self:isInfinite() and bcmath.isZero( bval ) then
 				_value = nil
-				return self:addPayload ( 'bcmath-mul-infinite-and-zero' )
+				return self:addPayload( 'bcmath-mul-infinite-and-zero' )
 			-- special case: multiplier zero, multiplicator infinite – NaN
 			elseif self:isZero() and bcmath.isInfinite( bval ) then
 				_value = nil
-				return self:addPayload ( 'bcmath-mul-infinite-and-zero' )
+				return self:addPayload( 'bcmath-mul-infinite-and-zero' )
 			end
 
 			-- special case: infiniteness are dissimilar
 			if self:getInfinite() ~= bcmath.getInfinite( bval ) then
 				_value = bcmath.neg( _value )
-				return self:addPayload ( 'bcmath-mul-opposite-infinites' )
+				return self:addPayload( 'bcmath-mul-opposite-infinites' )
 			-- special case: infiniteness are similar
 			elseif self:getInfinite() == bcmath.getInfinite( bval ) then
 				-- keep value
-				return self:addPayload ( 'bcmath-mul-similar-infinites' )
+				return self:addPayload( 'bcmath-mul-similar-infinites' )
 			end
 
 		end
 
-		_value = php.bcmul( _value, bval, _scale ) or nil
+		_value = php.bcmul( _value, bval, _scale )
+
 		return self
 end
 
@@ -1031,7 +1044,7 @@ end
 		-- special case: divisor zero – NaN
 		if bcmath.isZero( bval ) then
 			_value = nil
-			return self:addPayload ( 'bcmath-div-divisor-zero' )
+			return self:addPayload( 'bcmath-div-divisor-zero' )
 		end
 
 		-- special case: dividend infinite
@@ -1039,21 +1052,22 @@ end
 			-- special case: divisor infinite – NaN
 			if bcmath.isInfinite( bval ) then
 				_value = nil
-				return self:addPayload ( 'bcmath-div-dividend-divisor-infinite' )
+				return self:addPayload( 'bcmath-div-dividend-divisor-infinite' )
 			end
 			-- special case: divisor finite – NaN
 			_value = bcmath.lt( bval, 0 ) and bcmath.neg( _value ) or _value
-			return self:addPayload ( 'bcmath-div-dividend-infinite' )
+			return self:addPayload( 'bcmath-div-dividend-infinite' )
 		end
 
 		-- self infinite, operand infinite (note double infinite catched above)
 		if self:isFinite() and bcmath.isInfinite( bval ) then
 			-- sign on zero is not suppoted
 			_value = '0'
-			return self:addPayload ( 'bcmath-div-divisor-infinite' )
+			return self:addPayload( 'bcmath-div-divisor-infinite' )
 		end
 
-		_value = php.bcdiv( _value, bval, _scale ) or nil
+		_value = php.bcdiv( _value, bval, _scale )
+
 		return self
 	end
 
@@ -1074,7 +1088,7 @@ end
 		-- special case: divisor zero – NaN
 		if bcmath.isZero( bval ) then
 			_value = nil
-			return self:addPayload ( 'bcmath-mod-divisor-zero' )
+			return self:addPayload( 'bcmath-mod-divisor-zero' )
 		end
 
 		-- special case: dividend infinite
@@ -1082,21 +1096,22 @@ end
 			-- special case: divisor infinite – NaN
 			if bcmath.isInfinite( bval ) then
 				_value = nil
-				return self:addPayload ( 'bcmath-mod-dividend-divisor-infinite' )
+				return self:addPayload( 'bcmath-mod-dividend-divisor-infinite' )
 			end
 			-- special case: divisor finite – NaN
 			_value = bcmath.lt( bval, 0 ) and bcmath.neg( _value ) or _value
-			return self:addPayload ( 'bcmath-mod-dividend-infinite' )
+			return self:addPayload( 'bcmath-mod-dividend-infinite' )
 		end
 
 		-- special case: divisor infinite (note double infinite catched above)
 		if bcmath.isInfinite( bval ) then
 			-- sign on zero is not suppoted
 			_value = '0'
-			return self:addPayload ( 'bcmath-mod-divisor-infinite' )
+			return self:addPayload( 'bcmath-mod-divisor-infinite' )
 		end
 
-		_value = php.bcmod( _value, bval, _scale ) or nil
+		_value = php.bcmod( _value, bval, _scale )
+
 		return self
 	end
 
@@ -1117,15 +1132,16 @@ end
 		-- special case: exponent zero – always 1
 		if bcmath.eq( bval, '0' ) then
 			_value = '1'
-			return self:addPayload ( 'bcmath-pow-exponent-zero' )
+			return self:addPayload( 'bcmath-pow-exponent-zero' )
 		end
 
 		-- special case: base 1 – always 1
 		if bcmath.eq( _value, '1' ) then
-			return self:addPayload ( 'bcmath-pow-base-one' )
+			return self:addPayload( 'bcmath-pow-base-one' )
 		end
 
-		_value = php.bcpow( _value, bval, _scale ) or nil
+		_value = php.bcpow( _value, bval, _scale )
+
 		return self
 	end
 
@@ -1148,16 +1164,17 @@ end
 		-- special case: divisor zero – NaN
 		if bcmath.eq( bval2, '0' ) then
 			_value = nil
-			return self:addPayload ( 'bcmath-powmod-divisor-zero' )
+			return self:addPayload( 'bcmath-powmod-divisor-zero' )
 		end
 
 		-- special case: exponent negative – NaN
 		if bcmath.lt( bval1, '0' ) then
 			_value = nil
-			return self:addPayload ( 'bcmath-powmod-exponent-negative' )
+			return self:addPayload( 'bcmath-powmod-exponent-negative' )
 		end
 
-		_value = php.bcpowmod( _value, bval1, bval2, _scale ) or nil
+		_value = php.bcpowmod( _value, bval1, bval2, _scale )
+
 		return self
 	end
 
@@ -1176,10 +1193,11 @@ end
 		-- special case: operand less than zero – NaN
 		if bcmath.lt( _value, 0 ) then
 			_value = nil
-			return self:addPayload ( 'bcmath-sqrt-operand-negative' )
+			return self:addPayload( 'bcmath-sqrt-operand-negative' )
 		end
 
-		_value = php.bcsqrt( _value, scl ) or nil
+		_value = php.bcsqrt( _value, scl )
+
 		return self
 	end
 
@@ -1383,19 +1401,19 @@ function bcmath.mul( multiplier, multiplicator, scale )
 
 		-- special case: multiplier infinite, multiplicator zero – NaN
 		if bcmath.isInfinite( bval1 ) and bcmath.isZero( bval2 ) then
-			return makeBCmath( nil, scl ):addPayload ( 'bcmath-mul-infinite-and-zero' )
+			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-zero' )
 		-- special case: multiplier zero, multiplicator infinite – NaN
 		elseif bcmath.isZero( bval1 ) and bcmath.isInfinite( bval2 ) then
-			return makeBCmath( nil, scl ):addPayload ( 'bcmath-mul-infinite-and-zero' )
+			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-zero' )
 		end
 
 		-- special case: infiniteness are dissimilar
 		if bcmath.getInfinite( bval1 ) ~= bcmath.getInfinite( bval2 ) then
-			return makeBCmath( bcmath.neg( bval1 ), scl ):addPayload ( 'bcmath-mul-opposite-infinites' )
+			return makeBCmath( bcmath.neg( bval1 ), scl ):addPayload( 'bcmath-mul-opposite-infinites' )
 		-- special case: infiniteness are similar
 		elseif bcmath.getInfinite( bval1 ) == bcmath.getInfinite( bval2 ) then
 			-- keep value
-			return makeBCmath( bval1, scl ):addPayload ( 'bcmath-mul-similar-infinites' )
+			return makeBCmath( bval1, scl ):addPayload( 'bcmath-mul-similar-infinites' )
 		end
 
 	end
@@ -1420,24 +1438,24 @@ function bcmath.div( dividend, divisor, scale )
 
 	-- special case: divisor zero – NaN
 	if bcmath.isZero( bval2 ) then
-		return makeBCmath( nil, scl ):addPayload ( 'bcmath-div-divisor-zero' )
+		return makeBCmath( nil, scl ):addPayload( 'bcmath-div-divisor-zero' )
 	end
 
 	-- special case: dividend infinite
 	if bcmath.isInfinite( bval1 ) then
 		-- special case: divisor infinite – NaN
 		if bcmath.isInfinite( bval2 ) then
-			return makeBCmath( nil, scl):addPayload ( 'bcmath-div-dividend-divisor-infinite' )
+			return makeBCmath( nil, scl):addPayload( 'bcmath-div-dividend-divisor-infinite' )
 		end
 		-- special case: divisor finite – possible sign shift
 		local val = bcmath.lt( bval2, 0 ) and bcmath.neg( bval1 ) or bval1
-		return makeBCmath( val, scl):addPayload ( 'bcmath-div-dividend-infinite' )
+		return makeBCmath( val, scl):addPayload( 'bcmath-div-dividend-infinite' )
 	end
 
 	-- special case: divisor infinite (note double infinite catched above)
 	if bcmath.isInfinite( bval2 ) then
 		-- sign on zero is not suppoted
-		return makeBCmath( '0', scl ):addPayload ( 'bcmath-div-divisor-infinite' )
+		return makeBCmath( '0', scl ):addPayload( 'bcmath-div-divisor-infinite' )
 	end
 
 	return makeBCmath( php.bcdiv( bval1, bval2, scl ) or nil, scl )
@@ -1460,24 +1478,24 @@ function bcmath.mod( dividend, divisor, scale )
 
 	-- special case: divisor zero – NaN
 	if bcmath.isZero( bval2 ) then
-		return makeBCmath( nil, scl ):addPayload ( 'bcmath-mod-divisor-zero' )
+		return makeBCmath( nil, scl ):addPayload( 'bcmath-mod-divisor-zero' )
 	end
 
 	-- special case: dividend infinite
 	if bcmath.isInfinite( bval1 ) then
 		-- special case: divisor infinite – NaN
 		if bcmath.isInfinite( bval2 ) then
-			return makeBCmath( nil, scl):addPayload ( 'bcmath-mod-dividend-divisor-infinite' )
+			return makeBCmath( nil, scl):addPayload( 'bcmath-mod-dividend-divisor-infinite' )
 		end
 		-- special case: divisor finite – possible sign shift
 		local val = bcmath.lt( bval2, 0 ) and bcmath.neg( bval1 ) or bval1
-		return makeBCmath( val, scl):addPayload ( 'bcmath-mod-dividend-infinite' )
+		return makeBCmath( val, scl):addPayload( 'bcmath-mod-dividend-infinite' )
 	end
 
 	-- special case: divisor infinite (note double infinite catched above)
 	if bcmath.isInfinite( bval2 ) then
 		-- sign on zero is not supported
-		return makeBCmath( '0', scl ):addPayload ( 'bcmath-mod-divisor-infinite' )
+		return makeBCmath( '0', scl ):addPayload( 'bcmath-mod-divisor-infinite' )
 	end
 
 	return makeBCmath( php.bcmod( bval1, bval2, scl ) or nil, scl )
@@ -1500,12 +1518,12 @@ function bcmath.pow( base, exponent, scale )
 
 	-- exponent zero – always 1
 	if bcmath.eq( bval2, '0' ) then
-		return makeBCmath( '1', scl ):addPayload ( 'bcmath-pow-exponent-zero' )
+		return makeBCmath( '1', scl ):addPayload( 'bcmath-pow-exponent-zero' )
 	end
 
 	-- base 1 – always 1
 	if bcmath.eq( bval1, '1' ) then
-		return makeBCmath( '1', scl ):addPayload ( 'bcmath-pow-base-one' )
+		return makeBCmath( '1', scl ):addPayload( 'bcmath-pow-base-one' )
 	end
 
 	return makeBCmath( php.bcpow( bval1, bval2, scl ) or nil, scl )
@@ -1530,12 +1548,12 @@ function bcmath.powmod( base, exponent, divisor, scale )
 
 	-- divisor zero – NaN
 	if bcmath.eq( bval3, '0' ) then
-		return makeBCmath( nil, scl ):addPayload ( 'bcmath-pow-divisor-zero' )
+		return makeBCmath( nil, scl ):addPayload( 'bcmath-pow-divisor-zero' )
 	end
 
 	-- exponent negative – NaN
 	if bcmath.lt( bval2, '0' ) then
-		return makeBCmath( nil, scl ):addPayload ( 'bcmath-pow-exponent-negative' )
+		return makeBCmath( nil, scl ):addPayload( 'bcmath-pow-exponent-negative' )
 	end
 
 	return makeBCmath( php.bcpowmod( bval1, bval2, bval3, scl ) or nil, scl )
@@ -1555,7 +1573,7 @@ function bcmath.sqrt( operand, scale )
 
 	-- operand less than zero – NaN
 	if bcmath.lt( bval1, 0 ) then
-		return makeBCmath( nil, scl ):addPayload ( 'bcmath-sqrt-operand-negative' )
+		return makeBCmath( nil, scl ):addPayload( 'bcmath-sqrt-operand-negative' )
 	end
 
 	return makeBCmath( php.bcsqrt( bval1, scl ), scl )
@@ -1570,7 +1588,7 @@ end
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn bcmath
+-- @treturn boolean
 function bcmath.comp( left, right, scale )
 	checkBinaryOperands( 'bcmath:comp', left, right, scale )
 	local bval1, bscl1 = parseNumScale( left, 'bcmath.comp', 'left' )
@@ -1589,7 +1607,7 @@ end
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn bcmath
+-- @treturn boolean
 function bcmath.eq( left, right, scale )
 	return bcmath.comp( left, right, scale ) == 0
 end
@@ -1602,7 +1620,7 @@ bcmeta.__eq = bcmath.eq
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn bcmath
+-- @treturn boolean
 function bcmath.lt( left, right, scale )
 	return bcmath.comp( left, right, scale ) < 0
 end
@@ -1615,7 +1633,7 @@ bcmeta.__lt = bcmath.lt
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn bcmath
+-- @treturn boolean
 function bcmath.ge( left, right, scale )
 	return bcmath.comp( left, right, scale ) >= 0
 end
@@ -1627,7 +1645,7 @@ end
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn bcmath
+-- @treturn boolean
 function bcmath.le( left, right, scale )
 	return bcmath.comp( left, right, scale ) <= 0
 end
@@ -1640,7 +1658,7 @@ bcmeta.__le = bcmath.le
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn bcmath
+-- @treturn boolean
 function bcmath.gt( left, right, scale )
 	return bcmath.comp( left, right, scale ) > 0
 end
