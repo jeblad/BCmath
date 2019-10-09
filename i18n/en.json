@@ -15,20 +15,18 @@
 	"bcmath-sub-singlesided-infinite": "Subtracted two values where one is infinite",
 	"bcmath-sub-opposite-infinites": "Subtracted two infinite values of opposite direction",
 	"bcmath-sub-similar-infinites": "Subtracted two infinite values of similar direction",
-
 	"bcmath-mul-infinite-and-zero": "Multiplied infinite and zero",
 	"bcmath-mul-opposite-infinites": "Multiplied two infinite values of opposite direction",
 	"bcmath-mul-similar-infinites": "Multiplied two infinite values of similar direction",
-
-	"bcmath-div-divisor-infinite": "Divide where divisor is infinite",
-	"bcmath-div-divisor-zero": "Divide where divisor is zero",
-	"bcmath-div-dividend-infinite": "Divide where dividend is infinite",
-	"bcmath-mod-divisor-infinite": "Modulus where divisor is infinite",
-	"bcmath-mod-divisor-zero": "Modulus where divisor is zero",
-	"bcmath-mod-dividend-infinite": "Modulus where dividend is infinite",
-	"bcmath-pow-exponent-zero": "Power where exponent is zero",
-	"bcmath-pow-base-one": "Power where base is one",
-	"bcmath-powmod-divisor-zero": "Powermod where divisor is zero",
-	"bcmath-powmod-exponent-negative": "Powermod where exponent is negative",
-	"bcmath-sqrt-operand-negative": "Square root where operand is negative"
+	"bcmath-div-divisor-infinite": "Divided with infinite divisor",
+	"bcmath-div-divisor-zero": "Divided with zero divisor",
+	"bcmath-div-dividend-infinite": "Divided with infinite dividend",
+	"bcmath-mod-divisor-infinite": "Modulus with infinite divisor",
+	"bcmath-mod-divisor-zero": "Modulus with zero divisor",
+	"bcmath-mod-dividend-infinite": "Modulus with infinite dividend",
+	"bcmath-pow-exponent-zero": "Power with zero exponent",
+	"bcmath-pow-base-one": "Power with base one",
+	"bcmath-powmod-divisor-zero": "Powermod with zero divisor",
+	"bcmath-powmod-exponent-negative": "Powermod with negative exponent",
+	"bcmath-sqrt-operand-negative": "Square root with negative operand"
 }
