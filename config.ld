@@ -27,7 +27,8 @@ readme = {
 	-- 'topics/translatewiki.md',
 	'topics/vscode.md',
 	'topics/sources.md',
-	'CODE_OF_CONDUCT.md'
+	'CODE_OF_CONDUCT.md',
+	'SECURITY.md'
 }
 
 examples = {
