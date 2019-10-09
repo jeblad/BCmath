@@ -145,6 +145,10 @@
 	<td class="summary">Square root self.</td>
 	</tr>
 	<tr>
+	<td class="name nowrap"><a href="#bcmath:comp">bcmath:comp ()</a></td>
+	<td class="summary">Compare self with operand.</td>
+	</tr>
+	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.new">mw.bcmath.new ()</a></td>
 	<td class="summary">Create new instance.</td>
 	</tr>
@@ -169,7 +173,7 @@
 	<td class="summary">Is the string finite.</td>
 	</tr>
 	<tr>
-	<td class="name nowrap"><a href="#bcmath.neg">bcmath.neg ()</a></td>
+	<td class="name nowrap"><a href="#mw.bcmath.neg">mw.bcmath.neg ()</a></td>
 	<td class="summary">Negates the string representation of the number</td>
 	</tr>
 	<tr>
@@ -205,7 +209,7 @@
 	<td class="summary">Square root of the operand.</td>
 	</tr>
 	<tr>
-	<td class="name nowrap"><a href="#mw.bcmath.eq">mw.bcmath.eq ()</a></td>
+	<td class="name nowrap"><a href="#mw.bcmath.comp">mw.bcmath.comp ()</a></td>
 	<td class="summary">Compare the left operand with the right operand.</td>
 	</tr>
 	<tr>
@@ -806,6 +810,42 @@
 
 </dd>
     <dt>
+    <a name = "bcmath:comp"></a>
+    <strong>bcmath:comp ()</strong>
+    </dt>
+    <dd>
+    Compare self with operand.
+ All <a href="https://en.wikipedia.org/wiki/NaN#Comparison_with_NaN">comparisons involving a NaN</a> will
+ fail silently and return false.
+ See <a href="https://www.php.net/manual/en/function.bccomp.php">PHP: bccomp</a> for further documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">operand</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <span class="type">number</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">scale</span>
+            <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+         of decimal digits
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "mw.bcmath.new"></a>
     <strong>mw.bcmath.new ()</strong>
     </dt>
@@ -979,8 +1019,8 @@
 
 </dd>
     <dt>
-    <a name = "bcmath.neg"></a>
-    <strong>bcmath.neg ()</strong>
+    <a name = "mw.bcmath.neg"></a>
+    <strong>mw.bcmath.neg ()</strong>
     </dt>
     <dd>
     Negates the string representation of the number
@@ -1304,8 +1344,8 @@
 
 </dd>
     <dt>
-    <a name = "mw.bcmath.eq"></a>
-    <strong>mw.bcmath.eq ()</strong>
+    <a name = "mw.bcmath.comp"></a>
+    <strong>mw.bcmath.comp ()</strong>
     </dt>
     <dd>
     Compare the left operand with the right operand.
@@ -1333,7 +1373,7 @@
 
     <h3>Returns:</h3>
 
-           <span class="types"><span class="type">bcmath</span></span>
+           <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
 
 
 
@@ -1370,7 +1410,7 @@
 
     <h3>Returns:</h3>
 
-           <span class="types"><span class="type">bcmath</span></span>
+           <span class="types"><span class="type">boolean</span></span>
 
 
 
@@ -1407,7 +1447,7 @@
 
     <h3>Returns:</h3>
 
-           <span class="types"><span class="type">bcmath</span></span>
+           <span class="types"><span class="type">boolean</span></span>
 
 
 
@@ -1444,7 +1484,7 @@
 
     <h3>Returns:</h3>
 
-           <span class="types"><span class="type">bcmath</span></span>
+           <span class="types"><span class="type">boolean</span></span>
 
 
 
@@ -1481,7 +1521,7 @@
 
     <h3>Returns:</h3>
 
-           <span class="types"><span class="type">bcmath</span></span>
+           <span class="types"><span class="type">boolean</span></span>
 
 
 
@@ -1518,7 +1558,7 @@
 
     <h3>Returns:</h3>
 
-           <span class="types"><span class="type">bcmath</span></span>
+           <span class="types"><span class="type">boolean</span></span>
 
 
 
