@@ -44,8 +44,8 @@ local makeCheckSelfFunction = libUtil.makeCheckSelfFunction
 -- @tparam nil|string|number|table operand1
 -- @tparam nil|number scale
 local function checkUnaryOperand( name, operand1, scale )
-	assert( name )
-	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
+	assert( name ) -- simple check
+	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
@@ -56,9 +56,9 @@ end
 -- @tparam nil|string|number|table operand2
 -- @tparam nil|number scale
 local function checkBinaryOperands( name, operand1, operand2, scale )
-	assert( name )
-	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
+	assert( name ) -- simple check
+	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table' } )
+	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
@@ -70,10 +70,10 @@ end
 -- @tparam nil|string|number|table operand3
 -- @tparam nil|number scale
 local function checkTernaryOperands( name, operand1, operand2, operand3, scale )
-	assert( name )
-	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table', 'nil' } )
-	checkTypeMulti( name, 3, operand3, { 'string', 'number', 'table', 'nil' } )
+	assert( name ) -- simple check
+	checkTypeMulti( name, 1, operand1, { 'string', 'number', 'table' } )
+	checkTypeMulti( name, 2, operand2, { 'string', 'number', 'table' } )
+	checkTypeMulti( name, 3, operand3, { 'string', 'number', 'table' } )
 	checkType( name, 2, scale, 'number', true )
 end
 
@@ -349,11 +349,12 @@ end
 -- @function parseNumScale
 -- @tparam string|number|table value to be parsed
 -- @tparam nil|string operator to be reported
+-- @tparam nil|boolean hold and do not error out
 -- @treturn string holding bcnumber
 -- @treturn number holding an estimate
-local function parseNumScale( value, operator, operand )
-	if operator and not value then
-		error( mw.message.new( 'bcmath-check-operand-nan', operator, operand ):plain() )
+local function parseNumScale( value, operator, operand, hold )
+	if operator and not value and not hold then
+		error( mw.message.new( 'bcmath-check-operand-nan', operator, operand ):plain(), 3 )
 	end
 	local conv = argConvs[type( value )]
 	if not conv then
@@ -915,7 +916,6 @@ local function makeBCmath( value, scale )
 
 		-- short circuit tests
 		if self:isInfinite() or bcmath.isInfinite( bval ) then
-
 			-- special case: minuend infinite, subtrahend finite
 			if self:isInfinite() and bcmath.isFinite( bval ) then
 				return self:addPayload( 'bcmath-add-singlesided-infinite' )
@@ -933,7 +933,6 @@ local function makeBCmath( value, scale )
 			elseif self:getInfinite() == bcmath.getInfinite( bval ) then
 				return self:addPayload( 'bcmath-add-similar-infinites' )
 			end
-
 		end
 
 		_value = php.bcadd( _value, bval, _scale )
@@ -957,7 +956,6 @@ end
 
 		-- short circuit tests
 		if self:isInfinite() or bcmath.isInfinite( bval ) then
-
 			-- special case: minuend infinite, subtrahend finite
 			if self:isInfinite() and bcmath.isFinite( bval ) then
 				return self:addPayload( 'bcmath-sub-singlesided-infinite' )
@@ -975,7 +973,6 @@ end
 				_value = nil
 				return self:addPayload( 'bcmath-sub-similar-infinites' )
 			end
-
 		end
 
 		_value = php.bcsub( _value, bval, _scale )
@@ -999,7 +996,6 @@ end
 
 		-- short circuit tests
 		if self:isInfinite() or bcmath.isInfinite( bval ) then
-
 			-- special case: multiplier infinite, multiplicator zero – NaN
 			if self:isInfinite() and bcmath.isZero( bval ) then
 				_value = nil
@@ -1019,7 +1015,6 @@ end
 				-- keep value
 				return self:addPayload( 'bcmath-mul-similar-infinites' )
 			end
-
 		end
 
 		_value = php.bcmul( _value, bval, _scale )
@@ -1201,6 +1196,49 @@ end
 		return self
 	end
 
+	--- Compare self with operand.
+	-- All [comparisons involving a NaN](https://en.wikipedia.org/wiki/NaN#Comparison_with_NaN) will
+	-- fail silently and return false.
+	-- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
+	-- @function bcmath:comp
+	-- @tparam string|number|table operand
+	-- @tparam nil|number scale of decimal digits
+	-- @treturn nil|number
+	function obj:comp( operand, scale )
+		checkSelf( self, 'comp' )
+		checkSelfValue()
+		checkUnaryOperand( 'bcmath:comp', operand, scale )
+		local bval, bscl = parseNumScale( operand, 'bcmath:comp', 'operand' )
+		local scl = scale or math.max( _scale, bscl ) -- don't change the instance
+
+		-- short circuit the tests
+		if self:isInfinite() or bcmath.isInfinite( bval ) then
+			local inf1 = tonumber( self:isInfinite()
+				and mw.ustring.gsub( self:getInfinite(), '∞', '1', 1 )
+				or 0 )
+			local inf2 = tonumber( bcmath.isInfinite( bval )
+				and mw.ustring.gsub( bcmath.getInfinite( bval ), '∞', '1', 1 )
+				or 0 )
+
+			-- special case: left infinite, right finite – NaN
+			if self:isInfinite() and bcmath.isFinite( bval ) then
+				return inf1
+			elseif self:isFinite() and bcmath.isInfinite( bval ) then
+				return -inf2
+			end
+
+			-- special case: infiniteness are dissimilar
+			if self:getInfinite() ~= bcmath.getInfinite( bval ) then
+				return inf1 < inf2 and -1 or 1
+			-- special case: infiniteness are similar
+			elseif self:getInfinite() == bcmath.getInfinite( bval ) then
+				return nil
+			end
+		end
+
+		return php.bccomp( _value, bval, scl )
+	end
+
 	return obj
 end
 
@@ -1290,6 +1328,7 @@ function bcmath.isFinite( value )
 end
 
 --- Negates the string representation of the number
+-- @function mw.bcmath.neg
 -- @tparam string value
 -- @treturn string
 function bcmath.neg( value )
@@ -1320,7 +1359,6 @@ function bcmath.add( augend, addend, scale )
 
 	-- short circuit the tests
 	if bcmath.isInfinite( bval1 ) or bcmath.getInfinite( bval2 ) then
-
 		-- special case: minuend infinite, subtrahend finite
 		if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
 			return makeBCmath( bval1, scl ):addPayload( 'bcmath-add-singlesided-infinite' )
@@ -1336,7 +1374,6 @@ function bcmath.add( augend, addend, scale )
 		elseif bcmath.getInfinite( bval1 ) == bcmath.getInfinite( bval2 ) then
 			return makeBCmath( bval1, scl ):addPayload( 'bcmath-add-similar-infinites' )
 		end
-
 	end
 
 	return makeBCmath( php.bcadd( bval1, bval2, scl ) or nil, scl )
@@ -1359,7 +1396,6 @@ function bcmath.sub( minuend, subtrahend, scale )
 
 	-- short circuit the tests
 	if bcmath.isInfinite( bval1 ) or bcmath.getInfinite( bval2 ) then
-
 		-- special case: minuend infinite, subtrahend finite
 		if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
 			return makeBCmath( bval1, scl ):addPayload( 'bcmath-sub-singlesided-infinite' )
@@ -1375,7 +1411,6 @@ function bcmath.sub( minuend, subtrahend, scale )
 		elseif bcmath.getInfinite( bval1 ) == bcmath.getInfinite( bval2 ) then
 			return makeBCmath( nil, scl ):addPayload( 'bcmath-sub-similar-infinites' )
 		end
-
 	end
 
 	return makeBCmath( php.bcsub( bval1, bval2, scl ) or nil, scl )
@@ -1397,8 +1432,7 @@ function bcmath.mul( multiplier, multiplicator, scale )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- short circuit the tests
-	if bcmath.isInfinite( bval1 ) or bcmath.getInfinite( bval2 ) then
-
+	if bcmath.isInfinite( bval1 ) or bcmath.isInfinite( bval2 ) then
 		-- special case: multiplier infinite, multiplicator zero – NaN
 		if bcmath.isInfinite( bval1 ) and bcmath.isZero( bval2 ) then
 			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-zero' )
@@ -1415,7 +1449,6 @@ function bcmath.mul( multiplier, multiplicator, scale )
 			-- keep value
 			return makeBCmath( bval1, scl ):addPayload( 'bcmath-mul-similar-infinites' )
 		end
-
 	end
 
 	return makeBCmath( php.bcmul( bval1, bval2, scl ) or nil, scl )
@@ -1584,18 +1617,46 @@ end
 -- All [comparisons involving a NaN](https://en.wikipedia.org/wiki/NaN#Comparison_with_NaN) will
 -- fail silently and return false.
 -- See [PHP: bccomp](https://www.php.net/manual/en/function.bccomp.php) for further documentation.
--- @function mw.bcmath.eq
+-- @function mw.bcmath.comp
 -- @tparam string|number|table left an operand
 -- @tparam string|number|table right an operand
 -- @tparam nil|number scale of decimal digits
--- @treturn boolean
+-- @treturn nil|number
 function bcmath.comp( left, right, scale )
 	checkBinaryOperands( 'bcmath:comp', left, right, scale )
-	local bval1, bscl1 = parseNumScale( left, 'bcmath.comp', 'left' )
-	local bval2, bscl2 = parseNumScale( right, 'bcmath.comp', 'right' )
+	local bval1, bscl1 = parseNumScale( left, 'bcmath.comp', 'left', true )
+	local bval2, bscl2 = parseNumScale( right, 'bcmath.comp', 'right', true )
 	if not( bval1 ) or not( bval2 ) then
 		return false
 	end
+
+	-- short circuit the tests
+	if bcmath.isInfinite( bval1 ) or bcmath.isInfinite( bval2 ) then
+		--local inf = { mw.ustring.gsub( bcmath.getInfinite( bval1 ), '∞', '1', 1 ) }
+		--do return inf end
+		local inf1 = tonumber( bcmath.isInfinite(bval1 )
+			and mw.ustring.gsub( bcmath.getInfinite( bval1 ), '∞', '1', 1 )
+			or 0 )
+		local inf2 = tonumber( bcmath.isInfinite(bval2 )
+			and mw.ustring.gsub( bcmath.getInfinite( bval2 ), '∞', '1', 1 )
+			or 0 )
+
+		-- special case: left infinite, right finite – NaN
+		if bcmath.isInfinite( bval1 ) and bcmath.isFinite( bval2 ) then
+			return inf1
+		elseif bcmath.isFinite( bval1 ) and bcmath.isInfinite( bval2 ) then
+			return -inf2
+		end
+
+		-- special case: infiniteness are dissimilar
+		if bcmath.getInfinite( bval1 ) ~= bcmath.getInfinite( bval2 ) then
+			return inf1 < inf2 and -1 or 1
+		-- special case: infiniteness are similar
+		elseif bcmath.getInfinite( bval1 ) == bcmath.getInfinite( bval2 ) then
+			return nil
+		end
+	end
+
 	local bscl = scale or math.max( bscl1, bscl2 )
 	return php.bccomp( bval1, bval2, bscl )
 end
