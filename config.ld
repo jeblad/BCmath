@@ -29,7 +29,8 @@ readme = {
 	'topics/sources.md',
 	'CONTRIBUTING.md',
 	'CODE_OF_CONDUCT.md',
-	'SECURITY.md'
+	'SECURITY.md',
+	'TRANSLATING.md'
 }
 
 examples = {
