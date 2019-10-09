@@ -5,7 +5,7 @@
 
 This [extension for Mediawiki](https://www.mediawiki.org/wiki/Extension:Expect) adds [arbitrary-precision arithmetic](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic) to Lua modules provided by the [Scribunto extension](https://www.mediawiki.org/wiki/Extension:Scribunto). The modules call bcmath library for PHP through a minimal interface layer.
 
-Help is available at [BCmath documentation](https://jeblad.github.io/BCmath/), with an introduction, a reference, and examples.
+Help is available at [BCmath documentation](https://jeblad.github.io/BCmath/), with an [introduction](https://jeblad.github.io/BCmath/manual/introduction.md.html), references, and examples.
 
 ## Usage
 
