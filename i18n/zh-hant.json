@@ -1,16 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kly"
+			"Kly",
+			"Xiplus"
 		]
 	},
 	"bcmath-desc": "為 Lua 模組提供任意精確度算數",
 	"bcmath-payload-counter": "$1：$2",
 	"bcmath-check-not-implemented": "功能「$1」尚未生效！",
 	"bcmath-check-self-nan": "「self」沒有有效值",
-	"bcmath-check-operand-nan": "運算元「$1」沒有有效值",
-	"bcmath-add-opposite-infinites": "添加兩個方向相反的無限值",
-	"bcmath-add-similar-infinites": "添加兩個方向相同的無限值",
-	"bcmath-sub-opposite-infinites": "減去兩個方向相反的無限值",
-	"bcmath-sub-similar-infinites": "減去兩個方向相同的無限值"
+	"bcmath-check-operand-nan": "運算子「$1」和運算元「$2」沒有有效值",
+	"bcmath-add-singlesided-infinite": "添加兩個值，且其中一個為無限值",
+	"bcmath-add-opposite-infinites": "添加兩個反向的無限值",
+	"bcmath-add-similar-infinites": "添加兩個同向的無限值",
+	"bcmath-sub-singlesided-infinite": "相減兩個值，且其中一個為無限值",
+	"bcmath-sub-opposite-infinites": "減去兩個反向的無限值",
+	"bcmath-sub-similar-infinites": "減去兩個同向的無限值",
+	"bcmath-mul-infinite-and-zero": "相乘無限值與零",
+	"bcmath-mul-opposite-infinites": "相乘兩個反向的無限值",
+	"bcmath-mul-similar-infinites": "相乘兩個同向的無限值"
 }

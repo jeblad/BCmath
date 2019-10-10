@@ -3,7 +3,7 @@
     <sitename>devwiki</sitename>
     <dbname>wiki</dbname>
     <base>http://dev.wiki.local.wmftest.net:8080/wiki/Main_Page</base>
-    <generator>MediaWiki 1.34.0-alpha</generator>
+    <generator>MediaWiki 1.35.0-alpha</generator>
     <case>first-letter</case>
     <namespaces>
       <namespace key="-2" case="first-letter">Media</namespace>
@@ -31,9 +31,9 @@
   <page>
     <title>Module:Export-bcmath</title>
     <ns>828</ns>
-    <id>3</id>
+    <id>4</id>
     <revision>
-      <id>4</id>
+      <id>5</id>
       <timestamp>2019-09-18T00:42:17Z</timestamp>
       <contributor>
         <ip>10.0.2.2</ip>
@@ -50,8 +50,7 @@
     <ns>828</ns>
     <id>5</id>
     <revision>
-      <id>11</id>
-      <parentid>10</parentid>
+      <id>6</id>
       <timestamp>2019-09-18T01:46:30Z</timestamp>
       <contributor>
         <ip>10.0.2.2</ip>
@@ -88,7 +87,7 @@ return h</text>
     <ns>0</ns>
     <id>6</id>
     <revision>
-      <id>8</id>
+      <id>7</id>
       <timestamp>2019-09-18T01:41:32Z</timestamp>
       <contributor>
         <ip>10.0.2.2</ip>
@@ -99,23 +98,6 @@ return h</text>
       <text xml:space="preserve" bytes="108">From the radius of the sun we can calculate the circumference
 :{{#invoke:Hello-world|circumference|0.696e9}}</text>
       <sha1>oma1cd3m9mtxud1qve056vrd4rsei4x</sha1>
-    </revision>
-  </page>
-  <page>
-    <title>VagrantRole/bcmath</title>
-    <ns>0</ns>
-    <id>4</id>
-    <revision>
-      <id>5</id>
-      <timestamp>2019-09-18T00:55:01Z</timestamp>
-      <contributor>
-        <ip>10.0.2.2</ip>
-      </contributor>
-      <comment>Created page with "The '''bcmath''' role adds the [https://mediawiki.org/wiki/Extension:BCmath BCmatht extension] ([https://github.com/jeblad/BCmath/blob/master/README.md README], [https://jebla..."</comment>
-      <model>wikitext</model>
-      <format>text/x-wiki</format>
-      <text xml:space="preserve" bytes="421">The '''bcmath''' role adds the [https://mediawiki.org/wiki/Extension:BCmath BCmatht extension] ([https://github.com/jeblad/BCmath/blob/master/README.md README], [https://jeblad.github.io/Expect/mw.bcmath.html ldoc]), which provides arbitrary-precision arithmetic to Lua modules. The modules call [https://www.php.net/manual/en/book.bc.php BCMath Arbitrary Precision Mathematics] for PHP through a minimal interface layer.</text>
-      <sha1>55t0iojxsbe9zpamm8tsd5tonsneelg</sha1>
     </revision>
   </page>
 </mediawiki>

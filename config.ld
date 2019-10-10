@@ -18,14 +18,19 @@ dir = 'docs'
 kind_names={topic='Manual'}
 
 readme = {
-	-- 'topics/introduction.md',
-	'topics/pitfalls.md',
-	'topics/vagrant.md',
+	'topics/introduction.md',
+	-- 'topics/pitfalls.md',
+	'topics/wikibase.md',
 	'topics/databases.md',
+	'topics/non-pure.md',
+	'topics/vagrant.md',
 	-- 'topics/hello-world.md',
-	-- 'topics/translatewiki.md',
 	'topics/vscode.md',
-	'topics/sources.md'
+	'topics/sources.md',
+	'CONTRIBUTING.md',
+	'CODE_OF_CONDUCT.md',
+	'SECURITY.md',
+	'TRANSLATING.md'
 }
 
 examples = {

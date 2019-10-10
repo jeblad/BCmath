@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"ديفيد"
+			"ديفيد",
+			"Meno25"
 		]
 	},
 	"bcmath-desc": "يوفر الحساب التعسفي الدقيق لوحدات لوا",
@@ -9,11 +10,17 @@
 	"bcmath-check-not-implemented": "الوظيفة \"$1\" لم تُنفَّذ بعد!",
 	"bcmath-check-self-nan": "“self” ليست له قيمة صالحة",
 	"bcmath-check-operand-nan": "العامل \"$1\" مع المعامل \"$2\" ليست له قيمة صالحة",
-	"bcmath-invalid-state": "وصلت إلى حالة غير صالحة",
+	"bcmath-add-singlesided-infinite": "أضاف قيمتين حيث واحدة هي لانهائية",
 	"bcmath-add-opposite-infinites": "إضافة قيمتين لانهائيتين من الاتجاه المعاكس",
 	"bcmath-add-similar-infinites": "إضافة قيمتين لانهائيتين من اتجاه مماثل",
+	"bcmath-sub-singlesided-infinite": "طرح قيمتين حيث واحدة هي لانهائية",
 	"bcmath-sub-opposite-infinites": "طرح قيمتين لانهائيتين من الاتجاه المعاكس",
 	"bcmath-sub-similar-infinites": "طرح قيمتين لانهائيتين من اتجاه مماثل",
+	"bcmath-mul-infinite-and-zero": "ضرب اللا نهاية والصفر",
 	"bcmath-mul-opposite-infinites": "ضرب قيمتين غير محدودتين من الاتجاه المعاكس",
-	"bcmath-mul-similar-infinites": "ضرب قيمتين لانهائيتين من اتجاه مماثل"
+	"bcmath-mul-similar-infinites": "ضرب قيمتين لانهائيتين من اتجاه مماثل",
+	"bcmath-div-divisor-infinite": "اقسم حيث يكون المقسوم لا نهاية",
+	"bcmath-div-divisor-zero": "اقسم حيث يكون المقسوم صفرا",
+	"bcmath-div-dividend-infinite": "اقسم حيث تكون الأرباح غير محدودة",
+	"bcmath-sqrt-operand-negative": "الجذر التربيعي حيث يكون المعامل سالبا"
 }

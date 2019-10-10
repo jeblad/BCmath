@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>BCmath documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>BCmath</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Pitfalls">Pitfalls </a></li>
+</ul>
+
+
+<h2>Manual</h2>
+<ul class="nowrap">
+  <li><strong>Introduction</strong></li>
+  <li><a href="../manual/wikibase.md.html">Wikibase</a></li>
+  <li><a href="../manual/databases.md.html">Databases</a></li>
+  <li><a href="../manual/non-pure.md.html">Non-pure</a></li>
+  <li><a href="../manual/vagrant.md.html">Vagrant</a></li>
+  <li><a href="../manual/vscode.md.html">VScode</a></li>
+  <li><a href="../manual/sources.md.html">Sources</a></li>
+  <li><a href="../manual/CONTRIBUTING.md.html">Contributing</a></li>
+  <li><a href="../manual/CODE_OF_CONDUCT.md.html">Code of Conduct</a></li>
+  <li><a href="../manual/SECURITY.md.html">Security</a></li>
+  <li><a href="../manual/TRANSLATING.md.html">Translating</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../index.html">BCmath</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/export-bcmath.lua.html">export-bcmath.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+
+<h1>Introduction</h1>
+
+<p>This library implements <a href="https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">arbitrary-precision arithmetic</a> by scaling (shifting) arbitrary-precision integers. This is a rather simple solution that solves most problems with big numbers. Usually numbers is stored either in a <a href="https://en.wikipedia.org/wiki/fixed-point_arithmetic">fixed-point format</a>, or in a <a href="https://en.wikipedia.org/wiki/floating-point_arithmetic">floating-point format</a> as a <a href="https://en.wikipedia.org/wiki/significand">significand</a> multiplied by an arbitrary <a href="https://en.wikipedia.org/wiki/exponent">exponent</a>. The library has some additional support for converting floating-point numbers into fixed-point numbers. There are also some libraries for arbitrary-precision rational arithmetic, but this library support none of them.</p>
+
+<p>In particular, this library does not implement <a href="https://en.wikipedia.org/wiki/IEEE_754r">IEEE 754r</a>.</p>
+
+<h3>Representation</h3>
+
+<p>Numbers are represented during calculations as a <a href="https://en.wikipedia.org/wiki/Significand">significand</a> that contains a sign and an integral part, and may also contain a decimal point and a fractional part. Withing Lua the “numbers” are stored inside closures that export its members as tables, and can also contain undefined “numbers”. It is not possible to use those for calculations. The exported API can use Lua numbers as arguments, and also raw strings.</p>
+
+<p>Raw strings as arguments can be written in <a href="https://en.wikipedia.org/wiki/Scientific_notation">scientific notation</a> and some <a href="https://en.wikipedia.org/wiki/Engineering_notation">engineering notations</a>. The library does not support localized notation, but other functions may support this. Thus you might parse a localized number into a non-localized version, and then use that as a rwa string.</p>
+
+<p>Examples on valid numbers as strings. These will be parsed and reformatted into a valid fixed-point format.</p>
+
+<ul>
+    <li>123 – implicit plus sign</li>
+    <li>+123 – 'plus sign' (U+002B)</li>
+    <li>−123 - 'minus sign' (U+2212)</li>
+    <li>-123 - 'minus hyphen' (U+002D)</li>
+    <li>123.456 – decimal point</li>
+    <li>123 . 456 – adding spaces should not create problems</li>
+    <li>123.456×10+789 – 'multiplication sign' (U+00D7)</li>
+    <li>123.456×10⁷⁸⁹ – exponent with superscript digits, also superscript plus and minus</li>
+    <li>123 . 456 × 10 + ⁷⁸⁹ – can mix ordinary plus-minus and superscript digits</li>
+    <li>123.456e+789 – engineering notation</li>
+    <li>123.456e⁷⁸⁹ – engineering notation with superscript</li>
+    <li>123.456E789 – 'capital E' (Algol)</li>
+    <li>123.456D789 – 'capital D' (FORTRAN, Sharp)</li>
+    <li>123.456⏨789 – 'decimal exponent symbol' (Unicode)</li>
+    <li>123.456&amp;789 – 'ampersand' (Simula)</li>
+    <li>123.456𝗘789 – 'mathematical sans-serif capital E' (Texas) </li>
+    <li>123.456^789 – 'caret' (U+2038)</li>
+</ul>
+
+<p>It is not quite clear whether only ordinary letters should be allowed, or all the mathematical variants. It is assumed that this falls into the category of localization.</p>
+
+<p>Superscript can only be used for the exponent, and only after an exponent marker has been found. Other use of superscript or subscript is assumed to be outside the scope.</p>
+
+<p>If a string (or number) fails to decode, then the value will become undefined, and later use of that number will fail.</p>
+
+<p><a name="Pitfalls"></a></p>
+<h2>Pitfalls</h2>
+
+<p>This describes some common pitfalls with the <a href="https://www.mediawiki.org/wiki/Extension:BCmath">BCmath extension</a>, the <a href="https://www.php.net/manual/en/book.bc.php">bcmath library</a>, and the <a href="https://en.wikipedia.org/wiki/Bc_(programming_language">bc programming language</a>.</p>
+
+<h3>Modulo operation</h3>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a> exists in several variants. In particular Lua uses <em>floored division</em> while Bc uses <em>truncated division</em>. For the most common situations, where both dividend and divisor is positive, the results are the same. Any use where dividend or divisor, or both, are negative might give discrepancies. This does not imply that any specific variant is wrong, they are just different.</p>
+
+<h3>False precision</h3>
+
+<p>Using <a href="https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">arbitrary-precision arithmetic</a> can easily lead to <a href="https://en.wikipedia.org/wiki/False_precision">false precision</a>. Numbers with a given precision can be combined, for example with addition or multiply, and accumulate more and more digits.</p>
+
+<p>A simple example of addition</p>
+
+
+<pre>
+<span class="number">1.1</span>?
+<span class="number">0.01</span>
+<span class="number">1</span>,<span class="number">1</span>?
+</pre>
+
+<p>Do we really have two decimal places, or just one? The second decimal place in the first number is really unknown, and we can't really say what is more likely.</p>
+
+<p>With multiply the problem gets more pronounced</p>
+
+
+<pre>
+<span class="number">1.2</span> × <span class="number">1.2</span>
+   <span class="number">24</span>
+  <span class="number">12</span>?
+  <span class="number">144</span>
+</pre>
+
+<p>The summation will then contain digits without sufficient certainty, unless the answer is rounded or otherwise truncated.</p>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc TESTING</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
+

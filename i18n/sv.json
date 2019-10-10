@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeblad"
+		]
+	},
+	"bcmath-desc": "Lägger till arbiträr precisionsmatematik för Lua moduler",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Funktionaliteten ”$1” är ännu inte implementerat!",
+	"bcmath-check-self-nan": "”self” har inte ett giltigt värde",
+	"bcmath-check-operand-nan": "operator ”$1” med operand ”$2” har inte ett giltigt värde",
+	"bcmath-add-singlesided-infinite": "Summerar två värden där en är oändlig",
+	"bcmath-add-opposite-infinites": "Summerar två oändliga värden i motsatt riktning",
+	"bcmath-add-similar-infinites": "Summerar två oändliga värden i samma riktning",
+	"bcmath-sub-singlesided-infinite": "Subtraherade två värden där en är oändlig",
+	"bcmath-sub-opposite-infinites": "Subtraherade två oändliga värden i motsatt riktning",
+	"bcmath-sub-similar-infinites": "Subtraherade två oändliga värden i samma riktning",
+	"bcmath-mul-infinite-and-zero": "Multiplicerade oändlig och noll",
+	"bcmath-mul-opposite-infinites": "Multiplicerade två oändliga värden i motsatt retning",
+	"bcmath-mul-similar-infinites": "Multiplicerade två oändliga värden i samma riktning",
+	"bcmath-div-divisor-infinite": "Dividerade med oändlig divisor",
+	"bcmath-div-divisor-zero": "Dividerade med noll som divisor",
+	"bcmath-div-dividend-infinite": "Dividerade med oändlig dividend",
+	"bcmath-mod-divisor-infinite": "Modulus med oändlig divisor",
+	"bcmath-mod-divisor-zero": "Modulus med noll som divisor",
+	"bcmath-mod-dividend-infinite": "Modulus med oändlig dividend",
+	"bcmath-pow-exponent-zero": "Potens med noll som exponent",
+	"bcmath-pow-base-one": "potens med en som bas",
+	"bcmath-powmod-divisor-zero": "Potens-modulus med noll som divisor",
+	"bcmath-powmod-exponent-negative": "Potens-modulus med negativ exponent",
+	"bcmath-sqrt-operand-negative": "Kvadrat rot med negativ operand"
+}
