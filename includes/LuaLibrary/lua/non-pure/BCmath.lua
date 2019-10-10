@@ -900,6 +900,24 @@ local function makeBCmath( value, scale )
 	obj.exist = obj.exists
 	obj.hasNumber = obj.exists
 
+	--- Negates self.
+	-- @function bcmath:neg
+	-- @return self
+	function obj:neg()
+		checkSelf( self, 'neg' )
+		checkSelfValue()
+		local sign, _ = extractSign( _value )
+		if sign == '+' then
+			_value = string.gsub( _value, '^%+', '-', 1 )
+		elseif sign == '-' then
+			_value = string.gsub( _value, '^%-', '+', 1 )
+		else 
+			_value = '-' .. _value
+		end
+
+		return self
+	end
+
 	--- Add self with addend.
 	-- This method will store result in self, and then return self to facilitate chaining.
 	-- See [PHP: bcadd](https://www.php.net/manual/en/function.bcadd.php) for further documentation.
@@ -1329,17 +1347,19 @@ end
 
 --- Negates the string representation of the number
 -- @function mw.bcmath.neg
--- @tparam string value
+-- @tparam string operand
 -- @treturn string
-function bcmath.neg( value )
-	local sign, _ = extractSign( value )
+function bcmath.neg( operand )
+	checkUnaryOperand( 'bcmath.neg', operand )
+	local sign, _ = extractSign( operand )
 	if sign == '+' then
-		return string.gsub( value, '^%+', '-', 1 )
+		local str = string.gsub( operand, '^%+', '-', 1 )
+		return str
+	elseif sign == '-' then
+		local str = string.gsub( operand, '^%-', '+', 1 )
+		return str
 	end
-	if sign == '-' then
-		return string.gsub( value, '^%-', '+', 1 )
-	end
-	return '-'..value
+	return '-' .. operand
 end
 bcmeta.__unm = bcmath.add
 

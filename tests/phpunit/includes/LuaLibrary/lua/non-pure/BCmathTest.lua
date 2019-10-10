@@ -270,6 +270,24 @@ local tests = {
 		args = { mw.bcmath.new( '' ), 'isNaN' },
 		expect = { false }
 	},
+	{ -- 83
+		name = 'Neg 42',
+		func = callInstance,
+		args = { mw.bcmath.new( '42' ), 'neg' },
+		expect = { '-42', 0 }
+	},
+	{ -- 83
+		name = 'Neg +42',
+		func = callInstance,
+		args = { mw.bcmath.new( '+42' ), 'neg' },
+		expect = { '-42', 0 }
+	},
+	{ -- 83
+		name = 'Neg -42',
+		func = callInstance,
+		args = { mw.bcmath.new( '-42' ), 'neg' },
+		expect = { '+42', 0 }
+	},
 	{ -- 37
 		name = 'Add 0 with 42.123',
 		func = callInstance,
@@ -545,6 +563,36 @@ local tests = {
 		func = compInstance,
 		args = { mw.bcmath.new( '-∞', 0 ), 'comp', '-∞' },
 		expect = { nil }
+	},
+	{ -- 83
+		name = 'Neg 42',
+		func = compFunc,
+		args = { 'neg', '42' },
+		expect = { '-42' }
+	},
+	{ -- 83
+		name = 'Neg +42',
+		func = compFunc,
+		args = { 'neg', '+42' },
+		expect = { '-42' }
+	},
+	{ -- 83
+		name = 'Neg -42',
+		func = compFunc,
+		args = { 'neg', '-42' },
+		expect = { '+42' }
+	},
+	{ -- 83
+		name = 'Neg +∞',
+		func = compFunc,
+		args = { 'neg', '+∞' },
+		expect = { '-∞' }
+	},
+	{ -- 83
+		name = 'Neg -∞',
+		func = compFunc,
+		args = { 'neg', '-∞' },
+		expect = { '+∞' }
 	},
 	{ -- 83
 		name = 'Add 21 + 21',
