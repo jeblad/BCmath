@@ -503,14 +503,17 @@ selfConvs['sci'] = function( num, precision )
 	integralLen = 0
 	fraction = nil
 	local fractionLen = 0
+
 	if mantissaLen == 0 then
 		integral = '0'
 		exponent = 0
 	end
+
 	if mantissaLen > 0 then
 		integral = string.sub( mantissa, 1, 1 )
 		integralLen = 1
 	end
+
 	if mantissaLen > 1 then
 		fraction = string.sub( mantissa, 2, -1 )
 		fractionLen = mantissaLen - 1
@@ -548,26 +551,30 @@ selfConvs['eng'] = function( num, precision )
 	local _, leadLen = extractLead( digits )
 	local mantissa, mantissaLen = extractMantissa( digits )
 	local exponent = integralLen - leadLen - 1
-	local modulus = math.fmod( exponent, 3 )
+	local modulus = exponent % 3 --math.fmod( exponent, 3 )
 
 	integral = nil
 	integralLen = 0
 	fraction = nil
+
 	if mantissaLen == 0 then
 		integral = '0'
 		exponent = 0
+	elseif mantissaLen <= modulus then
+		mantissaLen = mantissaLen + modulus
+		mantissa = mantissa .. zeros( modulus )
+		exponent = exponent - modulus
 	else
 		exponent = exponent - modulus
 	end
+
 	if mantissaLen > modulus then
-		integral = string.sub( mantissa, 1, modulus )
+		integral = string.sub( mantissa, 1, modulus+1 )
 		integralLen = modulus + 1
-	elseif mantissaLen > 0 then
-		integral = mantissa
-		integralLen = mantissaLen
 	end
+
 	if mantissaLen > modulus+1 then
-		fraction = string.sub( mantissa, modulus+1, -1 )
+		fraction = string.sub( mantissa, modulus+2, -1 )
 		fractionLen = mantissaLen - modulus - 1
 	end
 
