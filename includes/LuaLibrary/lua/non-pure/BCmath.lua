@@ -1310,7 +1310,7 @@ end
 	-- @function bcmath:round
 	-- @tparam nil|number precision of decimal digits
 	-- @tparam nil|number scale of decimal digits (forwarded to bcmath object)
-	-- @treturn bcmath
+	-- @treturn self
 	function obj:round( precision, scale )
 		checkSelf( self, 'round' )
 		checkSelfValue()
@@ -1813,7 +1813,7 @@ end
 -- @tparam string|number|table value
 -- @tparam nil|number precision of decimal digits
 -- @tparam nil|number scale of decimal digits (forwarded to bcmath object)
--- @treturn string
+-- @treturn bcmath
 function bcmath.round( value, precision, scale )
 	checkTypeMulti( 'bcmath.round', 1, value, { 'string', 'table', 'number' } )
 	checkType( 'bcmath.round', 2, precision, 'number', true )
