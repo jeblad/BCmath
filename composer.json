@@ -54,7 +54,13 @@
 			"find modules/images -type d -path minified -prune -o -type d -execdir svgo --pretty --indent=2 -i . -o ./minified \\;"
 		],
 		"unit": [
+			"php ../../tests/phpunit/phpunit.php --wiki wiki --exclude-group LuaStandalone --group BCmath"
+		],
+		"unit-both": [
 			"php ../../tests/phpunit/phpunit.php --wiki wiki --group BCmath"
+		],
+		"unit-lua": [
+			"php ../../tests/phpunit/phpunit.php --wiki wiki --group Lua"
 		],
 		"codesize": [
 			"phpmd ./includes/ text codesize",
