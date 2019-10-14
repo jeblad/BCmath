@@ -7,6 +7,7 @@ namespace BCmath\Test;
 use Scribunto_LuaEngineTestBase;
 
 /**
+ * @group Lua
  * @group BCmath
  *
  * @license GPL-2.0-or-later
