@@ -158,6 +158,10 @@
 	<td class="summary">Compare self with operand.</td>
 	</tr>
 	<tr>
+	<td class="name nowrap"><a href="#bcmath:round">bcmath:round ()</a></td>
+	<td class="summary">Round self to given precision.</td>
+	</tr>
+	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.new">mw.bcmath.new ()</a></td>
 	<td class="summary">Create new instance.</td>
 	</tr>
@@ -240,6 +244,10 @@
 	<tr>
 	<td class="name nowrap"><a href="#mw.bcmath.gt">mw.bcmath.gt ()</a></td>
 	<td class="summary">Check if left operand is equal to right operand.</td>
+	</tr>
+	<tr>
+	<td class="name nowrap"><a href="#mw.bcmath.round">mw.bcmath.round ()</a></td>
+	<td class="summary">Round the value to given precision.</td>
 	</tr>
 </table>
 
@@ -863,6 +871,38 @@
     <h3>Returns:</h3>
 
            <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bcmath:round"></a>
+    <strong>bcmath:round ()</strong>
+    </dt>
+    <dd>
+    Round self to given precision.
+ This returns the rounded value as a new bcmath object, it does not change self.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">precision</span>
+            <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+         of decimal digits
+        </li>
+        <li><span class="parameter">scale</span>
+            <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+         of decimal digits (forwarded to bcmath object)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">self</span></span>
 
 
 
@@ -1585,6 +1625,43 @@
     <h3>Returns:</h3>
 
            <span class="types"><span class="type">boolean</span></span>
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "mw.bcmath.round"></a>
+    <strong>mw.bcmath.round ()</strong>
+    </dt>
+    <dd>
+    Round the value to given precision.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <span class="type">number</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">precision</span>
+            <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+         of decimal digits
+        </li>
+        <li><span class="parameter">scale</span>
+            <span class="types"><span class="type">nil</span> or <span class="type">number</span></span>
+         of decimal digits (forwarded to bcmath object)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+
+           <span class="types"><span class="type">bcmath</span></span>
 
 
 
