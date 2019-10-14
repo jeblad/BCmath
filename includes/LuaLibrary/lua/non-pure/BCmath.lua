@@ -79,7 +79,6 @@ end
 
 -- @var structure for caching zero strings
 local zeroCache = {
-	[0] = '',
 	'0',
 	'00',
 	'000', -- kilo
@@ -115,6 +114,9 @@ local zeroCache = {
 -- @treturn string
 local function zeros( length )
 	assert( length )
+	if length <= 0 then
+		return ''
+	end
 	local str = zeroCache[length]
 	if str then
 		return str
