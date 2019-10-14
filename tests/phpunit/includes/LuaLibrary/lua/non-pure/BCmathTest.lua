@@ -36,6 +36,13 @@ local function callInstance( obj, name, ... )
 	return obj:value(), obj:scale()
 end
 
+local function callReturned( obj, name, ... )
+	assert( obj )
+	assert( obj[name] )
+	local ret = obj[name]( obj, ... )
+	return ret:value(), ret:scale()
+end
+
 local function compInstance( obj, name, ... )
 	assert( obj )
 	assert( obj[name] )
@@ -564,6 +571,72 @@ local tests = {
 		args = { mw.bcmath.new( '-∞', 0 ), 'comp', '-∞' },
 		expect = { nil }
 	},
+	{ -- 169
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 7 },
+		expect = { '-123.456', 3 }
+	},
+	{ -- 170
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 6 },
+		expect = { '-123.456', 3 }
+	},
+	{ -- 171
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 5 },
+		expect = { '-123.46', 3 }
+	},
+	{ -- 172
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 4 },
+		expect = { '-123.5', 3 }
+	},
+	{ -- 173
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 3 },
+		expect = { '-123', 3 }
+	},
+	{ -- 174
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 2 },
+		expect = { '-120', 3 }
+	},
+	{ -- 175
+		name = 'round -123.456',
+		func = callInstance,
+		args = { mw.bcmath.new( '-123.456' ), 'round', 1 },
+		expect = { '-100', 3 }
+	},
+	{ -- 176
+		name = 'round -456.789',
+		func = callInstance,
+		args = { mw.bcmath.new( '-456.789' ), 'round', 4 },
+		expect = { '-456.8', 3 }
+	},
+	{ -- 177
+		name = 'round -456.789',
+		func = callInstance,
+		args = { mw.bcmath.new( '-456.789' ), 'round', 3 },
+		expect = { '-457', 3 }
+	},
+	{ -- 178
+		name = 'round -456.789',
+		func = callInstance,
+		args = { mw.bcmath.new( '-456.789' ), 'round', 2 },
+		expect = { '-460', 3 }
+	},
+	{ -- 179
+		name = 'round -456.789',
+		func = callInstance,
+		args = { mw.bcmath.new( '-456.789' ), 'round', 1 },
+		expect = { '-500', 3 }
+	},
 	{ -- 86
 		name = 'Neg 42',
 		func = compFunc,
@@ -1061,6 +1134,72 @@ local tests = {
 		func = makeCall,
 		args = { mw.bcmath.new('-123.456'), 'sci', 3 },
 		expect = { '-1.23e2' }
+	},
+	{ -- 169
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 7 },
+		expect = { '-123.456', 3 }
+	},
+	{ -- 170
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 6 },
+		expect = { '-123.456', 3 }
+	},
+	{ -- 171
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 5 },
+		expect = { '-123.46', 2 }
+	},
+	{ -- 172
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 4 },
+		expect = { '-123.5', 1 }
+	},
+	{ -- 173
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 3 },
+		expect = { '-123', 0 }
+	},
+	{ -- 174
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 2 },
+		expect = { '-120', 0 }
+	},
+	{ -- 175
+		name = 'round -123.456',
+		func = callFunc,
+		args = { 'round', '-123.456', 1 },
+		expect = { '-100', 0 }
+	},
+	{ -- 176
+		name = 'round -456.789',
+		func = callFunc,
+		args = { 'round', '-456.789', 4 },
+		expect = { '-456.8', 1 }
+	},
+	{ -- 177
+		name = 'round -456.789',
+		func = callFunc,
+		args = { 'round', '-456.789', 3 },
+		expect = { '-457', 0 }
+	},
+	{ -- 178
+		name = 'round -456.789',
+		func = callFunc,
+		args = { 'round', '-456.789', 2 },
+		expect = { '-460', 0 }
+	},
+	{ -- 179
+		name = 'round -456.789',
+		func = callFunc,
+		args = { 'round', '-456.789', 1 },
+		expect = { '-500', 0 }
 	},
 }
 

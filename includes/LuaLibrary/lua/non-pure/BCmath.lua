@@ -252,6 +252,45 @@ local function truncIntegral( integral, remove )
 	return integral
 end
 
+local function round( value, precision )
+	local first,mantissa,rest = string.match( value, '^([-+]?)([0-9%.]+)(.*)$' )
+	local rPos = string.find( mantissa, '%.' )
+	mantissa = rPos
+		and ( string.sub(mantissa, 1, rPos-1 ) .. string.sub(mantissa, rPos+1) )
+		or mantissa
+	if string.find( mantissa, '^9*[56789]$' ) then
+		mantissa = '0'..mantissa
+		if rPos then
+			rPos = rPos+1
+		end
+	end
+	local mLen = string.len( mantissa )
+	if not precision then
+		precision = rPos and rPos-1 or mLen
+	end
+	precision = math.min( precision, mLen )
+	mantissa = (mLen <= precision+1)
+		and (mantissa .. zeros( precision-mLen+1 ) )
+		or string.sub( mantissa, 1, precision+1)
+	local pos, len = string.find( mantissa, '[0-8]9*[56789]$' )
+	mantissa = pos
+		and ( string.sub( mantissa, 1, pos-1 )
+			.. tostring( tonumber( string.sub( mantissa, pos, pos ) ) + 1 )
+			.. zeros( (len-pos-1) ) )
+		or ( string.sub( mantissa, 1, -2 ) )
+	if rPos and rPos > precision then
+		mantissa = mantissa .. zeros( rPos-precision-1)
+	end
+	if rPos and rPos ~= string.len(mantissa)+1 then
+		mantissa = string.sub( mantissa, 1, rPos-1 )
+			.. '.'
+			.. string.sub(mantissa, rPos, -1 )
+	end
+	return first
+		.. mantissa
+		.. rest
+end
+
 -- @var structure for lookup of type converters for arguments
 local argConvs = {}
 
@@ -920,7 +959,7 @@ local function makeBCmath( value, scale )
 			_value = string.gsub( _value, '^%+', '-', 1 )
 		elseif sign == '-' then
 			_value = string.gsub( _value, '^%-', '+', 1 )
-		else 
+		else
 			_value = '-' .. _value
 		end
 
@@ -1264,6 +1303,22 @@ end
 		end
 
 		return php.bccomp( _value, bval, scl )
+	end
+
+	--- Round self to given precision.
+	-- This returns the rounded value as a new bcmath object, it does not change self.
+	-- @function bcmath:round
+	-- @tparam nil|number precision of decimal digits
+	-- @tparam nil|number scale of decimal digits (forwarded to bcmath object)
+	-- @treturn bcmath
+	function obj:round( precision, scale )
+		checkSelf( self, 'round' )
+		checkSelfValue()
+		checkType( 'bcmath.round', 1, precision, 'number', true )
+		checkType( 'bcmath.round', 2, scale, 'number', true )
+		_scale = scale or _scale
+		_value = round( _value, precision )
+		return self
 	end
 
 	return obj
@@ -1751,6 +1806,20 @@ bcmeta.__le = bcmath.le
 -- @treturn boolean
 function bcmath.gt( left, right, scale )
 	return bcmath.comp( left, right, scale ) > 0
+end
+
+--- Round the value to given precision.
+-- @function mw.bcmath.round
+-- @tparam string|number|table value
+-- @tparam nil|number precision of decimal digits
+-- @tparam nil|number scale of decimal digits (forwarded to bcmath object)
+-- @treturn string
+function bcmath.round( value, precision, scale )
+	checkTypeMulti( 'bcmath.round', 1, value, { 'string', 'table', 'number' } )
+	checkType( 'bcmath.round', 2, precision, 'number', true )
+	checkType( 'bcmath.round', 3, scale, 'number', true )
+	local _value, _ = parseNumScale( value )
+	return makeBCmath( round( _value, precision ), scale )
 end
 
 return bcmath
