@@ -7,6 +7,7 @@ namespace BCmath\Test;
 use Scribunto_LuaEngineTestBase;
 
 /**
+ * @group slow
  * @group Lua
  * @group BCmath
  *
