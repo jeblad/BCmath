@@ -32,15 +32,15 @@
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "1.0.0",
 		"mediawiki/mediawiki-codesniffer": "26.0.0",
-		"phpunit/phpunit": "4.8.*",
+		"phpunit/phpunit": "6.*",
 		"phpmd/phpmd" : "@stable",
 		"squizlabs/php_codesniffer": "3.*",
 		"slevomat/coding-standard": "~4.5",
 		"phpspec/prophecy": "~1.0",
-		"liuggio/fastest": "~1.4",
 		"jakub-onderka/php-console-highlighter": "@stable",
 		"mediawiki/minus-x": "0.3.1",
-		"mediawiki/mediawiki-phan-config": "0.6.1"
+		"mediawiki/mediawiki-phan-config": "0.6.1",
+		"brianium/paratest": "^1.0"
 	},
 	"scripts": {
 		"fix": [
@@ -54,13 +54,13 @@
 			"find modules/images -type d -path minified -prune -o -type d -execdir svgo --pretty --indent=2 -i . -o ./minified \\;"
 		],
 		"unit": [
-			"php ../../tests/phpunit/phpunit.php --wiki wiki --exclude-group LuaStandalone --group BCmath"
+			"php ../../tests/phpunit/phpunit.php --wiki wiki --exclude-group LuaStandalone,Broken,Destructive,Database,Stub --group BCmath"
 		],
 		"unit-both": [
-			"php ../../tests/phpunit/phpunit.php --wiki wiki --group BCmath"
+			"php ../../tests/phpunit/phpunit.php --wiki wiki --exclude-group Broken,Destructive,Database,Stub --group BCmath"
 		],
 		"unit-lua": [
-			"php ../../tests/phpunit/phpunit.php --wiki wiki --group Lua"
+			"php ../../tests/phpunit/phpunit.php --wiki wiki --exclude-group Broken,Destructive,Database,Stub --group Lua"
 		],
 		"codesize": [
 			"phpmd ./includes/ text codesize",
