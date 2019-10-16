@@ -252,6 +252,13 @@ local function truncIntegral( integral, remove )
 	return integral
 end
 
+--- Round half away from zero.
+-- This implements rounding with string operations, as described by
+-- [round half away from zero](https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero).
+-- @local
+-- @tparam string representing a bcmath number
+-- @tparam number amount of significant digits
+-- @treturn string
 local function round( value, precision )
 	local first,mantissa,rest = string.match( value, '^([-+]?)([0-9%.]+)(.*)$' )
 	local rPos = string.find( mantissa, '%.' )
@@ -1818,8 +1825,14 @@ function bcmath.round( value, precision, scale )
 	checkTypeMulti( 'bcmath.round', 1, value, { 'string', 'table', 'number' } )
 	checkType( 'bcmath.round', 2, precision, 'number', true )
 	checkType( 'bcmath.round', 3, scale, 'number', true )
-	local _value, _ = parseNumScale( value )
-	return makeBCmath( round( _value, precision ), scale )
+	local bval, bscl = parseNumScale( value, 'bcmath.round', 'value', true )
+
+	-- can not round an infinite value
+	if bcmath.isInfinite( bval ) then
+		return makeBCmath( bval, bscl )
+	end
+
+	return makeBCmath( round( bval, precision ), scale )
 end
 
 return bcmath
