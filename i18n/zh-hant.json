@@ -18,5 +18,6 @@
 	"bcmath-sub-similar-infinites": "減去兩個同向的無限值",
 	"bcmath-mul-infinite-and-zero": "相乘無限值與零",
 	"bcmath-mul-opposite-infinites": "相乘兩個反向的無限值",
-	"bcmath-mul-similar-infinites": "相乘兩個同向的無限值"
+	"bcmath-mul-similar-infinites": "相乘兩個同向的無限值",
+	"bcmath-sqrt-operand-negative": "負數運算元平方根"
 }

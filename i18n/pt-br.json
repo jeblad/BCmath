@@ -15,6 +15,16 @@
 	"bcmath-sub-singlesided-infinite": "Subtraídos dois valores em que um é infinito",
 	"bcmath-sub-opposite-infinites": "Subtraídos dois valores infinitos de direção semelhante",
 	"bcmath-sub-similar-infinites": "Subtraídos dois valores infinitos de direção semelhante",
+	"bcmath-mul-infinite-and-zero": "Multiplicado infinito e zero",
 	"bcmath-mul-opposite-infinites": "Multiplicou dois valores infinitos de direção oposta",
-	"bcmath-mul-similar-infinites": "Multiplicou dois valores infinitos de direção semelhante"
+	"bcmath-mul-similar-infinites": "Multiplicou dois valores infinitos de direção semelhante",
+	"bcmath-div-divisor-infinite": "Dividido com divisor infinito",
+	"bcmath-div-divisor-zero": "Dividido com divisor zero",
+	"bcmath-div-dividend-infinite": "Dividido com dividendo infinito",
+	"bcmath-mod-divisor-infinite": "Módulo com divisor infinito",
+	"bcmath-mod-divisor-zero": "Módulo com divisor zero",
+	"bcmath-mod-dividend-infinite": "Módulo com dividendo infinito",
+	"bcmath-pow-exponent-zero": "Potência com expoente zero",
+	"bcmath-pow-base-one": "Potência com base um",
+	"bcmath-sqrt-operand-negative": "Raiz quadrada com operando negativo"
 }
