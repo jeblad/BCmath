@@ -741,7 +741,6 @@ function bcmeta:__call( ... )
 
 	-- return a formatted text representation
 	return func( num, precision, style )
-	
 end
 
 --- Instance is stringable.
