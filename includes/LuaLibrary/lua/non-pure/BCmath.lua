@@ -912,13 +912,13 @@ local function makeBCmath( value, scale )
 	--- Get zero.
 	-- The value is stored in the closure.
 	-- @nick bcmath:getNull
-	-- @function bcmath:getZero
+	-- @function bcmath:getSignedZero
 	-- @treturn nil|string
-	function obj:getZero()
+	function obj:getSignedZero()
 		checkSelf( self, 'value' )
-		return bcmath.getZero( _value )
+		return bcmath.getSignedZero( _value )
 	end
-	obj.getNull = obj.getZero
+	obj.getSignedNull = obj.getSignedZero
 
 	--- Is zero.
 	-- The value is stored in the closure.
@@ -1340,31 +1340,51 @@ function bcmath.new( value, scale )
 	return makeBCmath( value, scale )
 end
 
---- Get the string zero.
--- Returned string is normalized,
--- and nil if no zero is found.
--- @function mw.bcmath.getZero
+--- Get the sign.
+-- Returned number is normalized, but nil if no string is found.
+-- No explicit sign is interpreted as a positive sign.
+-- @function mw.bcmath.geSign
 -- @tparam nil|string value to be parsed
--- @treturn nil|string
-function bcmath.getZero( value )
+-- @treturn nil|number
+function bcmath.getSign( value )
 	if not value then
 		return nil
 	end
-	local pos = string.find( value, '[∞1-9]')
+
 	local sign = string.match( value, '^([-+]?)' )
-	if pos then
+	if sign == '+' then
+		return 1
+	elseif sign == '-' then
+		return -1
+	end
+
+	return 1
+end
+
+--- Get the signed zero string.
+-- Returned string is normalized, but nil if no zero string is found.
+-- No explicit sign is interpreted as a positive sign.
+-- @function mw.bcmath.getSignedZero
+-- @tparam nil|string value to be parsed
+-- @treturn nil|string
+function bcmath.getSignedZero( value )
+	if not value then
 		return nil
 	end
-	if not pos and sign == '' then
-		return '+0'
+
+	local pos = string.find( value, '^[-+]?[0][0.]*$')
+	if not pos then
+		return nil
 	end
-	if pos and sign == '+' then
+
+	local sign = string.match( value, '^([-+]?)' )
+	if sign == '+' then
 		return '+0'
-	end
-	if pos and sign == '-' then
+	elseif sign == '-' then
 		return '-0'
 	end
-	return nil
+
+	return '+0'
 end
 
 --- Is the string zero.
@@ -1373,38 +1393,52 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn nil|boolean
 function bcmath.isZero( value )
-	return not not bcmath.getZero( value )
+	if not value then
+		return nil
+	end
+
+	local pos = string.find( value, '^[-+]?([0][0.]*)$')
+	return not not pos
 end
 
 --- Get the strings infinite part.
 -- Returned string is normalized,
 -- and nil if no infinity is found.
--- @function mw.bcmath.getInfinity
+-- @function mw.bcmath.getInfinite
 -- @tparam nil|string value to be parsed
 -- @treturn nil|string
 function bcmath.getInfinite( value )
 	if not value then
 		return nil
 	end
-	if value == '∞' then
-		return '+∞'
+
+	local pos = string.find( value, '^[-+]?∞$')
+	if not pos then
+		return nil
 	end
-	if value == '+∞' then
+
+	local sign = string.match( value, '^([-+]?)' )
+	if sign == '+' then
 		return '+∞'
-	end
-	if value == '-∞' then
+	elseif sign == '-' then
 		return '-∞'
 	end
-	return nil
+
+	return '+∞'
 end
 
 --- Is the string infinite.
 -- Returned string is normalized.
 -- @function mw.bcmath.isInfinite
 -- @tparam nil|string value to be parsed
--- @treturn boolean
+-- @treturn nil|boolean
 function bcmath.isInfinite( value )
-	return not not bcmath.getInfinite( value )
+	if not value then
+		return nil
+	end
+
+	local pos = string.find( value, '[∞]')
+	return not not pos
 end
 
 --- Is the string finite.
@@ -1413,7 +1447,12 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn boolean
 function bcmath.isFinite( value )
-	return not bcmath.getInfinite( value )
+	if not value then
+		return nil
+	end
+
+	local pos = string.find( value, '[0-9]')
+	return not not pos
 end
 
 --- Negates the string representation of the number
@@ -1524,6 +1563,7 @@ function bcmath.mul( multiplier, multiplicator, scale )
 
 	-- short circuit the tests
 	if bcmath.isInfinite( bval1 ) or bcmath.isInfinite( bval2 ) then
+		-- For the following, see https://en.wikipedia.org/wiki/Indeterminate_form
 		-- special case: multiplier infinite, multiplicator zero – NaN
 		if bcmath.isInfinite( bval1 ) and bcmath.isZero( bval2 ) then
 			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-zero' )
@@ -1531,7 +1571,15 @@ function bcmath.mul( multiplier, multiplicator, scale )
 		elseif bcmath.isZero( bval1 ) and bcmath.isInfinite( bval2 ) then
 			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-zero' )
 		end
-
+--[[
+		-- special case: multiplier infinite, multiplicator finite – infinite
+		if bcmath.isInfinite( bval1 ) and bcmath.isZero( bval2 ) then
+			return makeBCmath( '', scl ):addPayload( 'bcmath-mul-infinite-and-finite' )
+		-- special case: multiplier zero, multiplicator infinite – NaN
+		elseif bcmath.isZero( bval1 ) and bcmath.isInfinite( bval2 ) then
+			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-finite' )
+		end
+]]
 		-- special case: infiniteness are dissimilar
 		if bcmath.getInfinite( bval1 ) ~= bcmath.getInfinite( bval2 ) then
 			return makeBCmath( bcmath.neg( bval1 ), scl ):addPayload( 'bcmath-mul-opposite-infinites' )
