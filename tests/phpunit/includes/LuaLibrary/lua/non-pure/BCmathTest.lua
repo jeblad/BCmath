@@ -405,7 +405,7 @@ local tests = {
 			{ '-500', 3 },
 		}
 	},
-	{ --
+	{ -- 16
 		name = 'Get sign',
 		func = compFunc,
 		args = { 'getSign',
@@ -435,7 +435,7 @@ local tests = {
 			{ -1 },
 		}
 	},
-	{ --
+	{ -- 17
 		name = 'Get accumulated sign',
 		func = compFunc,
 		args = { 'getAccumulatedSign',
@@ -465,7 +465,7 @@ local tests = {
 			{ 1 },
 		}
 	},
-	{ --
+	{ -- 18
 		name = 'Get signed zero',
 		func = compFunc,
 		args = { 'getSignedZero',
@@ -495,7 +495,7 @@ local tests = {
 			{ nil },
 		}
 	},
-	{ --
+	{ -- 19
 		name = 'Get infinite',
 		func = compFunc,
 		args = { 'getInfinite',
@@ -525,7 +525,7 @@ local tests = {
 			{ '-∞' },
 		}
 	},
-	{ --
+	{ -- 20
 		name = 'Is zero',
 		func = compFunc,
 		args = { 'isZero',
@@ -555,7 +555,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ --
+	{ -- 21
 		name = 'Is finite',
 		func = compFunc,
 		args = { 'isFinite',
@@ -585,7 +585,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ --
+	{ -- 22
 		name = 'Is infinite',
 		func = compFunc,
 		args = { 'isInfinite',
@@ -615,7 +615,7 @@ local tests = {
 			{ true },
 		}
 	},
-	{ -- 16
+	{ -- 23
 		name = 'Negation',
 		func = compFunc,
 		args = { 'neg',
@@ -635,7 +635,7 @@ local tests = {
 			{ '+∞' },
 		}
 	},
-	{ -- 17
+	{ -- 24
 		name = 'Addition',
 		func = callFunc,
 		args = { 'add',
@@ -655,7 +655,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 18
+	{ -- 25
 		name = 'Subtraction',
 		func = callFunc,
 		args = { 'sub',
@@ -675,7 +675,7 @@ local tests = {
 			{ '-∞', 0 },
 		}
 	},
-	{ -- 19
+	{ -- 26
 		name = 'Multiply',
 		func = callFunc,
 		args = { 'mul',
@@ -697,7 +697,7 @@ local tests = {
 			{ '-42', 0 }, -- @todo bug – this should be '∞'
 		}
 	},
-	{ -- 20
+	{ -- 27
 		name = 'Division',
 		func = callFunc,
 		args = { 'div',
@@ -717,7 +717,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 21
+	{ -- 28
 		name = 'Modulus',
 		func = callFunc,
 		args = { 'mod',
@@ -737,7 +737,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 22
+	{ -- 29
 		name = 'Power',
 		func = callFunc,
 		args = { 'pow',
@@ -753,7 +753,7 @@ local tests = {
 			{ '1', 0 },
 		}
 	},
-	{ -- 23
+	{ -- 30
 		name = 'Power-modulus',
 		func = callFunc,
 		args = { 'powmod',
@@ -765,7 +765,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 24
+	{ -- 31
 		name = 'Sqrt 9',
 		func = callFunc,
 		args = { 'sqrt',
@@ -779,7 +779,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 26
+	{ -- 32
 		name = 'Compare',
 		func = compFunc,
 		args = { 'comp',
@@ -801,7 +801,7 @@ local tests = {
 			{ nil },
 		}
 	},
-	{ -- 27
+	{ -- 33
 		name = 'Equality',
 		func = compFunc,
 		args = { 'eq',
@@ -813,7 +813,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 28
+	{ -- 34
 		name = 'Less than',
 		func = compFunc,
 		args = { 'lt',
@@ -827,7 +827,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 29
+	{ -- 35
 		name = 'Less or equal',
 		func = compFunc,
 		args = { 'le',
@@ -841,7 +841,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 30
+	{ -- 36
 		name = 'Greater than',
 		func = compFunc,
 		args = { 'gt',
@@ -855,7 +855,7 @@ local tests = {
 			{ true },
 		}
 	},
-	{ -- 31
+	{ -- 37
 		name = 'Greater or equal',
 		func = compFunc,
 		args = { 'ge',
@@ -869,7 +869,7 @@ local tests = {
 			{ true },
 		}
 	},
-	{ -- 32
+	{ -- 38
 		name = 'call fix',
 		func = makeCall,
 		args = {
@@ -894,7 +894,7 @@ local tests = {
 		}
 	},
 
-	{ -- 33
+	{ -- 39
 		name = 'call eng',
 		func = makeCall,
 		args = {
@@ -922,7 +922,7 @@ local tests = {
 			{ '-1.23e3' },
 		}
 	},
-	{ -- 34
+	{ -- 40
 		name = 'call sci',
 		func = makeCall,
 		args = {
@@ -946,7 +946,7 @@ local tests = {
 			{ '-1.23e2' },
 		}
 	},
-	{ -- 35
+	{ -- 41
 		name = 'round -123.456',
 		func = callFunc,
 		args = { 'round',
