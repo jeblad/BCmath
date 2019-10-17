@@ -19,5 +19,15 @@
 	"bcmath-mul-infinite-and-zero": "相乘無限值與零",
 	"bcmath-mul-opposite-infinites": "相乘兩個反向的無限值",
 	"bcmath-mul-similar-infinites": "相乘兩個同向的無限值",
+	"bcmath-div-divisor-infinite": "無限因子相除",
+	"bcmath-div-divisor-zero": "零因子相除",
+	"bcmath-div-dividend-infinite": "無窮大相除",
+	"bcmath-mod-divisor-infinite": "無限因子模除",
+	"bcmath-mod-divisor-zero": "零因子模除",
+	"bcmath-mod-dividend-infinite": "無窮大模除",
+	"bcmath-pow-exponent-zero": "零指數冪",
+	"bcmath-pow-base-one": "一次冪",
+	"bcmath-powmod-divisor-zero": "零因子冪取模",
+	"bcmath-powmod-exponent-negative": "負指數冪取模",
 	"bcmath-sqrt-operand-negative": "負數運算元平方根"
 }
