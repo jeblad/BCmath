@@ -1343,7 +1343,7 @@ end
 --- Get the sign.
 -- Returned number is normalized, but nil if no string is found.
 -- No explicit sign is interpreted as a positive sign.
--- @function mw.bcmath.geSign
+-- @function mw.bcmath.getSign
 -- @tparam nil|string value to be parsed
 -- @treturn nil|number
 function bcmath.getSign( value )
@@ -1359,6 +1359,30 @@ function bcmath.getSign( value )
 	end
 
 	return 1
+end
+
+--- Get accumulated sign.
+-- Returned number is normalized, but nil if no string is found.
+-- No explicit sign is interpreted as a positive sign.
+-- @function mw.bcmath.getAccumulatedSign
+-- @tparam vararg ... to be parsed
+-- @treturn nil|number
+function bcmath.getAccumulatedSign( ... )
+	local acc = nil
+	for _,v in ipairs( { ... } ) do
+		acc = acc or 1
+		local sign = bcmath.getSign( v )
+		mw.log('-foo-')
+		mw.logObject(sign)
+		if not sign then
+			return nil
+		end
+		-- shall the sign be flipped?
+		if bcmath.getSign( v ) < 0 then
+			acc = acc < 0 and 1 or -1
+		end
+	end
+	return acc
 end
 
 --- Get the signed zero string.
@@ -1575,7 +1599,7 @@ function bcmath.mul( multiplier, multiplicator, scale )
 		-- special case: multiplier infinite, multiplicator finite – infinite
 		if bcmath.isInfinite( bval1 ) and bcmath.isZero( bval2 ) then
 			return makeBCmath( '', scl ):addPayload( 'bcmath-mul-infinite-and-finite' )
-		-- special case: multiplier zero, multiplicator infinite – NaN
+		-- special case: multiplier zero, multiplicator infinite – infinite
 		elseif bcmath.isZero( bval1 ) and bcmath.isInfinite( bval2 ) then
 			return makeBCmath( nil, scl ):addPayload( 'bcmath-mul-infinite-and-finite' )
 		end
