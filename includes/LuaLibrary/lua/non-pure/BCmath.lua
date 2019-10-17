@@ -404,11 +404,11 @@ local function convert( value, operator, operand, hold )
 	if operator and not value and not hold then
 		error( mw.message.new( 'bcmath-check-operand-nan', operator, operand ):plain(), 3 )
 	end
-	local conv = argConvs[type( value )]
-	if not conv then
+	local func = argConvs[type( value )]
+	if not func then
 		return nil
 	end
-	local _value, _scale = conv( value )
+	local _value, _scale = func( value )
 	return _value, _scale
 end
 
