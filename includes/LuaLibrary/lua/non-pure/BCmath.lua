@@ -1347,6 +1347,7 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn nil|number
 function bcmath.getSign( value )
+	checkTypeMulti( 'bcmath.getSign', 1, value, { 'string', 'number', 'table', 'nil' } )
 	if not value then
 		return nil
 	end
@@ -1369,15 +1370,16 @@ end
 -- @treturn nil|number
 function bcmath.getAccumulatedSign( ... )
 	local acc = nil
-	for _,v in ipairs( { ... } ) do
+	for i,v in ipairs( { ... } ) do
+		checkTypeMulti( 'bcmath.getAccumulatedSign', i, v, { 'string', 'number', 'table', 'nil' } )
+
 		acc = acc or 1
+
 		local sign = bcmath.getSign( v )
-		mw.log('-foo-')
-		mw.logObject(sign)
 		if not sign then
 			return nil
 		end
-		-- shall the sign be flipped?
+
 		if bcmath.getSign( v ) < 0 then
 			acc = acc < 0 and 1 or -1
 		end
@@ -1392,6 +1394,7 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn nil|string
 function bcmath.getSignedZero( value )
+	checkTypeMulti( 'bcmath.getSignedZero', 1, value, { 'string', 'number', 'table', 'nil' } )
 	if not value then
 		return nil
 	end
@@ -1417,6 +1420,7 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn nil|boolean
 function bcmath.isZero( value )
+	checkTypeMulti( 'bcmath.isZero', 1, value, { 'string', 'number', 'table', 'nil' } )
 	if not value then
 		return nil
 	end
@@ -1432,6 +1436,7 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn nil|string
 function bcmath.getInfinite( value )
+	checkTypeMulti( 'bcmath.getInfinite', 1, value, { 'string', 'number', 'table', 'nil' } )
 	if not value then
 		return nil
 	end
@@ -1457,11 +1462,13 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn nil|boolean
 function bcmath.isInfinite( value )
+	checkTypeMulti( 'bcmath.isInfinite', 1, value, { 'string', 'number', 'table', 'nil' } )
 	if not value then
 		return nil
 	end
 
 	local pos = string.find( value, '[∞]')
+
 	return not not pos
 end
 
@@ -1471,11 +1478,13 @@ end
 -- @tparam nil|string value to be parsed
 -- @treturn boolean
 function bcmath.isFinite( value )
+	checkTypeMulti( 'bcmath.isFinite', 1, value, { 'string', 'number', 'table', 'nil' } )
 	if not value then
 		return nil
 	end
 
 	local pos = string.find( value, '[0-9]')
+
 	return not not pos
 end
 
@@ -1493,6 +1502,7 @@ function bcmath.neg( operand )
 		local str = string.gsub( operand, '^%-', '+', 1 )
 		return str
 	end
+
 	return '-' .. operand
 end
 bcmeta.__unm = bcmath.add
