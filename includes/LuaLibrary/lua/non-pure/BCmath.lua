@@ -711,9 +711,9 @@ function bcmeta:__call( ... )
 		end
 	end
 
-	local conv = selfConvs[style or 'fix']
-	if not conv then
-		conv = convertPattern
+	local func = selfConvs[style or 'fix']
+	if not func then
+		func = convertPattern
 	end
 
 	if self:isNaN() then
@@ -740,7 +740,8 @@ function bcmeta:__call( ... )
 	end
 
 	-- return a formatted text representation
-	return conv( num, precision, style )
+	return func( num, precision, style )
+	
 end
 
 --- Instance is stringable.
