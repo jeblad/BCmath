@@ -341,10 +341,10 @@ end
 -- @treturn nil|string holding bcnumber
 -- @treturn nil|number holding an estimate
 argConvs['string'] = function( value )
-	local infinity = bcmath.getInfinite( value )
-	if infinity then
-		return infinity, 0
-	end
+--	local infinity = bcmath.getInfinite( value )
+--	if infinity then
+--		return infinity, 0
+--	end
 
 	local scale
 	local num = value
@@ -364,6 +364,14 @@ argConvs['string'] = function( value )
 		end
 
 		return num, scale
+	end
+
+	if string.find( num, '∞' ) then
+		if not string.find( num, '^[-+]?∞$' ) then
+			return nil
+		end
+
+		return num, 0
 	end
 
 	if not string.find( num, '^[-+]?%d*%.?%d*$' ) then
@@ -1324,7 +1332,14 @@ end
 		checkType( 'bcmath.round', 1, precision, 'number', true )
 		checkType( 'bcmath.round', 2, scale, 'number', true )
 		_scale = scale or _scale
-		_value = round( _value, precision )
+
+		-- can not round an infinite value, but can normalize
+		if bcmath.isInfinite( _value ) then
+			_value = bcmath.getInfinite( _value )
+		else
+			_value = round( _value, precision )
+		end
+
 		return self
 	end
 
@@ -1348,11 +1363,13 @@ end
 -- @treturn nil|number
 function bcmath.getSign( value )
 	checkTypeMulti( 'bcmath.getSign', 1, value, { 'string', 'number', 'table', 'nil' } )
-	if not value then
+
+	local val,_ = convert( value )
+	if not val then
 		return nil
 	end
 
-	local sign = string.match( value, '^([-+]?)' )
+	local sign = string.match( val, '^([-+]?)' )
 	if sign == '+' then
 		return 1
 	elseif sign == '-' then
@@ -1373,14 +1390,18 @@ function bcmath.getAccumulatedSign( ... )
 	for i,v in ipairs( { ... } ) do
 		checkTypeMulti( 'bcmath.getAccumulatedSign', i, v, { 'string', 'number', 'table', 'nil' } )
 
-		acc = acc or 1
+		local val,_ = convert( v )
+		if not val then
+			return nil
+		end
 
-		local sign = bcmath.getSign( v )
+		local sign = bcmath.getSign( val )
 		if not sign then
 			return nil
 		end
 
-		if bcmath.getSign( v ) < 0 then
+		acc = acc or 1
+		if bcmath.getSign( val ) < 0 then
 			acc = acc < 0 and 1 or -1
 		end
 	end
@@ -1395,16 +1416,18 @@ end
 -- @treturn nil|string
 function bcmath.getSignedZero( value )
 	checkTypeMulti( 'bcmath.getSignedZero', 1, value, { 'string', 'number', 'table', 'nil' } )
-	if not value then
+
+	local val,_ = convert( value )
+	if not val then
 		return nil
 	end
 
-	local pos = string.find( value, '^[-+]?[0][0.]*$')
+	local pos = string.find( val, '^[-+]?[0][0.]*$')
 	if not pos then
 		return nil
 	end
 
-	local sign = string.match( value, '^([-+]?)' )
+	local sign = string.match( val, '^([-+]?)' )
 	if sign == '+' then
 		return '+0'
 	elseif sign == '-' then
@@ -1421,11 +1444,13 @@ end
 -- @treturn nil|boolean
 function bcmath.isZero( value )
 	checkTypeMulti( 'bcmath.isZero', 1, value, { 'string', 'number', 'table', 'nil' } )
-	if not value then
+
+	local val,_ = convert( value )
+	if not val then
 		return nil
 	end
 
-	local pos = string.find( value, '^[-+]?([0][0.]*)$')
+	local pos = string.find( val, '^[-+]?([0][0.]*)$')
 	return not not pos
 end
 
@@ -1437,16 +1462,18 @@ end
 -- @treturn nil|string
 function bcmath.getInfinite( value )
 	checkTypeMulti( 'bcmath.getInfinite', 1, value, { 'string', 'number', 'table', 'nil' } )
-	if not value then
+
+	local val,_ = convert( value )
+	if not val then
 		return nil
 	end
 
-	local pos = string.find( value, '^[-+]?∞$')
+	local pos = string.find( val, '^[-+]?∞$')
 	if not pos then
 		return nil
 	end
 
-	local sign = string.match( value, '^([-+]?)' )
+	local sign = string.match( val, '^([-+]?)' )
 	if sign == '+' then
 		return '+∞'
 	elseif sign == '-' then
@@ -1463,11 +1490,13 @@ end
 -- @treturn nil|boolean
 function bcmath.isInfinite( value )
 	checkTypeMulti( 'bcmath.isInfinite', 1, value, { 'string', 'number', 'table', 'nil' } )
-	if not value then
+
+	local val,_ = convert( value )
+	if not val then
 		return nil
 	end
 
-	local pos = string.find( value, '[∞]')
+	local pos = string.find( val, '[∞]')
 
 	return not not pos
 end
@@ -1479,11 +1508,13 @@ end
 -- @treturn boolean
 function bcmath.isFinite( value )
 	checkTypeMulti( 'bcmath.isFinite', 1, value, { 'string', 'number', 'table', 'nil' } )
-	if not value then
+
+	local val,_ = convert( value )
+	if not val then
 		return nil
 	end
 
-	local pos = string.find( value, '[0-9]')
+	local pos = string.find( val, '[0-9]')
 
 	return not not pos
 end
@@ -1911,7 +1942,7 @@ function bcmath.round( value, precision, scale )
 
 	-- can not round an infinite value
 	if bcmath.isInfinite( bval ) then
-		return makeBCmath( bval, bscl )
+		return makeBCmath( bcmath.getInfinite( bval ), bscl )
 	end
 
 	return makeBCmath( round( bval, precision ), scale )
