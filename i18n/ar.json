@@ -22,5 +22,8 @@
 	"bcmath-div-divisor-infinite": "اقسم حيث يكون المقسوم لا نهاية",
 	"bcmath-div-divisor-zero": "اقسم حيث يكون المقسوم صفرا",
 	"bcmath-div-dividend-infinite": "اقسم حيث تكون الأرباح غير محدودة",
+	"bcmath-mod-divisor-infinite": "معامل مع مقسوم لانهائي",
+	"bcmath-mod-divisor-zero": "معامل مع مقسوم صفر",
+	"bcmath-mod-dividend-infinite": "معامل مع أرباح لا حصر لها",
 	"bcmath-sqrt-operand-negative": "الجذر التربيعي حيث يكون المعامل سالبا"
 }
