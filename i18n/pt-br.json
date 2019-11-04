@@ -26,5 +26,7 @@
 	"bcmath-mod-dividend-infinite": "Módulo com dividendo infinito",
 	"bcmath-pow-exponent-zero": "Potência com expoente zero",
 	"bcmath-pow-base-one": "Potência com base um",
+	"bcmath-powmod-divisor-zero": "Potenciação com o divisor zero",
+	"bcmath-powmod-exponent-negative": "Potenciação com o divisor negativo",
 	"bcmath-sqrt-operand-negative": "Raiz quadrada com operando negativo"
 }
