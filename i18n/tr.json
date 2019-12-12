@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"BaRaN6161 TURK"
+		]
+	},
+	"bcmath-desc": "Lua modüllerine isteğe bağlı hassas aritmetik sağlar",
+	"bcmath-payload-counter": "$1 $2",
+	"bcmath-check-not-implemented": "İşlevselliği “$1” henüz uygulanmadı!",
+	"bcmath-check-self-nan": "“öz” geçerli bir değere sahip değil",
+	"bcmath-check-operand-nan": "“$2” operandlı “$1” operatörü geçerli bir değere sahip değil",
+	"bcmath-add-singlesided-infinite": "Birinin sonsuz olduğu iki değer eklendi",
+	"bcmath-add-opposite-infinites": "Ters yönde iki sonsuz değer eklendi",
+	"bcmath-add-similar-infinites": "Benzer yönde iki sonsuz değer eklendi",
+	"bcmath-sub-singlesided-infinite": "Birinin sonsuz olduğu iki değeri çıkarıldı",
+	"bcmath-sub-opposite-infinites": "Ters yönde iki sonsuz değer çıkarıldı",
+	"bcmath-sub-similar-infinites": "Çıkarılmış benzer yönde iki sonsuz değer",
+	"bcmath-mul-infinite-and-zero": "Çarpılmış sonsuz ve sıfır",
+	"bcmath-mul-opposite-infinites": "Ters yönde çarpılmış iki sonsuz değer",
+	"bcmath-mul-similar-infinites": "Benzer yönde çarpılmış iki sonsuz değer",
+	"bcmath-div-divisor-infinite": "Sonsuz bölen ile bölünmüş",
+	"bcmath-div-divisor-zero": "Sıfır bölen ile bölünmüş",
+	"bcmath-div-dividend-infinite": "Sonsuz temettü ile bölünmüş",
+	"bcmath-mod-divisor-infinite": "Sonsuz bölenli modül",
+	"bcmath-mod-divisor-zero": "Sıfır bölenli modül",
+	"bcmath-mod-dividend-infinite": "Sonsuz kar payına sahip modül",
+	"bcmath-pow-exponent-zero": "Sıfır üslü güç",
+	"bcmath-pow-base-one": "Temel bir güç",
+	"bcmath-powmod-divisor-zero": "Sıfır bölenli Powermod",
+	"bcmath-powmod-exponent-negative": "Negatif üslü Powermod",
+	"bcmath-sqrt-operand-negative": "Negatif operand ile karekök"
+}
