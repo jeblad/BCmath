@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamilton Abreu"
+		]
+	},
+	"bcmath-desc": "Fornece aritmética de precisão arbitrária a módulos Lua",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "A funcionalidade \"$1\" ainda não foi implementada!",
+	"bcmath-check-self-nan": "“self” não tem um valor válido",
+	"bcmath-check-operand-nan": "o operador “$1” com o operando “$2” não tem um valor válido",
+	"bcmath-add-singlesided-infinite": "Foram adicionados dois valores em que um é infinito",
+	"bcmath-add-opposite-infinites": "Foram adicionados dois valores infinitos de sinal oposto",
+	"bcmath-add-similar-infinites": "Foram adicionados dois valores infinitos com o mesmo sinal",
+	"bcmath-sub-singlesided-infinite": "Foram subtraídos dois valores em que um é infinito",
+	"bcmath-sub-opposite-infinites": "Foram subtraídos dois valores infinitos de sinal oposto",
+	"bcmath-sub-similar-infinites": "Foram subtraídos dois valores infinitos com o mesmo sinal",
+	"bcmath-mul-infinite-and-zero": "Foi multiplicado um valor infinito com zero",
+	"bcmath-mul-opposite-infinites": "Foram multiplicados dois valores infinitos de sinal oposto",
+	"bcmath-mul-similar-infinites": "Foram multiplicados dois valores infinitos com o mesmo sinal",
+	"bcmath-div-divisor-infinite": "Foi feita uma divisão com um divisor infinito",
+	"bcmath-div-divisor-zero": "Foi feita uma divisão com divisor zero",
+	"bcmath-div-dividend-infinite": "Foi feita uma divisão com dividendo infinito",
+	"bcmath-mod-divisor-infinite": "Módulo com divisor infinito",
+	"bcmath-mod-divisor-zero": "Módulo com divisor zero",
+	"bcmath-mod-dividend-infinite": "Módulo com dividendo infinito",
+	"bcmath-pow-exponent-zero": "Potência com expoente zero",
+	"bcmath-pow-base-one": "Potência com base um",
+	"bcmath-powmod-divisor-zero": "Exponenciação modular com divisor zero",
+	"bcmath-powmod-exponent-negative": "Exponenciação modular com expoente negativo",
+	"bcmath-sqrt-operand-negative": "Raiz quadrada com operando negativo"
+}
