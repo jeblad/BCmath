@@ -25,5 +25,7 @@
 	"bcmath-mod-divisor-infinite": "معامل مع مقسوم لانهائي",
 	"bcmath-mod-divisor-zero": "معامل مع مقسوم صفر",
 	"bcmath-mod-dividend-infinite": "معامل مع أرباح لا حصر لها",
+	"bcmath-pow-exponent-zero": "ضرب بأس صفري",
+	"bcmath-pow-base-one": "ضرب بقاعدة تساوي واحد",
 	"bcmath-sqrt-operand-negative": "الجذر التربيعي حيث يكون المعامل سالبا"
 }
