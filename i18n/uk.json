@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"Piramidion",
+			"Ата"
+		]
+	},
+	"bcmath-desc": "Забезпечує модулі Lua арифметикою довільної точності",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Функціонал «$1» ще не імплементовано!",
+	"bcmath-check-self-nan": "«self» не містить допустимого значення",
+	"bcmath-check-operand-nan": "оператор «$1» з операндом «$2» не містить допустимого значення",
+	"bcmath-add-singlesided-infinite": "Додано два значення, одне з яких — нескінченне",
+	"bcmath-add-opposite-infinites": "Додано два нескінченні значення з протилежними напрямками",
+	"bcmath-add-similar-infinites": "Додано два нескінченні значення з однаковими напрямками",
+	"bcmath-sub-singlesided-infinite": "Віднято два значення, одне з яких — нескінченне",
+	"bcmath-sub-opposite-infinites": "Віднято два нескінченні значення з протилежними напрямками",
+	"bcmath-sub-similar-infinites": "Віднято два нескінченні значення з однаковими напрямками",
+	"bcmath-mul-infinite-and-zero": "Помножено нескінченне значення і нуль",
+	"bcmath-mul-opposite-infinites": "Помножено два нескінченні значення з протилежними напрямками",
+	"bcmath-mul-similar-infinites": "Помножено два нескінченні значення з однаковими напрямками",
+	"bcmath-div-divisor-infinite": "Ділиться на нескінченність",
+	"bcmath-div-divisor-zero": "Ділиться на нуль",
+	"bcmath-div-dividend-infinite": "Поділено з нескінченним діленим",
+	"bcmath-mod-divisor-infinite": "Модуль з нескінченним дільником",
+	"bcmath-mod-divisor-zero": "Модуль з нульовим дільником",
+	"bcmath-mod-dividend-infinite": "Модуль з нескінченним діленим",
+	"bcmath-pow-exponent-zero": "Піднесення до нульового степеня",
+	"bcmath-pow-base-one": "Показник степеня з основою один",
+	"bcmath-powmod-divisor-zero": "Піднесення до степеня по модулю з нульовим дільником",
+	"bcmath-powmod-exponent-negative": "Піднесення до степеня по модулю з негативною експонентою",
+	"bcmath-sqrt-operand-negative": "Квадратний корінь з негативним операндом"
+}
