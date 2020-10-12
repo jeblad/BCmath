@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"YaronSh"
+		]
+	},
+	"bcmath-check-not-implemented": "התכונה „$1” לא הוטמעה עדיין!",
+	"bcmath-check-self-nan": "ל־„self” אין ערך תקני",
+	"bcmath-add-singlesided-infinite": "נוספו שני ערכים שאחד מהם הוא אינסוף",
+	"bcmath-add-opposite-infinites": "נוספו שני ערכי אינסוף בכיוונים מנוגדים",
+	"bcmath-add-similar-infinites": "נוספו שני ערכי אינסוף באותו הכיוון",
+	"bcmath-pow-exponent-zero": "חזקה עם מעריך אפס",
+	"bcmath-pow-base-one": "חזקה עם בסיס אחד"
+}
