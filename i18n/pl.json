@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Olaf"
+		]
+	},
+	"bcmath-desc": "Dostarcza modułom Lua arytmetykę o dowolnie wybranej precyzji",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Funkcjonalność \"$1\" nie jest jeszcze zaimplementowana!",
+	"bcmath-check-self-nan": "\"self\" nie ma poprawnej wartości",
+	"bcmath-check-operand-nan": "operator \"$1\" z argumentem \"$2\" nie ma poprawnej wartości",
+	"bcmath-add-singlesided-infinite": "Dodawane dwie wartości, z czego jedna jest nieskończona",
+	"bcmath-add-opposite-infinites": "Dodawane dwie przeciwne nieskończoności",
+	"bcmath-add-similar-infinites": "Dodawane dwie nieskończoności o tym samym znaku",
+	"bcmath-sub-singlesided-infinite": "Odejmowane dwie wartości, w tym jedna nieskończona",
+	"bcmath-sub-opposite-infinites": "Odejmowane dwie nieskończoności o przeciwnych znakach",
+	"bcmath-sub-similar-infinites": "Odejmowane dwie nieskończoności o tym samym znaku",
+	"bcmath-mul-infinite-and-zero": "Mnożona nieskończoność i zero",
+	"bcmath-mul-opposite-infinites": "Mnożone dwie nieskończoności o przeciwnych znakach",
+	"bcmath-mul-similar-infinites": "Mnożone dwie nieskończonści o tym samym znaku",
+	"bcmath-div-divisor-infinite": "Dzielenie przez nieskończoność",
+	"bcmath-div-divisor-zero": "Dzielenie przez zero",
+	"bcmath-div-dividend-infinite": "Dzielenie z nieskończoną dzielną",
+	"bcmath-mod-divisor-infinite": "Reszta z dzielenia przez nieskończoność",
+	"bcmath-mod-divisor-zero": "Reszta z dzielenia przez zero",
+	"bcmath-mod-dividend-infinite": "Reszta z dzielenia nieskończoności",
+	"bcmath-pow-exponent-zero": "Potęga z zerowym wykładnikiem",
+	"bcmath-pow-base-one": "Potęga o podstawie jeden",
+	"bcmath-powmod-divisor-zero": "Powermod z zerowym dzielnikiem",
+	"bcmath-powmod-exponent-negative": "Powermod z ujemnym wykładnikiem",
+	"bcmath-sqrt-operand-negative": "Pierwiastek kwadratowy z ujemnym argumentem"
+}
