@@ -24,6 +24,7 @@ readme = {
 	'topics/databases.md',
 	'topics/non-pure.md',
 	'topics/vagrant.md',
+	'topics/docker.md',
 	-- 'topics/hello-world.md',
 	'topics/vscode.md',
 	'topics/sources.md',
