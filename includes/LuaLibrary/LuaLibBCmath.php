@@ -14,8 +14,6 @@ use \Exception;
  */
 class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 	public function register(): array {
-		global $wgContLang;
-		$lang = $wgContLang;
 		$lib = [
 			'bcadd'    => [ $this, 'bcAdd' ],
 			'bcsub'    => [ $this, 'bcSub' ],
@@ -27,12 +25,12 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 			'bcsqrt'   => [ $this, 'bcSqrt' ],
 			'bccomp'   => [ $this, 'bcComp' ]
 		];
-		// Get the correct default language from the parser
+		$langCode = 'en';
 		if ( $this->getParser() ) {
-			$lang = $this->getParser()->getTargetLanguage();
+			$langCode = $this->getParser()->getFunctionLang();
 		}
 		return $this->getEngine()->registerInterface( __DIR__ . '/lua/non-pure/BCmath.lua', $lib, [
-			'lang' => $lang->getCode(),
+			'lang' => $langCode,
 		] );
 	}
 
