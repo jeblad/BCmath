@@ -27,7 +27,7 @@ class LuaLibBCmath extends Scribunto_LuaLibraryBase {
 		];
 		$langCode = 'en';
 		if ( $this->getParser() ) {
-			$langCode = $this->getParser()->getFunctionLang();
+			$langCode = $this->getParser()->getTargetLanguage();
 		}
 		return $this->getEngine()->registerInterface( __DIR__ . '/lua/non-pure/BCmath.lua', $lib, [
 			'lang' => $langCode,
