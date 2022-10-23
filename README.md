@@ -22,7 +22,7 @@ BCmath depends on modules from the Scribunto extension.
 
 ## Development
 
-Expect uses [Mediawiki-Vagrant](https://www.mediawiki.org/wiki/MediaWiki-Vagrant), and a complete setup can be made quite easily.
+BCmath uses [Mediawiki-Vagrant](https://www.mediawiki.org/wiki/MediaWiki-Vagrant), and a complete setup can be made quite easily.
 
 1. Make sure you have Vagrant, etc, prepare a development directory, and move to that directory.
 2. Clone Mediawiki
