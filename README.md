@@ -11,7 +11,7 @@ Help is available at [BCmath documentation](https://jeblad.github.io/BCmath/), w
 
 BCmath depends on modules from the Scribunto extension.
 
-1. Download from [Github](https://github.com/jeblad/BCmath) [zip](https://github.com/jeblad/BCmath/archive/master.zip) and place the file(s) in a directory called BCmath in your extensions/ folder.
+1. Download from [Github](https://github.com/jeblad/BCmath) [zip](https://github.com/jeblad/BCmath/archive/master.zip) and unpack the file(s) in a directory called BCmath in your extensions/ folder.
 2. Add the following code at the bottom of your LocalSettings.php:
 
 	```lua
