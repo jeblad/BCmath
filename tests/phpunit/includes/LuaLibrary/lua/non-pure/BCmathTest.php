@@ -10,6 +10,7 @@ use Scribunto_LuaEngineTestBase;
  * @group slow
  * @group Lua
  * @group BCmath
+ * @covers \BCmath\LuaLibBCmath
  *
  * @license GPL-2.0-or-later
  *
