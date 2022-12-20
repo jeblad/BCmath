@@ -1019,7 +1019,7 @@ local function makeBCmath( value, scale )
 		_value = php.bcadd( _value, bval, _scale )
 
 		return self
-end
+	end
 
 	--- Subtract self with subtrahend.
 	-- This method will store result in self, and then return self to facilitate chaining.
@@ -1059,7 +1059,7 @@ end
 		_value = php.bcsub( _value, bval, _scale )
 
 		return self
-end
+	end
 
 	--- Multiply self with multiplicator.
 	-- This method will store result in self, and then return self to facilitate chaining.
@@ -1101,7 +1101,7 @@ end
 		_value = php.bcmul( _value, bval, _scale )
 
 		return self
-end
+	end
 
 	--- Divide self with divisor.
 	-- This method will store result in self, and then return self to facilitate chaining.
