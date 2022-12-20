@@ -5,6 +5,7 @@
 local testframework = require 'Module:TestFramework'
 
 local function testExists()
+	assert( mw.bcmath, 'testExists could not find object' )
 	return type( mw.bcmath )
 end
 
