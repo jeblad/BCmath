@@ -399,25 +399,36 @@ end
 
 --- Convert provided value into bc num-scale pair.
 -- Dispatches value to type-specific converters.
--- If operator is given, then a failure will rise an exception.
 -- This is a real bottleneck due to the dispatched function calls.
 -- @local
 -- @function convert
 -- @tparam string|number|table value to be parsed
--- @tparam nil|string operator to be reported
--- @tparam nil|boolean hold and do not error out
 -- @treturn string holding bcnumber
 -- @treturn number holding an estimate
-local function convert( value, operator, operand, hold )
-	if operator and not value and not hold then
-		error( mw.message.new( 'bcmath-check-operand-nan', operator, operand ):plain(), 3 )
-	end
+local function convert( value )
 	local func = argConvs[type( value )]
 	if not func then
 		return nil
 	end
 	local _value, _scale = func( value )
 	return _value, _scale
+end
+
+--- Convert provided value into bc num-scale pair with blame.
+-- Dispatches value to type-specific converters through call to convert.
+-- If operator is given, then a failure will rise an exception.
+-- @local
+-- @function convertWithBlame
+-- @tparam string|number|table value to be parsed
+-- @tparam nil|string operator to be reported
+-- @tparam nil|string operand to be reported
+-- @treturn string holding bcnumber
+-- @treturn number holding an estimate
+local function convertWithBlame( value, operator, operand )
+	if not value then
+		error( mw.message.new( 'bcmath-check-operand-nan', operator or 'unknown', operand or 'unknown'):plain(), 3 )
+	end
+	return convert( value )
 end
 
 --- Extract sign and length from a bignum string.
@@ -992,7 +1003,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'add' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:add', addend, scale )
-		local bval, bscl = convert( addend, 'bcmath:add', 'addend' )
+		local bval, bscl = convertWithBlame( addend, 'bcmath:add', 'addend' )
 		_scale = scale or math.max( _scale, bscl )
 
 		-- short circuit tests
@@ -1032,7 +1043,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'sub' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:sub', subtrahend, scale )
-		local bval, bscl = convert( subtrahend, 'bcmath:sub', 'subtrahend' )
+		local bval, bscl = convertWithBlame( subtrahend, 'bcmath:sub', 'subtrahend' )
 		_scale = scale or math.max( _scale, bscl )
 
 		-- short circuit tests
@@ -1072,7 +1083,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'mul' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:mul', multiplicator, scale )
-		local bval, bscl = convert( multiplicator, 'bcmath:mul', 'multiplicator' )
+		local bval, bscl = convertWithBlame( multiplicator, 'bcmath:mul', 'multiplicator' )
 		_scale = scale or math.max( _scale, bscl )
 
 		-- short circuit tests
@@ -1114,7 +1125,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'div' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:div', divisor, scale )
-		local bval, bscl = convert( divisor, 'bcmath:div', 'divisor' )
+		local bval, bscl = convertWithBlame( divisor, 'bcmath:div', 'divisor' )
 		_scale = scale or math.max( _scale, bscl )
 
 		-- special case: divisor zero – NaN
@@ -1158,7 +1169,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'mod' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:mod', divisor, scale )
-		local bval, bscl = convert( divisor, 'bcmath:mod', 'divisor' )
+		local bval, bscl = convertWithBlame( divisor, 'bcmath:mod', 'divisor' )
 		_scale = scale or math.max( _scale, bscl )
 
 		-- special case: divisor zero – NaN
@@ -1202,7 +1213,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'pow' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:pow', exponent, scale )
-		local bval, bscl = convert( exponent, 'bcmath:pow', 'exponent' )
+		local bval, bscl = convertWithBlame( exponent, 'bcmath:pow', 'exponent' )
 		_scale = scale or math.max( _scale, bscl )
 
 		-- special case: exponent zero – always 1
@@ -1233,8 +1244,8 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'powmod' )
 		checkSelfValue()
 		checkBinaryOperands( 'bcmath:powmod', exponent, divisor, scale )
-		local bval1, bscl1 = convert( exponent, 'bcmath:powmod', 'exponent' )
-		local bval2, bscl2 = convert( divisor, 'bcmath:powmod', 'divisor' )
+		local bval1, bscl1 = convertWithBlame( exponent, 'bcmath:powmod', 'exponent' )
+		local bval2, bscl2 = convertWithBlame( divisor, 'bcmath:powmod', 'divisor' )
 		_scale = scale or math.max( _scale, bscl1, bscl2 )
 
 		-- special case: divisor zero – NaN
@@ -1289,7 +1300,7 @@ local function makeBCmath( value, scale )
 		checkSelf( self, 'comp' )
 		checkSelfValue()
 		checkUnaryOperand( 'bcmath:comp', operand, scale )
-		local bval, bscl = convert( operand, 'bcmath:comp', 'operand' )
+		local bval, bscl = convertWithBlame( operand, 'bcmath:comp', 'operand' )
 		local scl = scale or math.max( _scale, bscl ) -- don't change the instance
 
 		-- short circuit the tests
@@ -1548,8 +1559,8 @@ bcmeta.__unm = bcmath.neg
 -- @treturn bcmath
 function bcmath.add( augend, addend, scale )
 	checkBinaryOperands( 'bcmath.add', augend, addend, scale )
-	local bval1, bscl1 = convert( augend, 'bcmath.add', 'augend' )
-	local bval2, bscl2 = convert( addend, 'bcmath.add', 'addend' )
+	local bval1, bscl1 = convertWithBlame( augend, 'bcmath.add', 'augend' )
+	local bval2, bscl2 = convertWithBlame( addend, 'bcmath.add', 'addend' )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- short circuit the tests
@@ -1585,8 +1596,8 @@ bcmeta.__add = bcmath.add
 -- @treturn bcmath
 function bcmath.sub( minuend, subtrahend, scale )
 	checkBinaryOperands( 'bcmath:sub', minuend, subtrahend, scale )
-	local bval1, bscl1 = convert( minuend, 'bcmath.sub', 'minuend' )
-	local bval2, bscl2 = convert( subtrahend, 'bcmath.sub', 'subtrahend' )
+	local bval1, bscl1 = convertWithBlame( minuend, 'bcmath.sub', 'minuend' )
+	local bval2, bscl2 = convertWithBlame( subtrahend, 'bcmath.sub', 'subtrahend' )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- short circuit the tests
@@ -1622,8 +1633,8 @@ bcmeta.__sub = bcmath.sub
 -- @treturn bcmath
 function bcmath.mul( multiplier, multiplicator, scale )
 	checkBinaryOperands( 'bcmath:mul', multiplier, multiplicator, scale )
-	local bval1, bscl1 = convert( multiplier, 'bcmath.mul', 'multiplier' )
-	local bval2, bscl2 = convert( multiplicator, 'bcmath.mul', 'multiplicator' )
+	local bval1, bscl1 = convertWithBlame( multiplier, 'bcmath.mul', 'multiplier' )
+	local bval2, bscl2 = convertWithBlame( multiplicator, 'bcmath.mul', 'multiplicator' )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- short circuit the tests
@@ -1669,8 +1680,8 @@ bcmeta.__mul = bcmath.mul
 -- @treturn bcmath
 function bcmath.div( dividend, divisor, scale )
 	checkBinaryOperands( 'bcmath:div', dividend, divisor, scale )
-	local bval1, bscl1 = convert( dividend, 'bcmath.div', 'dividend' )
-	local bval2, bscl2 = convert( divisor, 'bcmath.div', 'divisor' )
+	local bval1, bscl1 = convertWithBlame( dividend, 'bcmath.div', 'dividend' )
+	local bval2, bscl2 = convertWithBlame( divisor, 'bcmath.div', 'divisor' )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- special case: divisor zero – NaN
@@ -1709,8 +1720,8 @@ bcmeta.__div = bcmath.div
 -- @treturn bcmath
 function bcmath.mod( dividend, divisor, scale )
 	checkBinaryOperands( 'bcmath:mod', dividend, divisor, scale )
-	local bval1, bscl1 = convert( dividend, 'bcmath.mod', 'dividend' )
-	local bval2, bscl2 = convert( divisor, 'bcmath.mod', 'divisor' )
+	local bval1, bscl1 = convertWithBlame( dividend, 'bcmath.mod', 'dividend' )
+	local bval2, bscl2 = convertWithBlame( divisor, 'bcmath.mod', 'divisor' )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- special case: divisor zero – NaN
@@ -1749,8 +1760,8 @@ bcmeta.__mod = bcmath.mod
 -- @treturn bcmath
 function bcmath.pow( base, exponent, scale )
 	checkBinaryOperands( 'bcmath:pow', base, exponent, scale )
-	local bval1, bscl1 = convert( base, 'bcmath.pow', 'base' )
-	local bval2, bscl2 = convert( exponent, 'bcmath.pow', 'exponent' )
+	local bval1, bscl1 = convertWithBlame( base, 'bcmath.pow', 'base' )
+	local bval2, bscl2 = convertWithBlame( exponent, 'bcmath.pow', 'exponent' )
 	local scl = scale or math.max( bscl1, bscl2 )
 
 	-- exponent zero – always 1
@@ -1778,9 +1789,9 @@ bcmeta.__pow = bcmath.pow
 -- @treturn bcmath
 function bcmath.powmod( base, exponent, divisor, scale )
 	checkTernaryOperands( 'bcmath:powmod', base, exponent, divisor, scale )
-	local bval1, bscl1 = convert( base, 'bcmath.powmod', 'base' )
-	local bval2, bscl2 = convert( exponent, 'bcmath.powmod', 'exponent' )
-	local bval3, bscl3 = convert( divisor, 'bcmath.powmod', 'divisor' )
+	local bval1, bscl1 = convertWithBlame( base, 'bcmath.powmod', 'base' )
+	local bval2, bscl2 = convertWithBlame( exponent, 'bcmath.powmod', 'exponent' )
+	local bval3, bscl3 = convertWithBlame( divisor, 'bcmath.powmod', 'divisor' )
 	local scl = scale or math.max( bscl1, bscl2, bscl3 )
 
 	-- divisor zero – NaN
@@ -1805,7 +1816,7 @@ end
 -- @treturn bcmath
 function bcmath.sqrt( operand, scale )
 	checkUnaryOperand( 'bcmath:sqrt', operand, scale )
-	local bval1, bscl1 = convert( operand, 'bcmath.sqrt', 'operand' )
+	local bval1, bscl1 = convertWithBlame( operand, 'bcmath.sqrt', 'operand' )
 	local scl = scale or bscl1
 
 	-- operand less than zero – NaN
@@ -1828,8 +1839,8 @@ end
 -- @treturn nil|number
 function bcmath.comp( left, right, scale )
 	checkBinaryOperands( 'bcmath:comp', left, right, scale )
-	local bval1, bscl1 = convert( left, 'bcmath.comp', 'left', true )
-	local bval2, bscl2 = convert( right, 'bcmath.comp', 'right', true )
+	local bval1, bscl1 = convertWithBlame( left, 'bcmath.comp', 'left' )
+	local bval2, bscl2 = convertWithBlame( right, 'bcmath.comp', 'right' )
 	if not( bval1 ) or not( bval2 ) then
 		return false
 	end
@@ -1938,7 +1949,7 @@ function bcmath.round( value, precision, scale )
 	checkTypeMulti( 'bcmath.round', 1, value, { 'string', 'table', 'number' } )
 	checkType( 'bcmath.round', 2, precision, 'number', true )
 	checkType( 'bcmath.round', 3, scale, 'number', true )
-	local bval, bscl = convert( value, 'bcmath.round', 'value', true )
+	local bval, bscl = convertWithBlame( value, 'bcmath.round', 'value' )
 
 	-- can not round an infinite value
 	if bcmath.isInfinite( bval ) then
