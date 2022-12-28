@@ -1536,7 +1536,7 @@ function bcmath.neg( operand )
 
 	return '-' .. operand
 end
-bcmeta.__unm = bcmath.add
+bcmeta.__unm = bcmath.neg
 
 --- Add the addend to augend.
 -- This function is available as a metamethod.
