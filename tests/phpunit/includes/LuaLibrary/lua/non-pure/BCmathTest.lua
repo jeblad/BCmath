@@ -194,219 +194,6 @@ local tests = {
 		}
 	},
 	{ -- 5
-		name = 'Negative',
-		func = callInstance,
-		args = { 'neg',
-			{ mw.bcmath.new( '42' ) },
-			{ mw.bcmath.new( '+42' ) },
-			{ mw.bcmath.new( '-42' ) },
-		},
-		expect = {
-			{ '-42', 0 },
-			{ '-42', 0 },
-			{ '+42', 0 },
-		}
-	},
-	{ -- 6
-		name = 'Addition',
-		func = callInstance,
-		args = { 'add',
-			{ mw.bcmath.new( '0', 3 ), '42.123' },
-			{ mw.bcmath.new( '0', 3 ), '+∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '0' },
-			{ mw.bcmath.new( '+∞', 3 ), '+∞' },
-			{ mw.bcmath.new( '∞', 3 ), '-∞' },
-		},
-		expect = {
-			{ '42.123', 3 },
-			{ '+∞', 3 },
-			{ '+∞', 3 },
-			{ '+∞', 3 },
-			{ nil, 3 },
-		}
-	},
-	{ -- 7
-		name = 'Subtraction',
-		func = callInstance,
-		args = { 'sub',
-			{ mw.bcmath.new( '0', 3 ), '42.123' },
-			{ mw.bcmath.new( '0', 3 ), '+∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '0' },
-			{ mw.bcmath.new( '+∞', 3 ), '+∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '-∞' },
-		},
-		expect = {
-			{ '-42.123', 3 },
-			{ '-∞', 3 },
-			{ '+∞', 3 },
-			{ nil, 3 },
-			{ '+∞', 3 },
-		}
-	},
-
-	{ -- 8
-		name = 'Multiply',
-		func = callInstance,
-		args = { 'mul',
-			{ mw.bcmath.new( '21.0', 3 ), '2' },
-			{ mw.bcmath.new( '42.0', 3 ), '0' },
-			{ mw.bcmath.new( '0', 3 ), '42.0' },
-			{ mw.bcmath.new( '∞', 3 ), '0' },
-			{ mw.bcmath.new( '0', 3 ), '∞' },
-			{ mw.bcmath.new( '42', 3 ), '∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '-∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '+∞' },
-		},
-		expect = {
-			{ '42.000', 3 },
-			{ '0.000', 3 },
-			{ '0.000', 3 },
-			{ nil, 3 },
-			{ nil, 3 },
-			{ '-42', 3 }, --@todo bug – this should be '∞'
-			{ '-∞', 3 },
-			{ '+∞', 3 },
-		}
-	},
-	{ -- 9
-		name = 'Divide',
-		func = callInstance,
-		args = { 'div',
-			{ mw.bcmath.new( '42.0', 3 ), '2' },
-			{ mw.bcmath.new( '42.0', 3 ), '0' },
-			{ mw.bcmath.new( '0', 3 ), '42' },
-			{ mw.bcmath.new( '42.0', 3 ), '+∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '42' },
-			{ mw.bcmath.new( '+∞', 3 ), '+∞' },
-		},
-		expect = {
-			{ '21.000', 3 },
-			{ nil, 3 },
-			{ '0.000', 3 },
-			{ '0', 3 },
-			{ '+∞', 3 },
-			{ nil, 3 },
-		}
-	},
-	{ -- 10
-		name = 'Modulus',
-		func = callInstance,
-		args = { 'mod',
-			{ mw.bcmath.new( '42.0', 3 ), '6' },
-			{ mw.bcmath.new( '42.0', 3 ), '0' },
-			{ mw.bcmath.new( '0', 3 ), '42' },
-			{ mw.bcmath.new( '42.0', 3 ), '+∞' },
-			{ mw.bcmath.new( '+∞', 3 ), '42' },
-			{ mw.bcmath.new( '+∞', 3 ), '+∞' },
-		},
-		expect = {
-			{ '0.000', 3 },
-			{ nil, 3 },
-			{ '0.000', 3 },
-			{ '0', 3 },
-			{ '+∞', 3 },
-			{ nil, 3 },
-		}
-	},
-	{ -- 11
-		name = 'Power',
-		func = callInstance,
-		args = { 'pow',
-			{ mw.bcmath.new( '42', 0 ), '2' },
-			{ mw.bcmath.new( '42', 0 ), '0' },
-			{ mw.bcmath.new( '1', 0 ), '0' },
-			{ mw.bcmath.new( '1', 0 ), '2' },
-		},
-		expect = {
-			{ '1764', 0 },
-			{ '1', 0 },
-			{ '1', 0 },
-			{ '1', 0 },
-		}
-	},
-	{ -- 12
-		name = 'Power-modulus',
-		func = callInstance,
-		args = { 'powmod',
-			{ mw.bcmath.new( '42', 0 ), '2', '6' },
-			{ mw.bcmath.new( '42', 0 ), '-2', '6' },
-			{ mw.bcmath.new( '42', 0 ), '2', '0' },
-		},
-		expect = {
-			{ '0', 0 },
-			{ nil, 0 },
-			{ nil, 0 },
-		}
-	},
-	{ -- 13
-		name = 'Sqare root',
-		func = callInstance,
-		args = { 'sqrt',
-			{ mw.bcmath.new( '1764', 0 ) },
-			{ mw.bcmath.new( '0', 0 ) },
-			{ mw.bcmath.new( '-1764', 0 ) },
-		},
-		expect = {
-			{ '42', 0 },
-			{ '0', 0 },
-			{ nil, 0 },
-		}
-	},
-	{ -- 14
-		name = 'Compare',
-		func = compInstance,
-		args = { 'comp',
-			{ mw.bcmath.new( '41', 0 ), '42' },
-			{ mw.bcmath.new( '42', 0 ), '42' },
-			{ mw.bcmath.new( '43', 0 ), '42' },
-			{ mw.bcmath.new( '-∞', 0 ), '42' },
-			{ mw.bcmath.new( '+∞', 0 ), '42' },
-			{ mw.bcmath.new( '-∞', 0 ), '+∞' },
-			{ mw.bcmath.new( '+∞', 0 ), '-∞' },
-			{ mw.bcmath.new( '+∞', 0 ), '+∞' },
-		},
-		expect = {
-			{ -1 },
-			{ 0 },
-			{ 1 },
-			{ -1 },
-			{ 1 },
-			{ -1 },
-			{ 1 },
-			{ nil },
-		}
-	},
-	{ -- 15
-		name = 'Round',
-		func = callInstance,
-		args = { 'round',
-			{ mw.bcmath.new( '-123.456' ), 7 },
-			{ mw.bcmath.new( '-123.456' ), 6 },
-			{ mw.bcmath.new( '-123.456' ), 5 },
-			{ mw.bcmath.new( '-123.456' ), 4 },
-			{ mw.bcmath.new( '-123.456' ), 3 },
-			{ mw.bcmath.new( '-123.456' ), 2 },
-			{ mw.bcmath.new( '-123.456' ), 1 },
-			{ mw.bcmath.new( '-456.789' ), 4 },
-			{ mw.bcmath.new( '-456.789' ), 3 },
-			{ mw.bcmath.new( '-456.789' ), 2 },
-			{ mw.bcmath.new( '-456.789' ), 1 },
-		},
-		expect = {
-			{ '-123.456', 3 },
-			{ '-123.456', 3 },
-			{ '-123.46', 3 },
-			{ '-123.5', 3 },
-			{ '-123', 3 },
-			{ '-120', 3 },
-			{ '-100', 3 },
-			{ '-456.8', 3 },
-			{ '-457', 3 },
-			{ '-460', 3 },
-			{ '-500', 3 },
-		}
-	},
-	{ -- 16
 		name = 'Get sign',
 		func = compFunc,
 		args = { 'getSign',
@@ -436,7 +223,7 @@ local tests = {
 			{ -1 },
 		}
 	},
-	{ -- 17
+	{ -- 6
 		name = 'Get accumulated sign',
 		func = compFunc,
 		args = { 'getAccumulatedSign',
@@ -466,7 +253,7 @@ local tests = {
 			{ 1 },
 		}
 	},
-	{ -- 18
+	{ -- 7
 		name = 'Get signed zero',
 		func = compFunc,
 		args = { 'getSignedZero',
@@ -496,7 +283,7 @@ local tests = {
 			{ nil },
 		}
 	},
-	{ -- 19
+	{ -- 8
 		name = 'Get infinite',
 		func = compFunc,
 		args = { 'getInfinite',
@@ -526,7 +313,7 @@ local tests = {
 			{ '-∞' },
 		}
 	},
-	{ -- 20
+	{ -- 9
 		name = 'Is zero',
 		func = compFunc,
 		args = { 'isZero',
@@ -556,7 +343,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 21
+	{ -- 10
 		name = 'Is finite',
 		func = compFunc,
 		args = { 'isFinite',
@@ -586,7 +373,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 22
+	{ -- 11
 		name = 'Is infinite',
 		func = compFunc,
 		args = { 'isInfinite',
@@ -616,7 +403,7 @@ local tests = {
 			{ true },
 		}
 	},
-	{ -- 23
+	{ -- 12
 		name = 'Negation',
 		func = compFunc,
 		args = { 'neg',
@@ -636,7 +423,7 @@ local tests = {
 			{ '+∞' },
 		}
 	},
-	{ -- 24
+	{ -- 13
 		name = 'Addition',
 		func = callFunc,
 		args = { 'add',
@@ -656,7 +443,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 25
+	{ -- 14
 		name = 'Subtraction',
 		func = callFunc,
 		args = { 'sub',
@@ -676,7 +463,7 @@ local tests = {
 			{ '-∞', 0 },
 		}
 	},
-	{ -- 26
+	{ -- 15
 		name = 'Multiply',
 		func = callFunc,
 		args = { 'mul',
@@ -698,7 +485,7 @@ local tests = {
 			{ '-42', 0 }, -- @todo bug – this should be '∞'
 		}
 	},
-	{ -- 27
+	{ -- 16
 		name = 'Division',
 		func = callFunc,
 		args = { 'div',
@@ -718,7 +505,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 28
+	{ -- 17
 		name = 'Modulus',
 		func = callFunc,
 		args = { 'mod',
@@ -738,7 +525,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 29
+	{ -- 18
 		name = 'Power',
 		func = callFunc,
 		args = { 'pow',
@@ -754,7 +541,7 @@ local tests = {
 			{ '1', 0 },
 		}
 	},
-	{ -- 30
+	{ -- 19
 		name = 'Power-modulus',
 		func = callFunc,
 		args = { 'powmod',
@@ -766,7 +553,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 31
+	{ -- 20
 		name = 'Sqrt 9',
 		func = callFunc,
 		args = { 'sqrt',
@@ -780,7 +567,7 @@ local tests = {
 			{ nil, 0 },
 		}
 	},
-	{ -- 32
+	{ -- 21
 		name = 'Compare',
 		func = compFunc,
 		args = { 'comp',
@@ -802,7 +589,7 @@ local tests = {
 			{ nil },
 		}
 	},
-	{ -- 33
+	{ -- 22
 		name = 'Equality',
 		func = compFunc,
 		args = { 'eq',
@@ -814,7 +601,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 34
+	{ -- 23
 		name = 'Less than',
 		func = compFunc,
 		args = { 'lt',
@@ -828,7 +615,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 35
+	{ -- 24
 		name = 'Less or equal',
 		func = compFunc,
 		args = { 'le',
@@ -842,7 +629,7 @@ local tests = {
 			{ false },
 		}
 	},
-	{ -- 36
+	{ -- 25
 		name = 'Greater than',
 		func = compFunc,
 		args = { 'gt',
@@ -856,7 +643,7 @@ local tests = {
 			{ true },
 		}
 	},
-	{ -- 37
+	{ -- 26
 		name = 'Greater or equal',
 		func = compFunc,
 		args = { 'ge',
@@ -870,7 +657,7 @@ local tests = {
 			{ true },
 		}
 	},
-	{ -- 38
+	{ -- 27
 		name = 'call fix',
 		func = makeCall,
 		args = {
@@ -895,7 +682,7 @@ local tests = {
 		}
 	},
 
-	{ -- 39
+	{ -- 28
 		name = 'call eng',
 		func = makeCall,
 		args = {
@@ -923,7 +710,7 @@ local tests = {
 			{ '-1.23e3' },
 		}
 	},
-	{ -- 40
+	{ -- 29
 		name = 'call sci',
 		func = makeCall,
 		args = {
@@ -947,7 +734,7 @@ local tests = {
 			{ '-1.23e2' },
 		}
 	},
-	{ -- 41
+	{ -- 30
 		name = 'round -123.456',
 		func = callFunc,
 		args = { 'round',
