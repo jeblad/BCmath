@@ -5,7 +5,7 @@
 		]
 	},
 	"bcmath-desc": "Læger til aritmetik med vilkårlig præcision for Lua moduler",
-	"bcmath-payload-counter": "$1: $2",
+	"bcmath-log-origin-lead": "bcmath: $1",
 	"bcmath-check-not-implemented": "Funktionaliteten »$1« er endnu ikke implementeret!",
 	"bcmath-check-self-nan": "»self« har ikke en gyldig værdi",
 	"bcmath-check-operand-nan": "operator »$1« med operand »$2« har ikke en gyldig værdi",

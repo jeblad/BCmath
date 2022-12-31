@@ -5,7 +5,7 @@
 		]
 	},
 	"bcmath-desc": "Lua modüllerine isteğe bağlı hassas aritmetik sağlar",
-	"bcmath-payload-counter": "$1 $2",
+	"bcmath-log-origin-lead": "bcmath: $1",
 	"bcmath-check-not-implemented": "İşlevselliği “$1” henüz uygulanmadı!",
 	"bcmath-check-self-nan": "“öz” geçerli bir değere sahip değil",
 	"bcmath-check-operand-nan": "“$2” operandlı “$1” operatörü geçerli bir değere sahip değil",

@@ -5,7 +5,7 @@
 		]
 	},
 	"bcmath-desc": "Dostarcza modułom Lua arytmetykę o dowolnie wybranej precyzji",
-	"bcmath-payload-counter": "$1: $2",
+	"bcmath-log-origin-lead": "bcmath: $1",
 	"bcmath-check-not-implemented": "Funkcjonalność \"$1\" nie jest jeszcze zaimplementowana!",
 	"bcmath-check-self-nan": "\"self\" nie ma poprawnej wartości",
 	"bcmath-check-operand-nan": "operator \"$1\" z argumentem \"$2\" nie ma poprawnej wartości",

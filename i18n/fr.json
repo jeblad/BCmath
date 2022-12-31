@@ -7,7 +7,7 @@
 		]
 	},
 	"bcmath-desc": "Fournit une arithmétique de précision arbitraire aux modules Lua",
-	"bcmath-payload-counter": "$1 : $2",
+	"bcmath-log-origin-lead": "bcmath : $2",
 	"bcmath-check-not-implemented": "La fonctionnalité « $1 » n’est pas encore mise en œuvre !",
 	"bcmath-check-self-nan": "« self » n’a pas une valeur valide",
 	"bcmath-check-operand-nan": "l’opérateur « $1 » avec l’opérande « $2 » n’a pas une valeur valide",

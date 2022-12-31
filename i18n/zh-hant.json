@@ -6,7 +6,7 @@
 		]
 	},
 	"bcmath-desc": "為 Lua 模組提供任意精確度算數",
-	"bcmath-payload-counter": "$1：$2",
+	"bcmath-log-origin-lead": "bcmath：$1",
 	"bcmath-check-not-implemented": "功能「$1」尚未生效！",
 	"bcmath-check-self-nan": "「self」沒有有效值",
 	"bcmath-check-operand-nan": "運算子「$1」和運算元「$2」沒有有效值",
