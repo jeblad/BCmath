@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"bcmath-desc": "Forni un arithmetica de precision arbitrari al modulos Lua",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Le functionalitate \"$1\" non es ancora implementate.",
+	"bcmath-check-self-nan": "\"self\" non ha un valor valide",
+	"bcmath-check-operand-nan": "operator “$1” con operando “$2” non ha un valor valide",
+	"bcmath-add-singlesided-infinite": "Duo valores ha essite addite del quales un es infinite",
+	"bcmath-add-opposite-infinites": "Duo valores infinite de direction opposite ha essite addite",
+	"bcmath-add-similar-infinites": "Duo valores infinite de direction similar ha essite addite",
+	"bcmath-sub-singlesided-infinite": "Duo valores ha essite subtrahite del quales un es infinite",
+	"bcmath-sub-opposite-infinites": "Duo valores infinite de direction opposite ha essite subtrahite",
+	"bcmath-sub-similar-infinites": "Duo valores infinite de direction similar ha essite subtrahite",
+	"bcmath-mul-infinite-and-zero": "Valor infinite multiplicate con zero",
+	"bcmath-mul-opposite-infinites": "Multiplication de duo valores infinite de direction opposite",
+	"bcmath-mul-similar-infinites": "Multiplication de duo valores infinite de direction similar",
+	"bcmath-div-divisor-infinite": "Division per un divisor infinite",
+	"bcmath-div-divisor-zero": "Division per un divisor de zero",
+	"bcmath-div-dividend-infinite": "Division con un dividendo infinite",
+	"bcmath-mod-divisor-infinite": "Modulo con un divisor infinite",
+	"bcmath-mod-divisor-zero": "Modulo con un divisor de zero",
+	"bcmath-mod-dividend-infinite": "Modulo con un dividendo infinite",
+	"bcmath-pow-exponent-zero": "Potentia con exponente zero",
+	"bcmath-pow-base-one": "Potentia con base un",
+	"bcmath-powmod-divisor-zero": "Exponentiation modular con divisor de zero",
+	"bcmath-powmod-exponent-negative": "Exponentiation modular con exponente negative",
+	"bcmath-sqrt-operand-negative": "Radice quadrate con operando negative"
+}
