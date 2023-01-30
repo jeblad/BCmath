@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"bcmath-desc": "Modulom Lua omogoča aritmetiko s poljubno natančnostjo",
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Funkcionalnost »$1« še ni implementirana!",
+	"bcmath-check-self-nan": "»self« nima veljavne vrednosti",
+	"bcmath-check-operand-nan": "operator »$1« z operandom »$2« nima veljavne vrednosti",
+	"bcmath-add-singlesided-infinite": "Seštevek dveh vrednosti, pri čemer je ena neskončna",
+	"bcmath-add-opposite-infinites": "Seštevek dveh neskončnih vrednosti z nasprotnim predznakom",
+	"bcmath-add-similar-infinites": "Seštevek dveh neskončnih vrednosti podobne smeri",
+	"bcmath-sub-singlesided-infinite": "Odštetje dveh vrednosti, pri čemer je ena neskončno",
+	"bcmath-sub-opposite-infinites": "Odštetje dveh neskončnih vrednosti z nasprotnim predznakom",
+	"bcmath-sub-similar-infinites": "Odštetje dveh neskončnih vrednosti podobne smeri",
+	"bcmath-mul-infinite-and-zero": "Pomnožitev neskončno in nič",
+	"bcmath-mul-opposite-infinites": "Množenje dveh neskončnih vrednosti z nasprotnim predznakom",
+	"bcmath-mul-similar-infinites": "Množenje dveh neskončnih vrednosti podobne smeri",
+	"bcmath-div-divisor-infinite": "Deljenje z neskončnim deliteljem",
+	"bcmath-div-divisor-zero": "Deljenje z deliteljem nič",
+	"bcmath-div-dividend-infinite": "Deljenje z neskončnim deljencem",
+	"bcmath-mod-divisor-infinite": "Modulo z neskončnim deliteljem",
+	"bcmath-mod-divisor-zero": "Modulo z deliteljem nič",
+	"bcmath-mod-dividend-infinite": "Modulo z neskončnim deljencem",
+	"bcmath-pow-exponent-zero": "Potenca z ničelnim eksponentom",
+	"bcmath-pow-base-one": "Potenca z osnovo ena",
+	"bcmath-powmod-divisor-zero": "Potenčni modulo z ničelnim deliteljem",
+	"bcmath-powmod-exponent-negative": "Potenčni modulo z negativnim eksponentom",
+	"bcmath-sqrt-operand-negative": "Kvadratni koren z negativnim operandom"
+}
