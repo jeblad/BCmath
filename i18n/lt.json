@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nokeoo"
+		]
+	},
+	"bcmath-payload-counter": "$1: $2",
+	"bcmath-check-not-implemented": "Funkcija „$1“ dar neįdiegta!",
+	"bcmath-add-singlesided-infinite": "Pridėtos dvi reikšmės, kur viena yra begalinė",
+	"bcmath-add-opposite-infinites": "Pridėtos dvi begalinės priešingos krypties reikšmės",
+	"bcmath-add-similar-infinites": "Pridėtos dvi begalinės panašios krypties reikšmės",
+	"bcmath-sub-singlesided-infinite": "Atimtos dvi reikšmės, kur viena yra begalinė",
+	"bcmath-sub-opposite-infinites": "Atimtos dvi begalinės priešingos krypties reikšmės",
+	"bcmath-sub-similar-infinites": "Atimtos dvi begalinės panašios krypties reikšmės"
+}
