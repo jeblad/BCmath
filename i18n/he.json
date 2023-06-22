@@ -1,14 +1,28 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"YaronSh"
 		]
 	},
 	"bcmath-check-not-implemented": "התכונה „$1” לא הוטמעה עדיין!",
 	"bcmath-check-self-nan": "ל־„self” אין ערך תקני",
+	"bcmath-check-operand-nan": "לאופרטור \"$1\" עם האופרנד \"$2\" אין ערך תקין",
 	"bcmath-add-singlesided-infinite": "נוספו שני ערכים שאחד מהם הוא אינסוף",
 	"bcmath-add-opposite-infinites": "נוספו שני ערכי אינסוף בכיוונים מנוגדים",
 	"bcmath-add-similar-infinites": "נוספו שני ערכי אינסוף באותו הכיוון",
+	"bcmath-sub-singlesided-infinite": "הוחסרו שני ערכים שאחד מהם אינסופי",
+	"bcmath-sub-opposite-infinites": "הוחסרו שני ערכים אינסופיים בכיוון הפוך",
+	"bcmath-sub-similar-infinites": "הוחסרו שני ערכים אינסופיים בכיוון דומה",
+	"bcmath-mul-infinite-and-zero": "הוכפלו אינסוף ואפס",
+	"bcmath-mul-opposite-infinites": "הוכפלו שני ערכים אינסופיים בכיוון הפוך",
+	"bcmath-mul-similar-infinites": "הוכפלו שני ערכים אינסופיים בכיוון דומה",
+	"bcmath-div-divisor-infinite": "חולקו במחלק אינסופי",
+	"bcmath-div-divisor-zero": "חולקו במחלק אפס",
+	"bcmath-div-dividend-infinite": "חולקו עם מחולק אינסופי",
+	"bcmath-mod-divisor-infinite": "פעולת מודולוס עם מחלק אינסופי",
+	"bcmath-mod-divisor-zero": "מודולוס עם מחלק אפס",
+	"bcmath-mod-dividend-infinite": "מודולוס עם מחולק אינסופי",
 	"bcmath-pow-exponent-zero": "חזקה עם מעריך אפס",
 	"bcmath-pow-base-one": "חזקה עם בסיס אחד"
 }
