@@ -5,6 +5,7 @@
 			"YaronSh"
 		]
 	},
+	"bcmath-desc": "מספק אריתמטיקה דיוק משתני ליחידות לואה",
 	"bcmath-check-not-implemented": "התכונה „$1” לא הוטמעה עדיין!",
 	"bcmath-check-self-nan": "ל־„self” אין ערך תקני",
 	"bcmath-check-operand-nan": "לאופרטור \"$1\" עם האופרנד \"$2\" אין ערך תקין",
@@ -24,5 +25,8 @@
 	"bcmath-mod-divisor-zero": "מודולוס עם מחלק אפס",
 	"bcmath-mod-dividend-infinite": "מודולוס עם מחולק אינסופי",
 	"bcmath-pow-exponent-zero": "חזקה עם מעריך אפס",
-	"bcmath-pow-base-one": "חזקה עם בסיס אחד"
+	"bcmath-pow-base-one": "חזקה עם בסיס אחד",
+	"bcmath-powmod-divisor-zero": "חזקה עם מודולוס עם מחלק אפס",
+	"bcmath-powmod-exponent-negative": "חזקה עם מודולוס עם מעריך שלילי",
+	"bcmath-sqrt-operand-negative": "שורש ריבועי עם אופרנד שלילי"
 }
