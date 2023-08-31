@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"Josephine W.",
+			"沈澄心"
+		]
+	},
+	"bcmath-desc": "为Lua模块提供任意精度算术",
+	"bcmath-payload-counter": "$1：$2",
+	"bcmath-check-not-implemented": "功能“ $1 ”尚未实现！",
+	"bcmath-check-self-nan": "“self”没有有效值",
+	"bcmath-check-operand-nan": "带操作数“$2”的运算符“$1”没有有效值",
+	"bcmath-add-singlesided-infinite": "两个值相加，其中一个值为无穷大",
+	"bcmath-add-opposite-infinites": "两个异号的无穷大相加",
+	"bcmath-add-similar-infinites": "两个同号的无穷大相加",
+	"bcmath-sub-singlesided-infinite": "两个值相减，其中一个值为无穷大",
+	"bcmath-sub-opposite-infinites": "两个异号的无穷大相减",
+	"bcmath-sub-similar-infinites": "两个同号的无穷大相减",
+	"bcmath-mul-infinite-and-zero": "无穷大与零相乘",
+	"bcmath-mul-opposite-infinites": "两个异号的无穷大相乘",
+	"bcmath-mul-similar-infinites": "两个同号的无穷大相乘",
+	"bcmath-div-divisor-infinite": "除以无穷大",
+	"bcmath-div-divisor-zero": "除以零",
+	"bcmath-div-dividend-infinite": "除无穷大",
+	"bcmath-mod-divisor-infinite": "对无穷大取模",
+	"bcmath-mod-divisor-zero": "对零取模",
+	"bcmath-mod-dividend-infinite": "无穷大取模",
+	"bcmath-pow-exponent-zero": "零次幂",
+	"bcmath-pow-base-one": "一的幂",
+	"bcmath-powmod-divisor-zero": "除数为零的模幂",
+	"bcmath-powmod-exponent-negative": "负指数模幂",
+	"bcmath-sqrt-operand-negative": "负数开平方"
+}
