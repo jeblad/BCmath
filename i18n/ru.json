@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Katunchik",
-			"Movses"
+			"Movses",
+			"Vlad5250"
 		]
 	},
 	"bcmath-desc": "Предоставляет арифметику произвольной точности для модулей Lua",
@@ -16,8 +17,11 @@
 	"bcmath-sub-singlesided-infinite": "Были вычтены два значения, одно из которых бесконечное",
 	"bcmath-sub-opposite-infinites": "Были вычтены два бесконечных значения противоположного направления",
 	"bcmath-sub-similar-infinites": "Были вычтены два бесконечных значения одинакового направления",
+	"bcmath-mul-infinite-and-zero": "Умножение бесконечности и нуля",
 	"bcmath-mul-opposite-infinites": "Были перемножены два бесконечных значения противоположного направления",
 	"bcmath-mul-similar-infinites": "Были перемножены два бесконечных значения одинакового направления",
 	"bcmath-div-divisor-infinite": "Делится на бесконечность",
-	"bcmath-pow-exponent-zero": "Возведение в нулевую степень"
+	"bcmath-div-divisor-zero": "Деление на ноль",
+	"bcmath-pow-exponent-zero": "Возведение в нулевую степень",
+	"bcmath-pow-base-one": "Возведение в степень по основанию единица"
 }
