@@ -5,7 +5,6 @@
 		]
 	},
 	"bcmath-desc": "Овозможува произволно уточнета аритметика за Lua-модули",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Можноста „$1“ сè уште не е воведена!",
 	"bcmath-check-self-nan": "„self“ нема важечка вредност",
 	"bcmath-check-operand-nan": "операторот „$1“ со операнд „$2“ нема важечка вредност",

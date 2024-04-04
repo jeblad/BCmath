@@ -5,7 +5,6 @@
 		]
 	},
 	"bcmath-desc": "Modulom Lua omogoča aritmetiko s poljubno natančnostjo",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Funkcionalnost »$1« še ni implementirana!",
 	"bcmath-check-self-nan": "»self« nima veljavne vrednosti",
 	"bcmath-check-operand-nan": "operator »$1« z operandom »$2« nima veljavne vrednosti",

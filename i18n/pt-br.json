@@ -6,7 +6,6 @@
 		]
 	},
 	"bcmath-desc": "Fornece aritmética de precisão arbitrária para módulos Lua",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "A funcionalidade \"$1\" ainda não foi implementada!",
 	"bcmath-check-self-nan": "\"self\" não tem um valor válido",
 	"bcmath-check-operand-nan": "O operador \"$1\" com o operando \"$2\" não possui um valor válido",

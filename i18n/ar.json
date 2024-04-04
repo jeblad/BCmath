@@ -6,7 +6,6 @@
 		]
 	},
 	"bcmath-desc": "يوفر الحساب التعسفي الدقيق لوحدات لوا",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "الوظيفة \"$1\" لم تُنفَّذ بعد!",
 	"bcmath-check-self-nan": "“self” ليست له قيمة صالحة",
 	"bcmath-check-operand-nan": "العامل \"$1\" مع المعامل \"$2\" ليست له قيمة صالحة",

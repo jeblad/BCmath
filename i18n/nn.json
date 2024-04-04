@@ -5,7 +5,6 @@
 		]
 	},
 	"bcmath-desc": "Legg til aritmetikk med vilkårleg presisjon for Lua modular",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Funksjonaliteten «$1» er enno ikkje implementert!",
 	"bcmath-check-self-nan": "«self» har ikkje ein gyldig verdi",
 	"bcmath-check-operand-nan": "operator «$1» med operanden «$2» har ikkje ein gyldig verdi",

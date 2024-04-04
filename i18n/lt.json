@@ -4,7 +4,6 @@
 			"Nokeoo"
 		]
 	},
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Funkcija „$1“ dar neįdiegta!",
 	"bcmath-add-singlesided-infinite": "Pridėtos dvi reikšmės, kur viena yra begalinė",
 	"bcmath-add-opposite-infinites": "Pridėtos dvi begalinės priešingos krypties reikšmės",

@@ -5,7 +5,6 @@
 		]
 	},
 	"bcmath-desc": "Forni un arithmetica de precision arbitrari al modulos Lua",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Le functionalitate \"$1\" non es ancora implementate.",
 	"bcmath-check-self-nan": "\"self\" non ha un valor valide",
 	"bcmath-check-operand-nan": "operator “$1” con operando “$2” non ha un valor valide",

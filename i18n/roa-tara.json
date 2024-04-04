@@ -5,7 +5,6 @@
 		]
 	},
 	"bcmath-desc": "Dèje 'na precisione aritmeteche arbitrarie pe le module Lua",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "'A funzione \"$1\" non g'ha state angore implemendate!",
 	"bcmath-check-self-nan": "“self” non g'ave 'nu numere valide",
 	"bcmath-check-operand-nan": "l'operatore “$1” cu l'operande \"$2\" non g'ave 'nu numere valide",

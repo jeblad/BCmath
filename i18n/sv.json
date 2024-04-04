@@ -5,7 +5,6 @@
 		]
 	},
 	"bcmath-desc": "Lägger till arbiträr precisionsmatematik för Lua moduler",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Funktionaliteten ”$1” är ännu inte implementerat!",
 	"bcmath-check-self-nan": "”self” har inte ett giltigt värde",
 	"bcmath-check-operand-nan": "operator ”$1” med operand ”$2” har inte ett giltigt värde",

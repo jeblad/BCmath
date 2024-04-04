@@ -6,7 +6,6 @@
 		]
 	},
 	"bcmath-desc": "Забезпечує модулі Lua арифметикою довільної точності",
-	"bcmath-payload-counter": "$1: $2",
 	"bcmath-check-not-implemented": "Функціонал «$1» ще не імплементовано!",
 	"bcmath-check-self-nan": "«self» не містить допустимого значення",
 	"bcmath-check-operand-nan": "оператор «$1» з операндом «$2» не містить допустимого значення",
