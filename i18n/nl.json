@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"bcmath-desc": "Biedt willekeurige precisieberekeningen voor Lua-modules",
+	"bcmath-check-not-implemented": "De functionaliteit “$1” is nog niet geïmplementeerd!",
+	"bcmath-check-self-nan": "“zelf” heeft geen geldige waarde",
+	"bcmath-check-operand-nan": "operator “$1” met operand “$2” heeft geen geldige waarde",
+	"bcmath-add-singlesided-infinite": "Twee waarden opgeteld waarvan één oneindig is",
+	"bcmath-add-opposite-infinites": "Twee oneindige waarden met tegengestelde richting opgeteld",
+	"bcmath-add-similar-infinites": "Twee oneindige waarden van vergelijkbare richting opgeteld",
+	"bcmath-sub-singlesided-infinite": "Twee waarden afgetrokken waarvan één oneindig is",
+	"bcmath-sub-opposite-infinites": "Twee oneindige waarden met tegengestelde richting afgetrokken",
+	"bcmath-sub-similar-infinites": "Twee oneindige waarden van vergelijkbare richting afgetrokken",
+	"bcmath-mul-infinite-and-zero": "Oneindig vermenigvuldigd met nul",
+	"bcmath-mul-opposite-infinites": "Twee oneindige waarden met tegengestelde richting vermenigvuldigd",
+	"bcmath-mul-similar-infinites": "Twee oneindige waarden met dezelfde richting vermenigvuldigd",
+	"bcmath-div-divisor-infinite": "Gedeeld door oneindig",
+	"bcmath-div-divisor-zero": "Gedeeld door nul",
+	"bcmath-div-dividend-infinite": "Oneindig getal gedeeld",
+	"bcmath-mod-divisor-infinite": "Restgetal berekend van oneindige deler",
+	"bcmath-mod-divisor-zero": "Restgetal berekend van deler nul",
+	"bcmath-mod-dividend-infinite": "Restgetal berekend van oneindig te delen getal",
+	"bcmath-pow-exponent-zero": "Macht met een exponent van nul",
+	"bcmath-pow-base-one": "Macht met basis één",
+	"bcmath-powmod-divisor-zero": "Machtsmodulus met nuldeler",
+	"bcmath-powmod-exponent-negative": "Machtsmodulus met negatieve exponent",
+	"bcmath-sqrt-operand-negative": "Vierkantswortel met negatieve operand"
+}
