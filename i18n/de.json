@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"TomatoCake"
+		]
+	},
+	"bcmath-check-not-implemented": "Die Funktion „$1“ ist noch nicht implementiert!",
+	"bcmath-check-self-nan": "„self“ hat keinen gültigen Wert",
+	"bcmath-check-operand-nan": "Operator „$1“ mit dem Operand „$2“ hat keinen gültigen Wert",
+	"bcmath-add-singlesided-infinite": "Zwei Werte addiert, wovon einer unendlich war",
+	"bcmath-add-opposite-infinites": "Zwei unendliche Werte mit entgegengesetzter Richtung addiert",
+	"bcmath-add-similar-infinites": "Zwei unendliche Werte mit ähnlicher Richtung addiert",
+	"bcmath-sub-singlesided-infinite": "Zwei Werte subtrahiert, wovon einer unendlich war",
+	"bcmath-sub-opposite-infinites": "Zwei unendliche Werte mit entgegengesetzter Richtung subtrahiert",
+	"bcmath-sub-similar-infinites": "Zwei unendliche Werte mit ähnlicher Richtung subtrahiert",
+	"bcmath-mul-infinite-and-zero": "Unendlich und null multipliziert",
+	"bcmath-mul-opposite-infinites": "Zwei unendliche Werte mit entgegengesetzter Richtung multipliziert",
+	"bcmath-mul-similar-infinites": "Zwei unendliche Werte mit ähnlicher Richtung multipliziert",
+	"bcmath-div-divisor-infinite": "Mit unendlichem Divisor dividiert",
+	"bcmath-div-divisor-zero": "Mit null als Divisor dividiert",
+	"bcmath-div-dividend-infinite": "Mit unendlichem Dividend dividiert",
+	"bcmath-mod-divisor-infinite": "Modulo mit unendlichem Divisor",
+	"bcmath-mod-divisor-zero": "Modula mit null als Divisor",
+	"bcmath-mod-dividend-infinite": "Modula mit unendlichem Dividend",
+	"bcmath-pow-exponent-zero": "Potenz mit null als Exponent",
+	"bcmath-pow-base-one": "Potenz mit Basis eins",
+	"bcmath-powmod-divisor-zero": "Potenzmodulo mit null als Divisor",
+	"bcmath-powmod-exponent-negative": "Potenzmodulo mit negativem Exponent",
+	"bcmath-sqrt-operand-negative": "Quadratwurzel mit negativem Operand"
+}
