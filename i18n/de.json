@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Justman10000",
 			"TomatoCake"
 		]
 	},
+	"bcmath-desc": "Bietet Lua-Modulen Arithmetik mit beliebiger Genauigkeit",
 	"bcmath-check-not-implemented": "Die Funktion „$1“ ist noch nicht implementiert!",
 	"bcmath-check-self-nan": "„self“ hat keinen gültigen Wert",
 	"bcmath-check-operand-nan": "Operator „$1“ mit dem Operand „$2“ hat keinen gültigen Wert",
