@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"bcmath-desc": "Proporciona aritmética de precisión arbitraria aos módulos Lua",
+	"bcmath-check-not-implemented": "A funcionalidade \"$1\" aínda non está implementada!",
+	"bcmath-check-self-nan": "\"self\" non ten un valor válido",
+	"bcmath-check-operand-nan": "o operador \"$1\" co operando \"$2\" non ten un valor válido",
+	"bcmath-add-singlesided-infinite": "Sumáronse dous valores onde un é infinito",
+	"bcmath-add-opposite-infinites": "Sumáronse dous valores infinitos de signo oposto",
+	"bcmath-add-similar-infinites": "Sumáronse dous valores infinitos do mesmo signo",
+	"bcmath-sub-singlesided-infinite": "Restáronse dous valores onde un é infinito",
+	"bcmath-sub-opposite-infinites": "Restáronse dous valores infinitos de signo oposto",
+	"bcmath-sub-similar-infinites": "Restáronse dous valores infinitos do mesmo signo",
+	"bcmath-mul-infinite-and-zero": "Multiplicouse infinito por cero",
+	"bcmath-mul-opposite-infinites": "Multiplicáronse dous valores infinitos de signo oposto",
+	"bcmath-mul-similar-infinites": "Multiplicáronse dous valores infinitos do mesmo signo",
+	"bcmath-div-divisor-infinite": "Dividiuse por un infinito",
+	"bcmath-div-divisor-zero": "Dividiuse por cero",
+	"bcmath-div-dividend-infinite": "Dividiuse cun dividendo infinito",
+	"bcmath-mod-divisor-infinite": "Módulo cun divisor infinito",
+	"bcmath-mod-divisor-zero": "Módulo cun divisor cero",
+	"bcmath-mod-dividend-infinite": "Módulo cun dividendo infinito",
+	"bcmath-pow-exponent-zero": "Potencia cun exponente cero",
+	"bcmath-pow-base-one": "Potencia con base un",
+	"bcmath-powmod-divisor-zero": "Exponenciación modular cun divisor cero",
+	"bcmath-powmod-exponent-negative": "Exponenciación modular cun exponente negativo",
+	"bcmath-sqrt-operand-negative": "Raíz cadrada cun operando negativo"
+}
