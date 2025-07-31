@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"bcmath-check-self-nan": "“self” магийна доцу маьӀна ду",
+	"bcmath-mul-infinite-and-zero": "Чаккхе йоцуш а, нулех а дебадар",
+	"bcmath-mul-opposite-infinites": "Дуьхь-дуьхьал некъан чеккхе оцу ши маьӀна совдаьккхира",
+	"bcmath-mul-similar-infinites": "Цхьана некъан чаккхе йоцу ши маьӀна совдаьккхира",
+	"bcmath-div-divisor-infinite": "Доза доцуш декъалуш ду",
+	"bcmath-div-divisor-zero": "Нулех декъар",
+	"bcmath-div-dividend-infinite": "Чеккхе йоцу дивидендца декъна",
+	"bcmath-mod-divisor-infinite": "Модуль чаккхе йоцу декъарца",
+	"bcmath-mod-divisor-zero": "Модуль нулан декъарца",
+	"bcmath-mod-dividend-infinite": "Модуль чаккхе йоцу дивиденд йолуш",
+	"bcmath-pow-exponent-zero": "Нулан тӀегӀане хьалаайар",
+	"bcmath-pow-base-one": "База цхьаъ йолчу тӀегӀане хьалаайар",
+	"bcmath-powmod-divisor-zero": "Powermod нул бекъарца",
+	"bcmath-powmod-exponent-negative": "Powermod негативан гайтамца",
+	"bcmath-sqrt-operand-negative": "Квадратан орамца негативан операнд"
+}
