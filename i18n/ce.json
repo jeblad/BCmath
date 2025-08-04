@@ -4,7 +4,16 @@
 			"Умар"
 		]
 	},
+	"bcmath-desc": "Lua модулийн лаамаза нийса арифметика ло",
+	"bcmath-check-not-implemented": "\"$1\" функционал хӀинца а кхочушйеш йац!",
 	"bcmath-check-self-nan": "“self” магийна доцу маьӀна ду",
+	"bcmath-check-operand-nan": "операторан \"$1\" а, операндан \"$2\" а нийса доцу маьӀна ду",
+	"bcmath-add-singlesided-infinite": "Ши маьӀна цхьаьнатоьхна, цхьаъ чаккхе йоцуш хилла",
+	"bcmath-add-opposite-infinites": "Дуьхь-дуьхьал некъан чеккхе йоцу ши маьӀна тӀетоьхна",
+	"bcmath-add-similar-infinites": "Цхьана некъан чаккхе йоцу ши маьӀна цхьаьнатоьхна",
+	"bcmath-sub-singlesided-infinite": "Ши маьӀна дӀадаьккхира, царех цхьаъ чаккхе йоцуш.",
+	"bcmath-sub-opposite-infinites": "Дуьхь-дуьхьал некъан чеккхе оцу ши маьӀна дӀадаьккхира",
+	"bcmath-sub-similar-infinites": "Цхьана некъан чаккхе йоцу ши маьӀна совдаьккхира",
 	"bcmath-mul-infinite-and-zero": "Чаккхе йоцуш а, нулех а дебадар",
 	"bcmath-mul-opposite-infinites": "Дуьхь-дуьхьал некъан чеккхе оцу ши маьӀна совдаьккхира",
 	"bcmath-mul-similar-infinites": "Цхьана некъан чаккхе йоцу ши маьӀна совдаьккхира",
