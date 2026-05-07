@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tensama0415",
+			"Ykhwong"
+		]
+	},
+	"bcmath-desc": "Lua 모듈에 임의 정밀도 연산 기능을 제공합니다",
+	"bcmath-check-not-implemented": "\"$1\" 기능은 아직 구현되어 있지 않습니다!",
+	"bcmath-check-self-nan": "“self”에 유효한 값이 없습니다",
+	"bcmath-check-operand-nan": "\"$1\" 연산자와 \"$2\" 피연산자는 유효한 값을 가지지 않습니다",
+	"bcmath-add-singlesided-infinite": "두 값의 덧셈에서 한 값이 무한대",
+	"bcmath-add-opposite-infinites": "반대 부호의 두 무한대 값을 더함",
+	"bcmath-add-similar-infinites": "같은 부호의 두 무한대 값을 더함",
+	"bcmath-sub-singlesided-infinite": "두 값의 뺄셈에서 한 값이 무한대",
+	"bcmath-sub-opposite-infinites": "반대 부호의 두 무한대 값을 뺌",
+	"bcmath-sub-similar-infinites": "같은 부호의 두 무한대 값을 뺌",
+	"bcmath-mul-infinite-and-zero": "무한대와 0을 곱함",
+	"bcmath-mul-opposite-infinites": "반대 부호의 두 무한대 값을 곱함",
+	"bcmath-mul-similar-infinites": "같은 부호의 두 무한대 값을 곱함",
+	"bcmath-div-divisor-infinite": "무한대로 나눔",
+	"bcmath-div-divisor-zero": "0으로 나눔",
+	"bcmath-div-dividend-infinite": "무한대를 나눔",
+	"bcmath-mod-divisor-infinite": "모듈러 연산의 법이 무한대",
+	"bcmath-mod-divisor-zero": "모듈러 연산의 법이 0",
+	"bcmath-mod-dividend-infinite": "무한대에 대한 모듈러 연산",
+	"bcmath-pow-exponent-zero": "지수가 0인 거듭제곱",
+	"bcmath-pow-base-one": "밑이 1인 거듭제곱",
+	"bcmath-powmod-divisor-zero": "모듈러 지수 연산의 법이 0",
+	"bcmath-powmod-exponent-negative": "모듈러 지수 연산의 법이 지수가 음수",
+	"bcmath-sqrt-operand-negative": "음의 피연산자를 갖는 제곱근"
+}
