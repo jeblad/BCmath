@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"AhmedG612"
+		]
+	},
+	"bcmath-desc": "Waxay siisaa xisaab saxnaan aan xad lahayn leh modules-ka Lua",
+	"bcmath-check-not-implemented": "Shaqada “$1” weli lama hirgelin!",
+	"bcmath-check-self-nan": "“self” ma laha qiime ansax ah",
+	"bcmath-check-operand-nan": "Hawl wadeenka “$1” oo leh hawl geliyaha “$2” ma laha qiime ansax ah",
+	"bcmath-add-singlesided-infinite": "Waxaa la isku daray laba qiime oo midkood aan xad lahayn",
+	"bcmath-add-opposite-infinites": "Waxaa la isku daray laba qiime oo aan xad lahayn oo jihooyin iska soo horjeeda leh",
+	"bcmath-add-similar-infinites": "Waxaa la isku daray laba qiime oo aan xad lahayn oo jihooyin isku mid ah leh",
+	"bcmath-sub-singlesided-infinite": "Waxaa la kala jaray laba qiime oo midkood aan xad lahayn",
+	"bcmath-sub-opposite-infinites": "Waxaa la kala jaray laba qiime oo aan xad lahayn oo jihooyin iska soo horjeeda leh",
+	"bcmath-sub-similar-infinites": "Waxaa la kala jaray laba qiime oo aan xad lahayn oo jihooyin isku mid ah leh",
+	"bcmath-mul-infinite-and-zero": "Waxaa la isku dhuftay qiime aan xad lahayn iyo eber",
+	"bcmath-mul-opposite-infinites": "Waxaa la isku dhuftay laba qiime oo aan xad lahayn oo jihooyin iska soo horjeeda leh",
+	"bcmath-mul-similar-infinites": "Waxaa la isku dhuftay laba qiime oo aan xad lahayn oo jihooyin isku mid ah leh",
+	"bcmath-div-divisor-infinite": "Waxaa loo qaybiyay qaybiyaha aan xad lahayn",
+	"bcmath-div-divisor-zero": "Waxaa loo qaybiyay qaybiyaha eberka ah",
+	"bcmath-div-dividend-infinite": "Waxaa loo qaybiyay qaybinta aan xad lahayn",
+	"bcmath-mod-divisor-infinite": "Hadhaaga qaybinta oo leh qaybiyaha aan xad lahayn",
+	"bcmath-mod-divisor-zero": "Hadhaaga qaybinta oo leh qaybiyaha eberka ah",
+	"bcmath-mod-dividend-infinite": "Hadhaaga qaybinta oo leh qaybinta aan xad lahayn",
+	"bcmath-pow-exponent-zero": "Awood leh jibbaar eber ah",
+	"bcmath-pow-base-one": "Awood leh saldhigga ah hal",
+	"bcmath-powmod-divisor-zero": "Habka awoodda leh qaybiyaha eberka ah",
+	"bcmath-powmod-exponent-negative": "Habka awoodda leh jibbaar taban",
+	"bcmath-sqrt-operand-negative": "Xididka laba jibbaaran oo leh hawl geliye taban"
+}
